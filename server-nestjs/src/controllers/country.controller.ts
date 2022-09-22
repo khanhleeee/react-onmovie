@@ -1,5 +1,5 @@
 import { Body, Controller, Get } from '@nestjs/common';
-import { CountryService } from './country.service';
+import { CountryService } from '../services/country.service';
 
 @Controller('country')
 export class CountryController {
