@@ -1,18 +1,19 @@
 const mssql = require('mssql');
 
-const Movie = require('../models/Movie');
+const Genre = require('../models/Genre');
 const sqlConfig = require('../database/dbConnection');
 
 module.exports = {
-    getMovie: async (req, res) => {
+    getGenre: async (req, res) => {
         try {
             await mssql.connect(sqlConfig);
             const request = new mssql.Request();
-            // const result = await request.query('SELECT * FROM phong');
-            const result = await request.execute('getRoom');
+            const result = await request.query('SELECT * FROM GENRES');
+            // const result = await request.execute('getGenre'); 
             console.log(result);
             res.status(200).json(result.recordset);
         } catch (error) {
+            console.log(error);
             res.status(500).json(error);
         }
     }, 
