@@ -8,9 +8,9 @@ module.exports = {
         try {
             await mssql.connect(sqlConfig);
             const request = new mssql.Request();
-            const result = await request.query('SELECT * FROM GENRES');
-            // const result = await request.execute('getGenre'); 
-            console.log(result);
+            const result = await request.query('SELECT FILMS.F_ID, FILMS.F_NAME, FILMS.F_DESC, FILMS.F_RELEASEYEAR, FILMS.F_AVGRATING, FILMS.F_LIMITEDAGE, FILMS.C_ID, FILMS.S_ID, FILM_GENRES.G_ID FROM FILMS, FILM_GENRES WHERE FILMS.F_ID = FILM_GENRES.F_ID');
+            // const result = await request.execute('getFilm'); 
+            // console.log(result);
             res.status(200).json(result.recordset);
         } catch (error) {
             console.log(error);
