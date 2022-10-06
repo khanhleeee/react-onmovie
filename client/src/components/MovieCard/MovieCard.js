@@ -28,10 +28,10 @@ function MovieCard(props) {
    const link = '/' + category[props.category] + '/' + item.id;
 
    const backgroud = apiConfig.w500Image(
-      item.poster_path || item.backdrop_path,
+      item.F_POSTER
    );
 
-   const date = new Date(item.release_date);
+   const date = new Date(item.F_RELEASEYEAR);
 
    const formatDate = `${monthNames[date.getMonth()]}, ${date.getFullYear()}`;
 
@@ -43,7 +43,7 @@ function MovieCard(props) {
                style={{ backgroundImage: `url(${backgroud})` }}
             ></div>
             <div className={cx('info')}>
-               <h3 className={cx('title')}>{item.title || item.name}</h3>
+               <h3 className={cx('title')}>{item.F_OFFICIAL_NAME}</h3>
                <span className={cx('release-date')}>{formatDate}</span>
             </div>
          </div>
