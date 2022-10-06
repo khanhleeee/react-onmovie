@@ -1,16 +1,38 @@
 const mssql = require('mssql');
 
-const Genre = require('../models/Genre');
+const Film = require('../models/Film');
 const sqlConfig = require('../database/dbConnection');
 
 module.exports = {
-    getGenre: async (req, res) => {
+    getFilmList: async (req, res) => {
         try {
             await mssql.connect(sqlConfig);
             const request = new mssql.Request();
-            const result = await request.query('SELECT FILMS.F_ID, FILMS.F_NAME, FILMS.F_DESC, FILMS.F_RELEASEYEAR, FILMS.F_AVGRATING, FILMS.F_LIMITEDAGE, FILMS.C_ID, FILMS.S_ID, FILM_GENRES.G_ID FROM FILMS, FILM_GENRES WHERE FILMS.F_ID = FILM_GENRES.F_ID');
+            query = `SELECT * FROM Films`;
+            const result = await request.query(query);
+            // let data;
+            // for (i = 0; i < result.recordset.length; i++) {
+            //     console.log(result.recordset[i].G_NAME);
+            //     obj = {
+            //         F_ID: result.recordset[i].F_ID, 
+            //         F_NAME: result.recordset[i].F_NAME,
+            //         C_ID: result.recordset[i].C_ID,
+            //         S_ID: result.recordset[i].S_ID,
+            //         G_NAME: []
+            //     };
+            //     console.log(obj.F_ID != result.recordset[i].F_ID)
+            //     if (obj.F_ID != result.recordset[i].F_ID) {
+            //         obj.G_NAME.push(result.recordset[i].G_NAME);
+            //     }
+
+                // console.log(result.recordset[i].G_NAME != result.recordset[i+1].G_NAME)
+                // if (result.recordset[i].G_NAME != result.recordset[i+1].G_NAME) {
+                //     obj.G_NAME.push(result.recordset[i].G_NAME);
+                // }
+                // console.log(obj);
+            // }
             // const result = await request.execute('getFilm'); 
-            // console.log(result);
+            // console.log(obj)
             res.status(200).json(result.recordset);
         } catch (error) {
             console.log(error);
