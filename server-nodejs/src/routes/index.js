@@ -1,7 +1,7 @@
-const GenreRouter = require('./Genre');
+const filmRouter = require('./Film');
 
 function route(app) {
-    app.use('/genre', GenreRouter);
+    app.use('/films', filmRouter);
 }
 
 module.exports = route;
