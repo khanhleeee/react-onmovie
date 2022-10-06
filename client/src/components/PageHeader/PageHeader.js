@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 function PageHeader(props) {
    return (
       <div className={cx('header')}>
-         <h2>{props.children}</h2>
+         {!props.noTitle && <h2>{props.children}</h2>}
       </div>
    );
 }
