@@ -2,9 +2,10 @@
 
 .movie-grid {
    display: grid;
-   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
    gap: 20px;
    margin-bottom: 3rem;
+   min-height: 100vh;
 
    @include tablet {
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -13,4 +14,10 @@
 
 .loadmore {
    text-align: center;
+}
+
+.no-result {
+   width: 100%;
+   display: flex;
+   justify-content: center;
 }

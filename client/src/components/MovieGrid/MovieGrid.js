@@ -6,6 +6,7 @@ import styles from './MovieGrid.module.scss';
 import MovieCard from '../MovieCard/MovieCard';
 import onmoviedbApi, { movieType } from '~/api/onmoviedb';
 import Button from '../Button/Button';
+import { useDebounce } from '~/hooks';
 
 const cx = classNames.bind(styles);
 
@@ -15,7 +16,8 @@ function MovieGrid(props) {
    const [page, setPage] = useState(1);
    const [totalPage, setTotalPage] = useState(0);
 
-   const keyword = useParams();
+   const keyword = props.keyword;
+   const keywodDebounce = useDebounce(keyword, 800);
 
    useEffect(() => {
       const getList = async () => {
@@ -27,7 +29,7 @@ function MovieGrid(props) {
             });
          } else {
             const params = {
-               query: keyword.category,
+               query: keyword,
             };
             response = await onmoviedbApi.search(props.category, { params });
          }
@@ -35,7 +37,7 @@ function MovieGrid(props) {
          setTotalPage(response.total_pages);
       };
       getList();
-   }, [props.category, keyword]);
+   }, [props.category, keywodDebounce]);
 
    const loadMore = async () => {
       let response = null;
@@ -59,6 +61,11 @@ function MovieGrid(props) {
 
    return (
       <>
+         {!items.length && (
+            <h2 className={cx('no-result')}>
+               No result for keywod '{keyword}'
+            </h2>
+         )}
          <div className={cx('movie-grid')}>
             {items.map((item, index) => (
                <MovieCard key={index} category={props.category} item={item} />

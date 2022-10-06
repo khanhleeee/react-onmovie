@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
 import styles from './Header.module.scss';
-import Button from '../Button/Button';
+import SearchBar from '../SearchBar/SearchBar';
 
 const cx = classNames.bind(styles);
 
@@ -30,38 +30,40 @@ function Header() {
 
    useEffect(() => {
       const shrinkHeader = () => {
-         if (
-            document.body.scrollTop > 100 ||
-            document.documentElement.scrollTop > 100
-         ) {
-            headerRef.current.classList.add('active');
+         if (document.documentElement.scrollTop > 100) {
+            headerRef.current.classList.add(cx('active'));
          } else {
-            headerRef.current.classList.remove('active');
+            headerRef.current.classList.remove(cx('active'));
          }
       };
       window.addEventListener('scroll', shrinkHeader);
-      return () => {
-         window.removeEventListener('scroll', shrinkHeader);
-      };
    }, []);
 
    return (
       <div ref={headerRef} className={cx('header')}>
          <div className={cx('wrapper', 'container')}>
-            <div className="logo">
-               <h3>on</h3>
-               <h3>Movie</h3>
+            <div className={cx('menu')}>
+               {/* Logo */}
+               <Link to="/" className="logo">
+                  <span>on</span>
+                  <span>Movie</span>
+               </Link>
+
+               {/* Nav */}
+               <ul className={cx('nav')}>
+                  {headerNav.map((item, index) => (
+                     <li
+                        key={index}
+                        className={index === active ? cx('active') : ''}
+                     >
+                        <Link to={item.path}>{item.display}</Link>
+                     </li>
+                  ))}
+               </ul>
             </div>
-            <ul className={cx('nav')}>
-               {headerNav.map((item, index) => (
-                  <li
-                     key={index}
-                     className={index === active ? cx('active') : ''}
-                  >
-                     <Link to={item.path}>{item.display}</Link>
-                  </li>
-               ))}
-            </ul>
+            <div className="section">
+               <SearchBar />
+            </div>
          </div>
       </div>
    );
