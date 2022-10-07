@@ -6,10 +6,52 @@ const sqlConfig = require('../database/dbConnection');
 module.exports = {
     getFilmList: async (req, res) => {
         try {
-            await mssql.connect(sqlConfig);
-            const request = new mssql.Request();
-            query = `SELECT * FROM Films`;
-            const result = await request.query(query);
+            const pool = await mssql.connect(sqlConfig);
+            const per_page = 5;
+            const page = parseInt(req.query.page);
+            if (isNaN(page)) {
+                const query = 'SELECT * FROM FILMS';
+                var obj = {
+                    data: [],
+                };
+                const result = await pool.request().query(query);
+                for (let i = 0; i < result.recordset.length; i++) {
+                    obj.data.push(result.recordset[i]);
+                }
+            } else {
+                const query = 'SELECT COUNT (*) FROM FILMS';
+                const count = await pool.request().query(query);
+                const total = count.recordsets
+                const offset = (page - 1) * per_page;
+                if (offset == 0) {
+                    const query = 'SELECT TOP ' + per_page + '* FROM FILMS';
+                    var obj = {
+                        page: 1,
+                        per_page: per_page,
+                        total: total[0][0][''],
+                        total_pages: total[0][0][''] / per_page,
+                        data: [],
+                    };
+                    const result = await pool.request().query(query);
+                    for (let i = 0; i < result.recordset.length; i++) {
+                        obj.data.push(result.recordset[i]);
+                    }
+                } else {
+                    const query = 'SELECT * FROM FILMS ORDER BY F_ID OFFSET ' + offset + ' ROWS FETCH NEXT ' + offset + ' ROWS ONLY ';
+                    var obj = {
+                        page: page,
+                        per_page: per_page,
+                        total: total[0][0][''],
+                        total_pages: total[0][0][''] / per_page,
+                        data: [],
+                    };
+                    const result = await pool.request().query(query);
+                    for (let i = 0; i < result.recordset.length; i++) {
+                        obj.data.push(result.recordset[i]);
+                    }
+                }
+            }
+            res.status(200).json(obj);
             // let data;
             // for (i = 0; i < result.recordset.length; i++) {
             //     console.log(result.recordset[i].G_NAME);
@@ -25,21 +67,18 @@ module.exports = {
             //         obj.G_NAME.push(result.recordset[i].G_NAME);
             //     }
 
-                // console.log(result.recordset[i].G_NAME != result.recordset[i+1].G_NAME)
-                // if (result.recordset[i].G_NAME != result.recordset[i+1].G_NAME) {
-                //     obj.G_NAME.push(result.recordset[i].G_NAME);
-                // }
-                // console.log(obj);
+            // console.log(result.recordset[i].G_NAME != result.recordset[i+1].G_NAME)
+            // if (result.recordset[i].G_NAME != result.recordset[i+1].G_NAME) {
+            //     obj.G_NAME.push(result.recordset[i].G_NAME);
+            // }
+            // console.log(obj);
             // }
             // const result = await request.execute('getFilm'); 
-            // console.log(obj)
-            res.status(200).json(result.recordset);
         } catch (error) {
-            console.log(error);
             res.status(500).json(error);
         }
-    }, 
-    
+    },
+
 };
 
 // createMovie: async (req, res) => {
