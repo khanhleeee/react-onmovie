@@ -5,6 +5,8 @@ import classNames from 'classnames/bind';
 import styles from './MovieGrid.module.scss';
 import MovieCard from '../MovieCard/MovieCard';
 import onmoviedbApi, { movieType } from '~/api/onmoviedb';
+import serverNode from '~/api/serverNode';
+
 import Button from '../Button/Button';
 import { useDebounce } from '~/hooks';
 
@@ -14,6 +16,7 @@ function MovieGrid(props) {
    const [items, setItems] = useState([]);
 
    const [page, setPage] = useState(1);
+
    const [totalPage, setTotalPage] = useState(0);
 
    const keyword = props.keyword;
@@ -21,42 +24,52 @@ function MovieGrid(props) {
 
    useEffect(() => {
       const getList = async () => {
-         let response = null;
-         if (keyword === undefined) {
-            const params = {};
-            response = await onmoviedbApi.getMovieList(movieType.upcoming, {
-               params,
-            });
-         } else {
-            const params = {
-               query: keyword,
-            };
-            response = await onmoviedbApi.search(props.category, { params });
+         try {
+            let response = null;
+            if (keyword === undefined) {
+               response = await serverNode.getFilmList(1);
+               // const params = {};
+               // response = await onmoviedbApi.getMovieList(movieType.upcoming, {
+               //    params,
+               // });
+               setItems(response.data.data);
+            } else {
+               // const params = {
+               //    query: keyword,
+               // };
+               // // response = await onmoviedbApi.search(props.category, { params });
+               // // setItems(response.results);
+               response = await serverNode.searchFilmList(keyword);
+               setItems(response.data.data);
+            }
+            setTotalPage(response.data.total_pages);
+         } catch (error) {
+            console.error(error);
          }
-         setItems(response.results);
-         setTotalPage(response.total_pages);
       };
       getList();
    }, [props.category, keywodDebounce]);
 
    const loadMore = async () => {
       let response = null;
-      if (keyword === undefined) {
-         const params = {
-            page: page + 1,
-         };
-         response = await onmoviedbApi.getMovieList(movieType.upcoming, {
-            params,
-         });
-      } else {
-         const params = {
-            page: page + 1,
-            query: keyword.category,
-         };
-         response = await onmoviedbApi.search(props.category, { params });
-      }
-      setItems([...items, ...response.results]);
+      response = await serverNode.getFilmList(page + 1);
+      setItems([...items, ...response.data.data]);
       setPage(page + 1);
+      // if (keyword === undefined) {
+      //    const params = {
+      //       page: page + 1,
+      //    };
+      //    response = await serverNode.getFilmList(params);
+      //    // response = await onmoviedbApi.getMovieList(movieType.upcoming, {
+      //    //    params,
+      //    // });
+      // } else {
+      //    const params = {
+      //       page: page + 1,
+      //       query: keyword.category,
+      //    };
+      //    response = await onmoviedbApi.search(props.category, { params });
+      // }
    };
 
    return (

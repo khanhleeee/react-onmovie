@@ -17,8 +17,12 @@ function MovieList(props) {
       const getList = async () => {
          let response = null;
          const params = {};
-         response = await serverNode.getFilmList();
-         setItems(response.data);
+         try {
+            response = await serverNode.getFilmList();
+            setItems(response.data.data);
+         } catch (error) {
+            console.error(error);
+         }
          // if (props.type !== 'similar') {
          //    switch (props.category) {
          //       case category.movie:
@@ -36,7 +40,6 @@ function MovieList(props) {
          // }
          // setItems(response.results);
       };
-
       getList();
    }, []);
    return (
