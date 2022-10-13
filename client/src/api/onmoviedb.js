@@ -27,11 +27,11 @@ const onmoviedbApi = {
       const url = 'search/' + category[cate];
       return axiosClient.get(url, params);
    },
-   detail: (cate, id, params) => {
+   detail: (cate, id) => {
       const url = category[cate] + '/' + id;
-      return axiosClient.get(url, params);
+      return axiosClient.get(url, { params: {} });
    },
-   credit: (cate, id) => {
+   credits: (cate, id) => {
       const url = category[cate] + '/' + id + '/credits';
       return axiosClient.get(url, { params: {} });
    },
