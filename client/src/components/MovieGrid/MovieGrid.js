@@ -34,11 +34,13 @@ function MovieGrid(props) {
                // });
                setItems(response.data.data);
             } else {
-               const params = {
-                  query: keyword,
-               };
-               response = await onmoviedbApi.search(props.category, { params });
-               setItems(response.results);
+               // const params = {
+               //    query: keyword,
+               // };
+               // // response = await onmoviedbApi.search(props.category, { params });
+               // // setItems(response.results);
+               response = await serverNode.searchFilmList(keyword);
+               setItems(response.data.data);
             }
             setTotalPage(response.data.total_pages);
          } catch (error) {
