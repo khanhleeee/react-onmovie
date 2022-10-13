@@ -6,7 +6,6 @@ import PageHeader from '../PageHeader/PageHeader';
 
 function Search() {
    const { keyword } = useParams();
-   console.log(keyword);
 
    return (
       <>

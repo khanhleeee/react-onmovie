@@ -23,9 +23,6 @@ function SearchBar(props) {
    }, [keyword, navigate]);
 
    useEffect(() => {
-      if (!keywodDebounce.trim().length) {
-         navigate('movie');
-      }
       goToSearch();
    }, [keywodDebounce]);
 
