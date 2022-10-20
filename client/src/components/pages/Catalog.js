@@ -5,13 +5,11 @@ import MovieGrid from '../MovieGrid/MovieGrid';
 import PageHeader from '../PageHeader/PageHeader';
 
 function Catalog() {
-   const { category } = useParams();
-
    return (
       <>
-         <PageHeader>{category === cate.movie ? 'Movies' : 'Login'}</PageHeader>
+         <PageHeader>Movie</PageHeader>
          <div className="section mb-3">
-            <MovieGrid category={category} />
+            <MovieGrid category="movie" />
          </div>
       </>
    );

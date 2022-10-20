@@ -1,19 +1,38 @@
-// import classnames from 'classnames/bind';
 import 'swiper/swiper.min.css';
 
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
+import { publicRoutes } from './routes';
 
 import CustomRoutes from './config/Routes';
+import DefaultLayout from './components/Layouts/DefaultLayout/DefaultLayout';
 
 function App() {
    return (
       <BrowserRouter>
-         <Header />
-         <CustomRoutes />
-         <Footer />
+         <Routes>
+            {publicRoutes.map((route, index) => {
+               console.log(route);
+               const Page = route.component;
+               let Layout = DefaultLayout;
+
+               if (route.layout) {
+                  Layout = route.layout;
+               }
+
+               return (
+                  <Route
+                     key={index}
+                     path={route.path}
+                     element={
+                        <Layout>
+                           <Page />
+                        </Layout>
+                     }
+                  />
+               );
+            })}
+         </Routes>
       </BrowserRouter>
    );
 }

@@ -6,6 +6,8 @@ import onmoviedbApi from '~/api/onmoviedb';
 import apiConfig from '~/api/apiConfig';
 import styles from './Detail.module.scss';
 import CastList from './CastList';
+import Trailers from './Trailers';
+import MovieList from '~/components/MovieList/MovieList';
 
 const cx = classNames.bind(styles);
 
@@ -18,6 +20,7 @@ function Detail() {
       const getDetail = async () => {
          const response = await onmoviedbApi.detail(category, id);
          setItem(response);
+         window.scrollTo(0, 0);
       };
 
       getDetail();
@@ -65,6 +68,21 @@ function Detail() {
                         </div>
                         <CastList id={item.id} />
                      </div>
+                  </div>
+               </div>
+               <div className={cx('trailer', 'container')}>
+                  <div className="section mb-3">
+                     <Trailers id={id} />
+                  </div>
+                  <div className="section mb-3">
+                     <div className="section-header mb-2">
+                        <h2>Similar</h2>
+                     </div>
+                     <MovieList
+                        category={category}
+                        type="similar"
+                        id={item.id}
+                     />
                   </div>
                </div>
             </div>

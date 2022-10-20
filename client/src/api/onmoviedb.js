@@ -19,7 +19,7 @@ const onmoviedbApi = {
       const url = category[cate] + '/' + id + '/images';
       return axiosClient.get(url, params);
    },
-   getVideo: (cate, id) => {
+   getVideos: (cate, id) => {
       const url = category[cate] + '/' + id + '/videos';
       return axiosClient.get(url, { params: {} });
    },

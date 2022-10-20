@@ -7,6 +7,8 @@ const cx = classNames.bind(styles);
 function Button({
    children,
    className,
+   gray = false,
+   fullfill = false,
    outline = false,
    onClick,
    ...otherProps
@@ -15,6 +17,8 @@ function Button({
       'btn',
       {
          outline,
+         fullfill,
+         gray,
       },
       className,
    );
