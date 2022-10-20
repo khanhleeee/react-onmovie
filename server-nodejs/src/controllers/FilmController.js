@@ -98,6 +98,9 @@ module.exports = {
             const result = await pool.request()
                 .input('F_ID', mssql.Char(5), filmID)
                 .execute('sp_getFilmDetail');
+            const findTrailer = await pool.request()
+                .input('ID_FILM', mssql.Char(5), filmID)
+                .execute('sp_getFilmTrailers');
             var obj = {
                 F_ID: result.recordset[0].F_ID,
                 F_OFFICIAL_NAME: result.recordset[0].F_OFFICIAL_NAME,
@@ -110,10 +113,29 @@ module.exports = {
                 F_POSTER: result.recordset[0].F_POSTER,
                 C_ID: result.recordset[0].C_ID,
                 S_ID: result.recordset[0].S_ID,
+                F_TRAILER: findTrailer.recordset[0],
                 G_NAME: [],
             };
             for (let i = 0; i < result.recordset.length; i++) {
                 obj.G_NAME.push(result.recordset[i].G_NAME);
+            }
+            res.status(200).json(obj);
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+    getSimilarFilm: async (req, res) => {
+        const filmID = req.params.filmID;
+        try {
+            const pool = await mssql.connect(sqlConfig);
+            const result = await pool.request()
+                .input('F_ID', mssql.Char(5), filmID)
+                .execute('sp_getSimilarFilms');
+            var obj = {
+                data: [],
+            };
+            for (let i = 0; i < result.recordset.length; i++) {
+                obj.data.push(result.recordset[i]);
             }
             res.status(200).json(obj);
         } catch (error) {

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
 import { useParams } from 'react-router-dom';
 import onmoviedbApi from '~/api/onmoviedb';
+import serverNode from '~/api/serverNode';
 
 import styles from './Detail.module.scss';
 
@@ -13,7 +14,9 @@ function Trailers(props) {
 
    useEffect(() => {
       const getVideos = async () => {
-         const response = await onmoviedbApi.getVideos(category, props.id);
+         const getFilmDetail = await serverNode.getFilmDetail(props.id);
+         const trailerId = getFilmDetail.data.F_TRAILER.TR_ID
+         const response = await onmoviedbApi.getVideos(category, trailerId);
          setVideos(response.results.slice(0, 3));
       };
       getVideos();
@@ -30,8 +33,6 @@ function Trailers(props) {
 
 const Video = (props) => {
    const item = props.item;
-
-   console.log('item', item);
 
    const iframeRef = useRef(null);
 

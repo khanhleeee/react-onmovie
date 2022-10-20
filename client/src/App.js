@@ -12,7 +12,6 @@ function App() {
       <BrowserRouter>
          <Routes>
             {publicRoutes.map((route, index) => {
-               console.log(route);
                const Page = route.component;
                let Layout = DefaultLayout;
 

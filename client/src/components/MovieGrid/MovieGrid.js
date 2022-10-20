@@ -28,17 +28,9 @@ function MovieGrid(props) {
             let response = null;
             if (keyword === undefined) {
                response = await serverNode.getFilmList(1);
-               // const params = {};
-               // response = await onmoviedbApi.getMovieList(movieType.upcoming, {
-               //    params,
-               // });
                setItems(response.data.data);
             } else {
-               // const params = {
-               //    query: keyword,
-               // };
-               // // response = await onmoviedbApi.search(props.category, { params });
-               // // setItems(response.results);
+               //note dang bi loi search
                response = await serverNode.searchFilmList(keyword);
                setItems(response.data.data);
             }
