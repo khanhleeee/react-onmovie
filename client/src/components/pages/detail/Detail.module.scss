@@ -86,23 +86,27 @@
 
 .casts {
    display: grid;
-   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-   gap: 20px;
+   grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+   gap: 10px;
 
    & .cast {
       margin-top: 2rem;
+
       &-img {
-         padding-top: 120px;
+         padding-top: 110px;
          background-position: center;
          background-size: cover;
          margin-bottom: 0.5rem;
-         border-radius: 50%;
       }
       &-name {
          display: flex;
          text-align: center;
          justify-content: center;
-         font-size: 1.4rem;
+         font-size: 1.2rem;
       }
    }
+}
+.trailer {
+   margin-top: 3rem;
+   width: 1260px;
 }

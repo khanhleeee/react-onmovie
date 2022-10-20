@@ -8,6 +8,7 @@ import styles from './Detail.module.scss';
 import CastList from './CastList';
 import serverNode from '~/api/serverNode';
 
+
 const cx = classNames.bind(styles);
 
 function Detail() {
@@ -17,6 +18,7 @@ function Detail() {
 
    useEffect(() => {
       const getDetail = async () => {
+         window.scrollTo(0, 0);
          // const response = await onmoviedbApi.detail(category, id);
          const response = await serverNode.getFilmDetail(id);
          setItem(response.data);
@@ -70,6 +72,21 @@ function Detail() {
                         </div>
                         <CastList id={item.F_ID} />
                      </div>
+                  </div>
+               </div>
+               <div className={cx('trailer', 'container')}>
+                  <div className="section mb-3">
+                     <Trailers id={id} />
+                  </div>
+                  <div className="section mb-3">
+                     <div className="section-header mb-2">
+                        <h2>Similar</h2>
+                     </div>
+                     <MovieList
+                        category={category}
+                        type="similar"
+                        id={item.id}
+                     />
                   </div>
                </div>
             </div>

@@ -19,9 +19,15 @@
    .info {
       margin-top: 1rem;
       height: 8rem;
+
       & .title {
          font-size: 1.8rem;
          font-weight: 700;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         display: -webkit-box;
+         -webkit-box-orient: vertical;
+         -webkit-line-clamp: 2;
       }
       & .release-date {
          font-size: 1.6rem;
