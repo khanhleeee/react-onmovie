@@ -6,6 +6,7 @@ import styles from './MovieList.module.scss';
 import onmoviedbApi, { category } from '~/api/onmoviedb';
 import apiConfig from '~/api/apiConfig';
 import MovieCard from '../MovieCard/MovieCard';
+import serverNode from '~/api/serverNode';
 
 const cx = classNames.bind(styles);
 
@@ -16,25 +17,29 @@ function MovieList(props) {
       const getList = async () => {
          let response = null;
          const params = {};
-
-         if (props.type !== 'similar') {
-            switch (props.category) {
-               case category.movie:
-                  response = await onmoviedbApi.getMovieList(props.type, {
-                     params,
-                  });
-                  break;
-               default:
-                  response = await onmoviedbApi.getMovieList(props.type, {
-                     params,
-                  });
-            }
-         } else {
-            response = await onmoviedbApi.similar(props.category, props.id);
+         try {
+            response = await serverNode.getFilmList();
+            setItems(response.data.data);
+         } catch (error) {
+            console.error(error);
          }
-         setItems(response.results);
+         // if (props.type !== 'similar') {
+         //    switch (props.category) {
+         //       case category.movie:
+         //          response = await onmoviedbApi.getMovieList(props.type, {
+         //             params,
+         //          });
+         //          break;
+         //       default:
+         //          response = await onmoviedbApi.getMovieList(props.type, {
+         //             params,
+         //          });
+         //    }
+         // } else {
+         //    response = await onmoviedbApi.similar(props.category, props.id);
+         // }
+         // setItems(response.results);
       };
-
       getList();
    }, []);
    return (

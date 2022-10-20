@@ -6,8 +6,8 @@ import onmoviedbApi from '~/api/onmoviedb';
 import apiConfig from '~/api/apiConfig';
 import styles from './Detail.module.scss';
 import CastList from './CastList';
-import Trailers from './Trailers';
-import MovieList from '~/components/MovieList/MovieList';
+import serverNode from '~/api/serverNode';
+
 
 const cx = classNames.bind(styles);
 
@@ -18,9 +18,10 @@ function Detail() {
 
    useEffect(() => {
       const getDetail = async () => {
-         const response = await onmoviedbApi.detail(category, id);
-         setItem(response);
          window.scrollTo(0, 0);
+         // const response = await onmoviedbApi.detail(category, id);
+         const response = await serverNode.getFilmDetail(id);
+         setItem(response.data);
       };
 
       getDetail();
@@ -33,9 +34,10 @@ function Detail() {
                <div
                   className={cx('banner')}
                   style={{
-                     backgroundImage: `url(${apiConfig.originalImage(
-                        item.backdrop_path,
-                     )})`,
+                     // backgroundImage: `url(${apiConfig.originalImage(
+                     //    item.backdrop_path,
+                     // )})`,
+                     backgroundImage: `url(${item.F_BACKCDROP})`,
                   }}
                ></div>
                <div className={cx('content', 'mb-3')}>
@@ -43,30 +45,32 @@ function Detail() {
                      <div
                         className={cx('poster-img')}
                         style={{
-                           backgroundImage: `url(${apiConfig.originalImage(
-                              item.poster_path,
-                           )})`,
+                           // backgroundImage: `url(${apiConfig.originalImage(
+                           //    item.poster_path,
+                           // )})`,
+                           backgroundImage: `url(${item.F_POSTER})`,
                         }}
                      ></div>
                   </div>
                   <div className={cx('info')}>
                      <div className={cx('title')}>
-                        {item.title || item.name}
+                        {item.title || item.name || item.F_OFFICIAL_NAME}
                      </div>
                      <div className={cx('genres')}>
-                        {item.genres &&
-                           item.genres.slice(0, 5).map((gene, i) => (
+                        {item.G_NAME &&
+                           item.G_NAME.slice(0, 5).map((gene, i) => (
                               <span key={i} className={cx('item')}>
-                                 {gene.name}
+                                 {gene}
+                                 {/* {gene.name} */}
                               </span>
                            ))}
                      </div>
-                     <p className={cx('overview')}>{item.overview}</p>
+                     <p className={cx('overview')}>{item.F_DESC}</p>
                      <div className={cx('cast')}>
                         <div className="section-header">
                            <h2>Casts</h2>
                         </div>
-                        <CastList id={item.id} />
+                        <CastList id={item.F_ID} />
                      </div>
                   </div>
                </div>
