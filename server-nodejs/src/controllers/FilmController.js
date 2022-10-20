@@ -10,11 +10,10 @@ module.exports = {
             const per_page = 5;
             const page = parseInt(req.query.page);
             if (isNaN(page)) {
-                const query = 'SELECT * FROM FILMS';
                 var obj = {
                     data: [],
                 };
-                const result = await pool.request().query(query);
+                const result = await pool.request().execute('sp_getFilmsByDate');
                 for (let i = 0; i < result.recordset.length; i++) {
                     obj.data.push(result.recordset[i]);
                 }
@@ -52,28 +51,6 @@ module.exports = {
                 }
             }
             res.status(200).json(obj);
-            // let data;
-            // for (i = 0; i < result.recordset.length; i++) {
-            //     console.log(result.recordset[i].G_NAME);
-            //     obj = {
-            //         F_ID: result.recordset[i].F_ID, 
-            //         F_NAME: result.recordset[i].F_NAME,
-            //         C_ID: result.recordset[i].C_ID,
-            //         S_ID: result.recordset[i].S_ID,
-            //         G_NAME: []
-            //     };
-            //     console.log(obj.F_ID != result.recordset[i].F_ID)
-            //     if (obj.F_ID != result.recordset[i].F_ID) {
-            //         obj.G_NAME.push(result.recordset[i].G_NAME);
-            //     }
-
-            // console.log(result.recordset[i].G_NAME != result.recordset[i+1].G_NAME)
-            // if (result.recordset[i].G_NAME != result.recordset[i+1].G_NAME) {
-            //     obj.G_NAME.push(result.recordset[i].G_NAME);
-            // }
-            // console.log(obj);
-            // }
-            // const result = await request.execute('getFilm'); 
         } catch (error) {
             res.status(500).json(error);
         }
@@ -113,27 +90,46 @@ module.exports = {
         } catch (error) {
             res.status(500).json(error);
         }
+    },
+    getDetailFilm: async (req, res) => {
+        const filmID = req.params.filmID;
+        try {
+            const pool = await mssql.connect(sqlConfig);
+            const result = await pool.request()
+                .input('F_ID', mssql.Char(5), filmID)
+                .execute('sp_getFilmDetail');
+            var obj = {
+                F_ID: result.recordset[0].F_ID,
+                F_OFFICIAL_NAME: result.recordset[0].F_OFFICIAL_NAME,
+                F_PREFERENCED_NAME: result.recordset[0].F_PREFERENCED_NAME,
+                F_DESC: result.recordset[0].F_DESC,
+                F_RELEASEYEAR: result.recordset[0].F_RELEASEYEAR,
+                F_AVGRATING: result.recordset[0].F_AVGRATING,
+                F_LIMITEDAGE: result.recordset[0].F_LIMITEDAGE,
+                F_BACKCDROP: result.recordset[0].F_BACKCDROP,
+                F_POSTER: result.recordset[0].F_POSTER,
+                C_ID: result.recordset[0].C_ID,
+                S_ID: result.recordset[0].S_ID,
+                G_NAME: [],
+            };
+            for (let i = 0; i < result.recordset.length; i++) {
+                obj.G_NAME.push(result.recordset[i].G_NAME);
+            }
+            res.status(200).json(obj);
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+    getActorFilm: async (req, res) => {
+        const filmID = req.params.filmID;
+        try {
+            const pool = await mssql.connect(sqlConfig);
+            const result = await pool.request()
+                .input('F_ID', mssql.Char(5), filmID)
+                .execute('sp_getFilmCredit');
+            res.status(200).json(result.recordset);
+        } catch (error) {
+            res.status(500).json(error);
+        }
     }
 };
-
-// const findRandomMovie = async(req, res) => {
-//     const type = req.query.type;
-//     let movie;
-//     try {
-//         if (type === "series") {
-//             movie = await Movie.aggregate([
-//                 { $match: { isSeries: true } },
-//                 { $sample: { size: 1 } },
-//             ]);
-//         } else {
-//             movie = await Movie.aggregate([
-//                 { $match: { isSeries: false } },
-//                 { $sample: { size: 1 } },
-//             ]);
-//         }
-//         res.status(200).json(movie);
-//     } catch (err) {
-//         res.status(500).json(err);
-//     }
-// }
-

@@ -26,7 +26,6 @@ function HeroSlide() {
             // });
             // setMovieItems(movies.results.slice(8, 20));
             const movies = await serverNode.getFilmList();
-            console.log(movies.data.data.slice(8, 20))
             setMovieItems(movies.data.data.slice(8, 20));
          } catch {
             console.log('error');
@@ -67,7 +66,6 @@ const HeroSlideItem = (props) => {
    const background = apiConfig.originalImage(
       item.F_BACKCDROP ? item.F_BACKCDROP : item.poster_path,
    );
-   console.log(background)
 
    // const [trailers, setTrailer] = useState([]);
    // useEffect(() => {

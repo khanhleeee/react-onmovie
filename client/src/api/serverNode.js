@@ -8,7 +8,14 @@ const serverNode = {
   },
   searchFilmList: async (keyword) => {
     const data = await axios.get(apiNode.baseUrl + 'film/search?q=' + keyword);
-    console.log(data);
+    return data
+  },
+  getFilmDetail: async (id) => {
+    const data = await axios.get(apiNode.baseUrl + 'film/' + id);
+    return data
+  },
+  getActorFilm: async (id) => {
+    const data = await axios.get(apiNode.baseUrl + 'film/actor/' + id);
     return data
   }
 };
