@@ -5,7 +5,7 @@ import { EmailIcon, LockIcon, PenIcon } from '~/components/Icons/Icons';
 
 const cx = classNames.bind(styles);
 
-function Input({ type, placeholder, erroorMessage, onChange }) {
+function Input({ type, placeholder, errorMessage, onChange }) {
    let Icon = PenIcon;
 
    if (type == 'password') {
@@ -20,7 +20,7 @@ function Input({ type, placeholder, erroorMessage, onChange }) {
             <Icon classNames={cx('icon')} />
             <input type={type} placeholder={placeholder} onChange={onChange} />
          </div>
-         <span className={cx('message')}>{erroorMessage}</span>
+         <span className={cx('message')}>{errorMessage}</span>
       </div>
    );
 }

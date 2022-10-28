@@ -30,6 +30,14 @@ const serverNode = {
       return error.response;
     }
   },
+  checkRegister: async (user) => {
+    try {
+      const data = await axios.post(apiNode.baseUrl + 'auth/register', user);
+      return data
+    } catch (error) {
+      return error.response;
+    }
+  }
 };
 
 export default serverNode;
