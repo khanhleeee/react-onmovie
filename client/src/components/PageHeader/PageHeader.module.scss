@@ -1,7 +1,13 @@
 @use '../../scss' as *;
 
 .header {
-   @include flex(center, center);
-   padding: $header-height 2rem;
+   @include flex(unset, center);
+   flex-direction: column;
+   padding: $header-height 0;
    background-color: red($color: #000000);
+}
+.separate {
+   width: 100%;
+   border-bottom: 1.5px solid $card-bg;
+   margin: 2rem 0 4rem 0;
 }

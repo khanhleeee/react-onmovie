@@ -1,4 +1,5 @@
 import classNames from 'classnames/bind';
+import { Link } from 'react-router-dom';
 
 import styles from './Button.module.scss';
 
@@ -11,6 +12,7 @@ function Button({
    fullfill = false,
    outline = false,
    onClick,
+   to,
    ...otherProps
 }) {
    const classes = cx(
@@ -23,14 +25,21 @@ function Button({
       className,
    );
 
+   let Component = 'button';
+
+   if (to) {
+      Component = Link;
+   }
+
    return (
-      <button
+      <Component
          className={classes}
+         to={to ? to : null}
          onClick={onClick ? onClick : null}
          {...otherProps}
       >
          {children}
-      </button>
+      </Component>
    );
 }
 

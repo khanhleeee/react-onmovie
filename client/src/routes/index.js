@@ -5,12 +5,14 @@ import Catalog from '~/components/pages/Catalog';
 import LogIn from '~/components/pages/authentic/LogIn';
 import Detail from '~/components/pages/detail/Detail';
 import Search from '~/components/pages/Search';
+import SignUp from '~/components/pages/authentic/SignUp';
 
 // Public routes
 const publicRoutes = [
    { path: '/', component: Home },
    { path: '/movie', component: Catalog },
    { path: '/login', component: LogIn, layout: FooterOnly },
+   { path: '/signup', component: SignUp, layout: FooterOnly },
    { path: '/movie/:id', component: Detail },
    { path: '/movie/search/:keyword', component: Search },
 ];

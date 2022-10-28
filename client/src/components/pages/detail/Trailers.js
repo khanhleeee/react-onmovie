@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import onmoviedbApi from '~/api/onmoviedb';
 
 import styles from './Detail.module.scss';
@@ -8,7 +8,7 @@ import styles from './Detail.module.scss';
 const cx = classNames.bind(styles);
 
 function Trailers(props) {
-   const { category } = useParams();
+   const category = 'movie';
    const [videos, setVideos] = useState([]);
 
    useEffect(() => {

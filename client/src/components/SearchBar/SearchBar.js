@@ -18,7 +18,7 @@ function SearchBar(props) {
 
    const goToSearch = useCallback(() => {
       if (keyword.trim().length > 0) {
-         navigate(`movie/search/${keyword}`);
+         navigate(`/movie/search/${keyword}`, { replace: true });
       }
    }, [keyword, navigate]);
 

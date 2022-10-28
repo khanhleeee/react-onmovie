@@ -9,7 +9,7 @@ import apiConfig from '~/api/apiConfig';
 const cx = classNames.bind(styles);
 
 function CastList(props) {
-   const { category } = useParams();
+   const category = 'movie';
 
    const [casts, setCasts] = useState([]);
 

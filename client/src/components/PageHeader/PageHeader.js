@@ -6,7 +6,8 @@ const cx = classNames.bind(styles);
 
 function PageHeader(props) {
    return (
-      <div className={cx('header')}>
+      <div className={cx('header', 'container')}>
+         <div className={cx('separate')}></div>
          {!props.noTitle && <h2>{props.children}</h2>}
       </div>
    );
