@@ -55,16 +55,6 @@ function LogIn() {
                   placeholder="password123"
                   onChange={(e) => setPassword(e.target.value)}
                />
-               {/* <input
-                  type="email"
-                  placeholder="email@mail.com"
-                  onChange={(e) => setEmail(e.target.value)}
-               />
-               <input
-                  type="password"
-                  placeholder="password123"
-                  onChange={(e) => setPassword(e.target.value)}
-               /> */}
                <Button
                   className={cx('card-button')}
                   fullfill

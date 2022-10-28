@@ -18,7 +18,7 @@ function Input({ type, placeholder, erroorMessage, onChange }) {
       <div className={cx('form-group')}>
          <div className={cx('input')}>
             <Icon classNames={cx('icon')} />
-            <input type="email" placeholder={placeholder} onChange={onChange} />
+            <input type={type} placeholder={placeholder} onChange={onChange} />
          </div>
          <span className={cx('message')}>{erroorMessage}</span>
       </div>
