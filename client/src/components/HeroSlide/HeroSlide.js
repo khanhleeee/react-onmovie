@@ -9,6 +9,7 @@ import onmoviedbApi, { category, movieType } from '~/api/onmoviedb';
 import apiConfig from '~/api/apiConfig';
 import styles from './HeroSlide.module.scss';
 import Button from '../Button/Button';
+import serverNode from '~/api/serverNode';
 
 const cx = classNames.bind(styles);
 
@@ -62,7 +63,7 @@ const HeroSlideItem = (props) => {
    const item = props.item;
 
    const background = apiConfig.originalImage(
-      item.backdrop_path ? item.backdrop_path : item.poster_path,
+      item.F_BACKCDROP ? item.F_BACKCDROP : item.poster_path,
    );
 
    return (
@@ -72,8 +73,8 @@ const HeroSlideItem = (props) => {
       >
          <div className={cx('content', 'container')}>
             <div className={cx('info')}>
-               <h2 className={cx('title')}>{item.title}</h2>
-               <div className={cx('overview')}>{item.overview}</div>
+               <h2 className={cx('title')}>{item.F_OFFICIAL_NAME}</h2>
+               <div className={cx('overview')}>{item.F_DESC}</div>
                <div className={cx('btns')}>
                   <Button onClick={() => navigate('/movie/' + item.id)}>
                      See Details
