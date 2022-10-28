@@ -7,7 +7,8 @@ import apiConfig from '~/api/apiConfig';
 import styles from './Detail.module.scss';
 import CastList from './CastList';
 import serverNode from '~/api/serverNode';
-
+import Trailers from './Trailers';
+import MovieList from '~/components/MovieList/MovieList';
 
 const cx = classNames.bind(styles);
 
@@ -19,10 +20,10 @@ function Detail() {
 
    useEffect(() => {
       const getDetail = async () => {
-         const response = await onmoviedbApi.detail('movie', id);
+         //const response = await onmoviedbApi.detail('movie', id);
          setItem(response);
          window.scrollTo(0, 0);
-         // const response = await onmoviedbApi.detail(category, id);
+         // const response1 = await onmoviedbApi.detail(category, id);
          const response = await serverNode.getFilmDetail(id);
          setItem(response.data);
       };
@@ -79,7 +80,7 @@ function Detail() {
                </div>
                <div className={cx('trailer', 'container')}>
                   <div className="section mb-3">
-                     <Trailers id={id} />
+                     <Trailers id={item.F_ID} />
                   </div>
                   <div className="section mb-3">
                      <div className="section-header mb-2">
@@ -88,7 +89,7 @@ function Detail() {
                      <MovieList
                         category={category}
                         type="similar"
-                        id={item.id}
+                        id={item.F_ID}
                      />
                   </div>
                </div>

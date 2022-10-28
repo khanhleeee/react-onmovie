@@ -16,32 +16,21 @@ function MovieList(props) {
    useEffect(() => {
       const getList = async () => {
          let response = null;
-         const params = {};
          try {
             response = await serverNode.getFilmList();
             setItems(response.data.data);
+            if (props.type === 'similar') {
+               const similarFilm = await serverNode.getSimilarFilm(props.id);
+               setItems(similarFilm.data.data);
+            }
          } catch (error) {
             console.error(error);
          }
-         // if (props.type !== 'similar') {
-         //    switch (props.category) {
-         //       case category.movie:
-         //          response = await onmoviedbApi.getMovieList(props.type, {
-         //             params,
-         //          });
-         //          break;
-         //       default:
-         //          response = await onmoviedbApi.getMovieList(props.type, {
-         //             params,
-         //          });
-         //    }
-         // } else {
-         //    response = await onmoviedbApi.similar(props.category, props.id);
-         // }
-         // setItems(response.results);
+
       };
       getList();
    }, []);
+   
    return (
       <div className={cx('movie-list')}>
          <Swiper grabCursor={true} spaceBetween={10} slidesPerView={'auto'}>

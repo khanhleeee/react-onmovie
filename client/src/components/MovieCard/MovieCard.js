@@ -24,9 +24,9 @@ const monthNames = [
 
 function MovieCard(props) {
    const item = props.item;
-
+   
    // const link = '/' + category[props.category] + '/' + item.id;
-   const link = '/' + 'movie' + '/' + item.id;
+   const link = '/' +  'movie' + '/' + item.F_ID;
 
    const backgroud = apiConfig.w500Image(
       item.F_POSTER ? item.F_POSTER : item.poster_path
