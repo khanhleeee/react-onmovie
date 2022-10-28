@@ -30,6 +30,7 @@ function MovieList(props) {
       };
       getList();
    }, []);
+   
    return (
       <div className={cx('movie-list')}>
          <Swiper grabCursor={true} spaceBetween={10} slidesPerView={'auto'}>

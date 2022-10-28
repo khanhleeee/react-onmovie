@@ -21,7 +21,15 @@ const serverNode = {
   getActorFilm: async (id) => {
     const data = await axios.get(apiNode.baseUrl + 'film/actor/' + id);
     return data
-  }
+  },
+  checkLogin: async (user) => {
+    try {
+      const data = await axios.post(apiNode.baseUrl + 'auth/login', user);
+      return data
+    } catch (error) {
+      return error.response;
+    }
+  },
 };
 
 export default serverNode;
