@@ -45,9 +45,17 @@ function LogIn() {
             </div>
             <CardForm title="Sign In">
                {sendStatus ? <p className="loginStatus">{sendStatus}</p> : null}
-               <Input type="email" placeholder="email@mail.com" />
-               <Input type="password" placeholder="password123" />
-               <input
+               <Input
+                  type="email"
+                  placeholder="email@mail.com"
+                  onChange={(e) => setEmail(e.target.value)}
+               />
+               <Input
+                  type="password"
+                  placeholder="password123"
+                  onChange={(e) => setPassword(e.target.value)}
+               />
+               {/* <input
                   type="email"
                   placeholder="email@mail.com"
                   onChange={(e) => setEmail(e.target.value)}
@@ -56,7 +64,7 @@ function LogIn() {
                   type="password"
                   placeholder="password123"
                   onChange={(e) => setPassword(e.target.value)}
-               />
+               /> */}
                <Button
                   className={cx('card-button')}
                   fullfill

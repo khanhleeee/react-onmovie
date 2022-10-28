@@ -21,7 +21,7 @@ function Detail() {
    useEffect(() => {
       const getDetail = async () => {
          //const response = await onmoviedbApi.detail('movie', id);
-         setItem(response);
+         //setItem(response);
          window.scrollTo(0, 0);
          // const response1 = await onmoviedbApi.detail(category, id);
          const response = await serverNode.getFilmDetail(id);

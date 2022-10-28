@@ -5,7 +5,7 @@ import { EmailIcon, LockIcon, PenIcon } from '~/components/Icons/Icons';
 
 const cx = classNames.bind(styles);
 
-function Input({ type, placeholder, erroorMessage }) {
+function Input({ type, placeholder, erroorMessage, onChange }) {
    let Icon = PenIcon;
 
    if (type == 'password') {
@@ -18,7 +18,7 @@ function Input({ type, placeholder, erroorMessage }) {
       <div className={cx('form-group')}>
          <div className={cx('input')}>
             <Icon classNames={cx('icon')} />
-            <input type="email" placeholder={placeholder} />
+            <input type="email" placeholder={placeholder} onChange={onChange} />
          </div>
          <span className={cx('message')}>{erroorMessage}</span>
       </div>
