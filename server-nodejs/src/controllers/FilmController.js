@@ -1,47 +1,51 @@
 const mssql = require("mssql");
-
-const Film = require("../models/Film");
-const sqlConfig = require("../database/dbConnection");
+const { execute, queryStatement, executeOneParam, executeTwoParams } = require("../database/handleQuery");
+const { per_page, firstPage, numberChar } = require("../constants/FilmConstants");
 
 module.exports = {
     getFilmList: async (req, res) => {
         try {
-            const pool = await mssql.connect(sqlConfig);
-            const per_page = 5;
             const page = parseInt(req.query.page);
             if (isNaN(page)) {
                 var obj = {
                     data: [],
                 };
-                const result = await pool.request().execute("sp_getFilmsByDate");
+                const result = await execute("sp_getFilmsByDate");
                 for (let i = 0; i < result.recordset.length; i++) {
                     obj.data.push(result.recordset[i]);
                 }
             } else {
-                const query = "SELECT COUNT (*) FROM FILMS";
-                const count = await pool.request().query(query);
-                const total = count.recordsets;
+                const statement = "SELECT COUNT (*) FROM FILMS";
+                const count = await queryStatement(statement);
+                const total = count.recordsets
                 const offset = (page - 1) * per_page;
                 if (offset == 0) {
-                    const query = "SELECT TOP " + per_page + "* FROM FILMS";
                     var obj = {
-                        page: 1,
+                        page: firstPage,
                         per_page: per_page,
                         total: total[0][0][""],
                         total_pages: total[0][0][""] / per_page,
                         data: [],
                     };
-                    const result = await pool.request().query(query);
+                    // const result = await pool.request()
+                    //     .input("PAGENUMBER", mssql.Int, firstPage)
+                    //     .input("PAGESIZE", mssql.Int, per_page)
+                    //     .execute("sp_pagination");
+                    const result = await executeTwoParams("sp_pagination", [
+                        { name: "PAGENUMBER", type: mssql.Int, value: firstPage },
+                        { name: "PAGESIZE", type: mssql.Int, value: per_page },
+                    ])
                     for (let i = 0; i < result.recordset.length; i++) {
                         obj.data.push(result.recordset[i]);
                     }
                 } else {
-                    const query =
-                        "SELECT * FROM FILMS ORDER BY F_ID OFFSET " +
-                        offset +
-                        " ROWS FETCH NEXT " +
-                        offset +
-                        " ROWS ONLY ";
+                    // const query =
+                    //     "SELECT * FROM FILMS ORDER BY F_ID OFFSET " +
+                    //     offset +
+                    //     " ROWS FETCH NEXT " +
+                    //     offset +
+                    //     " ROWS ONLY ";
+                    // const result = await queryStatement(query);
                     var obj = {
                         page: page,
                         per_page: per_page,
@@ -49,7 +53,14 @@ module.exports = {
                         total_pages: total[0][0][""] / per_page,
                         data: [],
                     };
-                    const result = await pool.request().query(query);
+                    // const result = await pool.request()
+                    //     .input("PAGENUMBER", mssql.Int, page)
+                    //     .input("PAGESIZE", mssql.Int, per_page)
+                    //     .execute("sp_pagination");
+                    const result = await executeTwoParams("sp_pagination", [
+                        { name: "PAGENUMBER", type: mssql.Int, value: page },
+                        { name: "PAGESIZE", type: mssql.Int, value: per_page },
+                    ])
                     for (let i = 0; i < result.recordset.length; i++) {
                         obj.data.push(result.recordset[i]);
                     }
@@ -63,24 +74,18 @@ module.exports = {
     searchFilm: async (req, res) => {
         const q = req.query.q;
         try {
-            const pool = await mssql.connect(sqlConfig);
-            const query =
-                "SELECT F.F_ID, F.F_OFFICIAL_NAME, F.F_PREFERENCED_NAME, F.F_DESC, F.F_RELEASEYEAR, F.F_AVGRATING, F.F_LIMITEDAGE, F.F_BACKCDROP, F.F_POSTER, F.C_ID, F.S_ID FROM FILM_KEYWORDS AS FKW, KEYWORDS AS KW, FILMS AS F WHERE FKW.KW_ID = KW.KW_ID AND FKW.F_ID = F.F_ID AND KW_TITLE = " +
-                `'${q}'`;
-            const result = await pool.request().query(query);
+            const result = await executeOneParam("sp_searchFilms", { name: "KW_TITLE", type: mssql.NVarChar, value: q });
             if (result.recordset.length == 0) {
-                const page = 1;
-                const per_page = 5;
-                const offset = (page - 1) * per_page;
+                const offset = (firstPage - 1) * per_page;
                 const query =
                     "SELECT * FROM FILMS WHERE F_OFFICIAL_NAME LIKE " +
                     `'${q}%'` +
                     " ORDER BY F_ID OFFSET " +
                     offset +
                     " ROWS FETCH NEXT 5 ROWS ONLY";
-                const result = await pool.request().query(query);
+                const result = await queryStatement(query);
                 var obj = {
-                    page: page,
+                    page: firstPage,
                     per_page: per_page,
                     total: result.recordset.length,
                     // total_pages: result.recordset.length / per_page,
@@ -106,15 +111,8 @@ module.exports = {
     getDetailFilm: async (req, res) => {
         const filmID = req.params.filmID;
         try {
-            const pool = await mssql.connect(sqlConfig);
-            const result = await pool
-                .request()
-                .input("F_ID", mssql.Char(5), filmID)
-                .execute("sp_getFilmDetail");
-            const findTrailer = await pool
-                .request()
-                .input("ID_FILM", mssql.Char(5), filmID)
-                .execute("sp_getFilmTrailers");
+            const result = await executeOneParam("sp_getFilmDetail", { name: "F_ID", type: mssql.Char(numberChar), value: filmID });
+            const findTrailer = await executeOneParam("sp_getFilmTrailers", { name: "ID_FILM", type: mssql.Char(numberChar), value: filmID });
             var obj = {
                 F_ID: result.recordset[0].F_ID,
                 F_OFFICIAL_NAME: result.recordset[0].F_OFFICIAL_NAME,
@@ -141,11 +139,7 @@ module.exports = {
     getSimilarFilm: async (req, res) => {
         const filmID = req.params.filmID;
         try {
-            const pool = await mssql.connect(sqlConfig);
-            const result = await pool
-                .request()
-                .input("F_ID", mssql.Char(5), filmID)
-                .execute("sp_getSimilarFilms");
+            const result = await executeOneParam("sp_getSimilarFilms", { name: "F_ID", type: mssql.Char(numberChar), value: filmID });
             var obj = {
                 data: [],
             };
@@ -160,11 +154,7 @@ module.exports = {
     getActorFilm: async (req, res) => {
         const filmID = req.params.filmID;
         try {
-            const pool = await mssql.connect(sqlConfig);
-            const result = await pool
-                .request()
-                .input("F_ID", mssql.Char(5), filmID)
-                .execute("sp_getFilmCredit");
+            const result = await executeOneParam("sp_getFilmCredit", { name: "F_ID", type: mssql.Char(numberChar), value: filmID });
             res.status(200).json(result.recordset);
         } catch (error) {
             res.status(500).json(error);

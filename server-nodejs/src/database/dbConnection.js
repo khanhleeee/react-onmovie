@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
-const Config = {
+const dbConnection = {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
@@ -14,4 +14,4 @@ const Config = {
   },
 };
 
-module.exports = Config;
+module.exports = dbConnection;
