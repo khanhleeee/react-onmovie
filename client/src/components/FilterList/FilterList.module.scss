@@ -1,0 +1,35 @@
+@use '../../scss/' as *;
+
+.filter-list {
+   display: flex;
+   align-items: center;
+   padding: 0 6rem;
+
+   & + .filter-list {
+      margin-top: 2rem;
+   }
+}
+.lable {
+   font-size: 2.1rem;
+   text-align: end;
+   margin-right: 2rem;
+   font-weight: 700;
+   color: $text-color;
+   opacity: 0.4;
+}
+.container {
+   display: flex;
+   align-items: center;
+}
+.card {
+   font-weight: 500;
+   font-size: 2rem;
+   background-color: $card-bg;
+   border-radius: 4px;
+   padding: 0.3rem 2rem;
+   cursor: pointer;
+
+   & + .card {
+      margin-left: 1rem;
+   }
+}

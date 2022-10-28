@@ -16,10 +16,6 @@ const headerNav = [
       display: 'Movies',
       path: '/movie',
    },
-   {
-      display: 'Login',
-      path: '/login',
-   },
 ];
 
 function Header() {

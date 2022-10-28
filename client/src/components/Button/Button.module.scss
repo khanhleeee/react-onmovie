@@ -6,6 +6,8 @@ button {
 }
 
 .btn {
+   display: inline-block;
+   text-align: center;
    font-size: 1.5rem;
    font-weight: 700;
    min-width: 100px;
@@ -43,6 +45,9 @@ button {
    }
 }
 .fullfill {
+   display: flex;
+   align-items: center;
+   justify-content: center;
    color: $white;
    width: 100%;
    border: 1px solid transparent;
@@ -54,12 +59,12 @@ button {
    }
 }
 .gray {
-   color: $black;
+   color: $white;
    background-color: #999;
 
    &:hover {
       opacity: 0.8;
-      color: $black;
+      color: $white;
       background-color: #999;
       transition: opacity 0.2s ease-out;
    }

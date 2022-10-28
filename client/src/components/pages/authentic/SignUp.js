@@ -9,7 +9,7 @@ import styles from './Authentic.module.scss';
 
 const cx = classNames.bind(styles);
 
-function LogIn() {
+function SignUp() {
    return (
       <div className={cx('container')}>
          <div className={cx('card-container')}>
@@ -19,15 +19,18 @@ function LogIn() {
                   <span>Movie</span>
                </div>
             </div>
-            <CardForm title="Sign In">
+            <CardForm title="Sign Up">
+               <Input type="text" placeholder="your nickname" />
                <Input type="email" placeholder="email@mail.com" />
                <Input type="password" placeholder="password123" />
+               <Input type="password" placeholder="confirm password" />
                <Button className={cx('card-button')} fullfill>
-                  Sign In
+                  Sign Up
                </Button>
                <Separate />
-               <Button to="/signup" className={cx('card-button')} fullfill gray>
-                  Sign Up
+
+               <Button to="/login" className={cx('card-button')} fullfill gray>
+                  Sign In
                </Button>
             </CardForm>
          </div>
@@ -35,4 +38,4 @@ function LogIn() {
    );
 }
 
-export default LogIn;
+export default SignUp;

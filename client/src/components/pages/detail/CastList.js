@@ -10,7 +10,7 @@ import serverNode from '~/api/serverNode';
 const cx = classNames.bind(styles);
 
 function CastList(props) {
-   const { category } = useParams();
+   const category = 'movie';
 
    const [casts, setCasts] = useState([]);
 

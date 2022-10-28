@@ -1,11 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
 
-import Home from '~/components/pages/Home';
-import Catalog from '~/components/pages/Catalog';
-import LogIn from '~/components/pages/authentic/LogIn';
-import Detail from '~/components/pages/detail/Detail';
-import Search from '~/components/pages/Search';
-import DefaultLayout from '~/components/Layouts/DefaultLayout/DefaultLayout';
+// import Home from '~/components/pages/Home';
+// import Catalog from '~/components/pages/Catalog';
+// import LogIn from '~/components/pages/authentic/LogIn';
+// import Detail from '~/components/pages/detail/Detail';
+// import Search from '~/components/pages/Search';
+// import DefaultLayout from '~/components/Layouts/DefaultLayout/DefaultLayout';
+// import FooterOnly from '~/components/Layouts/FooterOnly/FooterOnly';
 
 const CustomRoutes = ({ path, element }) => {
    const Element = element;

@@ -21,12 +21,10 @@ function HeroSlide() {
       const getMovies = async () => {
          const params = { page: 1 };
          try {
-            // const movies = await onmoviedbApi.getMovieList(movieType.popular, {
-            //    params,
-            // });
-            // setMovieItems(movies.results.slice(8, 20));
-            const movies = await serverNode.getFilmList();
-            setMovieItems(movies.data.data.slice(8, 20));
+            const movies = await onmoviedbApi.getMovieList(movieType.popular, {
+               params,
+            });
+            setMovieItems(movies.results.slice(0, 6));
          } catch {
             console.log('error');
          }
@@ -41,6 +39,7 @@ function HeroSlide() {
             grabCursor={true}
             spaceBetween={0}
             slidesPerView={1}
+            onSlideNextTransitionStart
             autoplay={{ delay: 4000 }}
          >
             {movieItems.map((item, index) => (
@@ -66,18 +65,6 @@ const HeroSlideItem = (props) => {
    const background = apiConfig.originalImage(
       item.F_BACKCDROP ? item.F_BACKCDROP : item.poster_path,
    );
-
-   // const [trailers, setTrailer] = useState([]);
-   // useEffect(() => {
-   //    const getVideo = async () => {
-   //       const videos = await onmoviedbApi.getVideo(category.movie, item.id);
-
-   //       if (videos.results.length > 0) {
-   //          setTrailer(videos.results.slice(0, 2));
-   //       }
-   //    };
-   //    getVideo();
-   // }, [item.id]);
 
    return (
       <div

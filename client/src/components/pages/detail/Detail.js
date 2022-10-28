@@ -12,12 +12,15 @@ import serverNode from '~/api/serverNode';
 const cx = classNames.bind(styles);
 
 function Detail() {
-   const { category, id } = useParams();
+   const { id } = useParams();
+   const category = 'movie';
 
    const [item, setItem] = useState(null);
 
    useEffect(() => {
       const getDetail = async () => {
+         const response = await onmoviedbApi.detail('movie', id);
+         setItem(response);
          window.scrollTo(0, 0);
          // const response = await onmoviedbApi.detail(category, id);
          const response = await serverNode.getFilmDetail(id);
