@@ -10,13 +10,14 @@ function Catalog() {
    const [activeGenre, setActiveGenre] = useState('All');
 
    useEffect(() => {
-      if (activeGenre != 'All') {
+      if (activeGenre !== 'All') {
          const getFilms = async () => {
             const response = await serverNode.getFilmsByGenre(activeGenre);
-            console.log(response);
+            setFilms(response.data);
          };
          getFilms();
       }
+
    }, [activeGenre]);
 
    return (
@@ -27,9 +28,17 @@ function Catalog() {
                setActiveGenre={setActiveGenre}
             />
          </PageHeader>
-         <div className="section mb-3">
-            <MovieGrid />
-         </div>
+         {
+            films.length < 0 ? "No films for this genre" : (
+               activeGenre === 'All' ? (
+                  <MovieGrid />
+               ) : (
+                  <div className="section mb-3">
+                     <MovieGrid films={films.length !== 0 ? films : null} />
+                  </div>
+               )
+            )
+         }
       </>
    );
 }

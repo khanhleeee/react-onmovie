@@ -22,13 +22,12 @@ function HeroSlide() {
          const params = { page: 1 };
          try {
             const movies = await serverNode.getFilmList(1);
-            console.log(movies.data.data);
             // const movies = await onmoviedbApi.getMovieList(movieType.popular, {
             //    params,
             // });
             setMovieItems(movies.data.data.slice(0, 6));
          } catch {
-            console.log('error');
+            console.error('error');
          }
       };
       getMovies();
