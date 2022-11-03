@@ -1,15 +1,43 @@
 import classNames from 'classnames/bind';
+import { useState } from 'react';
+
 import { Link } from 'react-router-dom';
 import Button from '~/components/Button/Button';
 import CardForm from '~/components/form/CardForm/CardForm';
 import Input from '~/components/form/Input/Input';
 import Separate from '~/components/form/Separate/Separate';
-
+import serverNode from '~/api/serverNode';
 import styles from './Authentic.module.scss';
 
 const cx = classNames.bind(styles);
 
 function SignUp() {
+   const [name, setName] = useState('');
+   const [email, setEmail] = useState('');
+   const [password, setPassword] = useState('');
+   const [confirmPassword, setConfirmPassword] = useState('');
+   const [data, setData] = useState('');
+   const [sendStatus, setSendStatus] = useState('');
+
+   const handleRegister = async (e) => {
+      e.preventDefault();
+      serverNode
+         .checkRegister({ uid: "00019", name, email, password, confirmPassword })
+         .then((res) => {
+            if (res.status === 200) {
+               console.log(res.data);
+               setData(res.data);
+               localStorage.setItem('user', JSON.stringify(res.data));
+               // window.location.href = '/';
+            } else {
+               setSendStatus(res.data);
+            }
+         })
+         .catch((err) => {
+            console.log(err);
+         });
+   };
+
    return (
       <div className={cx('container')}>
          <div className={cx('card-container')}>
@@ -20,15 +48,14 @@ function SignUp() {
                </div>
             </div>
             <CardForm title="Sign Up">
-               <Input type="text" placeholder="your nickname" />
-               <Input type="email" placeholder="email@mail.com" />
-               <Input type="password" placeholder="password123" />
-               <Input type="password" placeholder="confirm password" />
-               <Button className={cx('card-button')} fullfill>
+               <Input type="text" placeholder="your name" onChange={(e) => setName(e.target.value)} errorMessage={sendStatus} />
+               <Input type="email" placeholder="email@mail.com" onChange={(e) => setEmail(e.target.value)} errorMessage={sendStatus} />
+               <Input type="password" placeholder="password123" onChange={(e) => setPassword(e.target.value)} errorMessage={sendStatus} />
+               <Input type="password" placeholder="confirm password" onChange={(e) => setConfirmPassword(e.target.value)} errorMessage={sendStatus} />
+               <Button className={cx('card-button')} fullfill onClick={handleRegister} >
                   Sign Up
                </Button>
                <Separate />
-
                <Button to="/login" className={cx('card-button')} fullfill gray>
                   Sign In
                </Button>

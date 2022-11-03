@@ -44,16 +44,17 @@ function LogIn() {
                </div>
             </div>
             <CardForm title="Sign In">
-               {sendStatus ? <p className="loginStatus">{sendStatus}</p> : null}
                <Input
                   type="email"
                   placeholder="email@mail.com"
                   onChange={(e) => setEmail(e.target.value)}
+                  errorMessage={sendStatus}
                />
                <Input
                   type="password"
                   placeholder="password123"
                   onChange={(e) => setPassword(e.target.value)}
+                  errorMessage={sendStatus}
                />
                <Button
                   className={cx('card-button')}
