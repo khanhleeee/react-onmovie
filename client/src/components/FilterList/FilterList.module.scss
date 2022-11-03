@@ -2,7 +2,7 @@
 
 .filter-list {
    display: flex;
-   align-items: center;
+   align-items: flex-start;
    padding: 0 6rem;
 
    & + .filter-list {
@@ -10,7 +10,9 @@
    }
 }
 .lable {
-   font-size: 2.1rem;
+   line-height: 1;
+   margin-top: 0.3rem;
+   font-size: 1.8rem;
    text-align: end;
    margin-right: 2rem;
    font-weight: 700;
@@ -19,17 +21,27 @@
 }
 .container {
    display: flex;
-   align-items: center;
+   height: 10rem;
+   align-items: flex-start;
+   flex-wrap: wrap;
 }
 .card {
    font-weight: 500;
-   font-size: 2rem;
+   font-size: 1.4rem;
    background-color: $card-bg;
    border-radius: 4px;
-   padding: 0.3rem 2rem;
+   padding: 1rem 1.2rem;
    cursor: pointer;
+   color: rgb(193, 193, 193);
+   margin-right: 0.8rem;
+   margin-bottom: 0.8rem;
+   transition: color 0.3s ease, background-color 0.3s ease;
 
-   & + .card {
-      margin-left: 1rem;
+   &:hover {
+      color: white;
+   }
+   &.checked {
+      background-color: $primary-color;
+      color: $text-color;
    }
 }

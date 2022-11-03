@@ -21,10 +21,12 @@ function HeroSlide() {
       const getMovies = async () => {
          const params = { page: 1 };
          try {
-            const movies = await onmoviedbApi.getMovieList(movieType.popular, {
-               params,
-            });
-            setMovieItems(movies.results.slice(0, 6));
+            const movies = await serverNode.getFilmList(1);
+            console.log(movies.data.data);
+            // const movies = await onmoviedbApi.getMovieList(movieType.popular, {
+            //    params,
+            // });
+            setMovieItems(movies.data.data.slice(0, 6));
          } catch {
             console.log('error');
          }
@@ -76,14 +78,11 @@ const HeroSlideItem = (props) => {
                <h2 className={cx('title')}>{item.F_OFFICIAL_NAME}</h2>
                <div className={cx('overview')}>{item.F_DESC}</div>
                <div className={cx('btns')}>
-                  <Button onClick={() => navigate('/movie/' + item.id)}>
+                  <Button onClick={() => navigate('/movie/' + item.F_ID)}>
                      See Details
                   </Button>
                </div>
             </div>
-            {/* <div className={cx('poster')}>
-               <img src={apiConfig.w500Image(item.poster_path)} alt="" />
-            </div> */}
          </div>
       </div>
    );

@@ -18,7 +18,7 @@ function Trailers(props) {
          console.log(getFilmDetail.data.F_TRAILER);
          const trailerId = getFilmDetail.data.F_TRAILER.TR_ID;
          const response = await onmoviedbApi.getVideos(category, trailerId);
-         setVideos(response.results.slice(0, 3));
+         setVideos(response.results.slice(0, 2));
       };
       getVideos();
    }, [category, props.id]);

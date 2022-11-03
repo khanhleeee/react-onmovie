@@ -30,7 +30,6 @@ function MovieGrid(props) {
                response = await serverNode.getFilmList(1);
                setItems(response.data.data);
             } else {
-               //note dang bi loi search
                response = await serverNode.searchFilmList(keyword);
                setItems(response.data.data);
             }

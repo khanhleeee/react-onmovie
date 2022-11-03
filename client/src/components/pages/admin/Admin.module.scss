@@ -1,0 +1,45 @@
+@use '../../../scss' as *;
+
+$subColor: #222632;
+.container {
+}
+.newFilm-field {
+   padding: 2rem;
+   border-radius: 4px;
+   background-color: $subColor;
+}
+.title {
+   font-weight: 600;
+   font-size: 1.8rem;
+   color: $primary-color;
+   opacity: 0.8;
+   text-transform: capitalize;
+}
+.form {
+   display: grid;
+   gap: 1rem;
+   margin-top: 3rem;
+   padding: 0 3rem;
+}
+.form-group {
+   label {
+      font-size: 1.4rem;
+      margin-left: 0.4rem;
+      opacity: 0.6;
+   }
+
+   .input {
+      margin-top: 0.4rem;
+      border-radius: 4px;
+      background-color: #2b303e;
+      padding: 0.4rem 1rem;
+
+      input {
+         width: 100%;
+         color: $text-color;
+         font-size: 1.6rem;
+         border: none;
+         background: none;
+      }
+   }
+}

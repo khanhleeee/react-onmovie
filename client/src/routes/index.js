@@ -1,6 +1,8 @@
 import FooterOnly from '~/components/Layouts/FooterOnly/FooterOnly';
+import AdminLayout from '~/components/Layouts/AdminLayout/AdminLayout';
 
 import Home from '~/components/pages/Home';
+import Admin from '~/components/pages/admin/ManageFilms';
 import Catalog from '~/components/pages/Catalog';
 import LogIn from '~/components/pages/authentic/LogIn';
 import Detail from '~/components/pages/detail/Detail';
@@ -10,6 +12,7 @@ import SignUp from '~/components/pages/authentic/SignUp';
 // Public routes
 const publicRoutes = [
    { path: '/', component: Home },
+   { path: '/admin', component: Admin, layout: AdminLayout },
    { path: '/movie', component: Catalog },
    { path: '/login', component: LogIn, layout: FooterOnly },
    { path: '/signup', component: SignUp, layout: FooterOnly },

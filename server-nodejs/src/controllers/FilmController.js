@@ -7,7 +7,7 @@ module.exports = {
   getFilmList: async (req, res) => {
     try {
       const pool = await mssql.connect(sqlConfig);
-      const per_page = 5;
+      const per_page = 10;
       const page = parseInt(req.query.page);
       if (isNaN(page)) {
         var obj = {
@@ -167,6 +167,44 @@ module.exports = {
         .input("F_ID", mssql.Char(5), filmID)
         .execute("sp_getFilmCredit");
       res.status(200).json(result.recordset);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+  getGenres: async (req, res) => {
+    try {
+      const pool = await mssql.connect(sqlConfig);
+      const result = await pool.request().execute("sp_getGenres");
+      res.status(200).json(result.recordset);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+  getContries: async (req, res) => {
+    try {
+      const pool = await mssql.connect(sqlConfig);
+      const result = await pool.request().execute("sp_getCountries");
+      res.status(200).json(result.recordset);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+  getFilmsByGenre: async (req, res) => {
+    const id = req.params.id;
+    console.log(id);
+    try {
+      const pool = await mssql.connect(sqlConfig);
+      var obj = {
+        data: [],
+      };
+      const result = await pool
+        .request()
+        .input("G_ID", mssql.varchar(30), id)
+        .execute("sp_getFilmsByGenre");
+      for (let i = 0; i < result.recordset.length; i++) {
+        obj.data.push(result.recordset[i]);
+      }
+      res.status(200).json(obj);
     } catch (error) {
       res.status(500).json(error);
     }

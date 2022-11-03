@@ -1,18 +1,34 @@
-import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import serverNode from '~/api/serverNode';
 
-import { category as cate } from '~/api/onmoviedb';
 import FilterList from '../FilterList/FilterList';
 import MovieGrid from '../MovieGrid/MovieGrid';
 import PageHeader from '../PageHeader/PageHeader';
 
 function Catalog() {
+   const [films, setFilms] = useState([]);
+   const [activeGenre, setActiveGenre] = useState('All');
+
+   useEffect(() => {
+      if (activeGenre != 'All') {
+         const getFilms = async () => {
+            const response = await serverNode.getFilmsByGenre(activeGenre);
+            console.log(response);
+         };
+         getFilms();
+      }
+   }, [activeGenre]);
+
    return (
       <>
          <PageHeader>
-            <FilterList />
+            <FilterList
+               activeGenre={activeGenre}
+               setActiveGenre={setActiveGenre}
+            />
          </PageHeader>
          <div className="section mb-3">
-            <MovieGrid category="movie" />
+            <MovieGrid />
          </div>
       </>
    );
