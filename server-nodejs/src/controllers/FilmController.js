@@ -1,5 +1,4 @@
 const mssql = require("mssql");
-const dbConnection = require("../database/dbConnection");
 const {
     execute,
     queryStatement,
