@@ -1,10 +1,13 @@
 import classNames from 'classnames/bind';
+import { useState } from 'react';
 
 import styles from './Admin.module.scss';
 
 const cx = classNames.bind(styles);
 
 function ManageFilms() {
+   const [activePage, setActivePage] = useState('Account');
+
    return (
       <div>
          <div className={cx('container')}>

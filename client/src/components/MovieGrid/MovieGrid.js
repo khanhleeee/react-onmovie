@@ -25,17 +25,17 @@ function MovieGrid(props) {
       const getList = async () => {
          try {
             let response = null;
-            if(props.films) {
+            if (props.films) {
                setItems(props.films.data);
                setPage(props.films.page);
                setTotalPage(props.films.total);
-            }
-            else if (keywodDebounce === undefined) {
+            } else if (keyword === undefined) {
                response = await serverNode.getFilmList(1);
                setItems(response.data.data);
                setTotalPage(response.data.total_pages);
             } else {
                response = await serverNode.searchFilmList(keyword);
+               console.log(response);
                setItems(response.data.data);
                setTotalPage(response.data.total_pages);
             }
@@ -80,15 +80,15 @@ function MovieGrid(props) {
                <MovieCard key={index} category={props.category} item={item} />
             ))}
          </div>
-         {
-            page == null ? '' : page < totalPage && (
-               <div className={cx('loadmore')}>
-                  <Button outline onClick={loadMore}>
-                     Load More
-                  </Button>
-               </div>
-            )
-         }
+         {page == null
+            ? ''
+            : page < totalPage && (
+                 <div className={cx('loadmore')}>
+                    <Button outline onClick={loadMore}>
+                       Load More
+                    </Button>
+                 </div>
+              )}
       </>
    );
 }

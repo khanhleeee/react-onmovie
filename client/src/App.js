@@ -16,7 +16,12 @@ function App() {
             <Routes>
                {publicRoutes.map((route, index) => {
                   const Page = route.component;
+                  let props = null;
                   let Layout = DefaultLayout;
+
+                  if (route.headerActive) {
+                     props = { headerActive: route.headerActive };
+                  }
 
                   if (route.layout) {
                      Layout = route.layout;
@@ -27,7 +32,9 @@ function App() {
                         key={index}
                         path={route.path}
                         element={
-                           <Layout>
+                           <Layout
+                              headerActive={props ? props.headerActive : null}
+                           >
                               <Page />
                            </Layout>
                         }

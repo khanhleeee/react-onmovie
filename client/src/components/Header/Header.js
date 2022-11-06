@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 
 import styles from './Header.module.scss';
 import SearchBar from '../SearchBar/SearchBar';
+import { UserIcon } from '../Icons/Icons';
 
 const cx = classNames.bind(styles);
 
@@ -18,21 +19,25 @@ const headerNav = [
    },
 ];
 
-function Header() {
+function Header(props) {
    const { pathname } = useLocation();
    const headerRef = useRef(null);
 
    const active = headerNav.findIndex((e) => e.path === pathname);
 
    useEffect(() => {
-      const shrinkHeader = () => {
-         if (document.documentElement.scrollTop > 100) {
-            headerRef.current.classList.add(cx('active'));
-         } else {
-            headerRef.current.classList.remove(cx('active'));
-         }
-      };
-      window.addEventListener('scroll', shrinkHeader);
+      if (props.active) {
+         headerRef.current.classList.add(cx('active'));
+      } else {
+         const shrinkHeader = () => {
+            if (document.documentElement.scrollTop > 100) {
+               headerRef.current.classList.add(cx('active'));
+            } else {
+               headerRef.current.classList.remove(cx('active'));
+            }
+         };
+         window.addEventListener('scroll', shrinkHeader);
+      }
    }, []);
 
    return (
@@ -57,8 +62,12 @@ function Header() {
                   ))}
                </ul>
             </div>
-            <div className="section">
+            <div className={cx('right-side')}>
                <SearchBar />
+               <Link to="/user" className={cx('user-avatar')}>
+                  <UserIcon classNames={cx('icon')} />
+                  Profile
+               </Link>
             </div>
          </div>
       </div>
