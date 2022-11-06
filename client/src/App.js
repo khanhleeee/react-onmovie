@@ -2,19 +2,32 @@ import { useState } from 'react';
 import { Fragment } from 'react';
 import 'swiper/swiper.min.css';
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
 import { publicRoutes } from './routes';
 
+import Home from './components/pages/Home';
+import Login from './components/pages/authentic/LogIn';
+
 // import CustomRoutes from './config/Routes';
 import DefaultLayout from './components/Layouts/DefaultLayout/DefaultLayout';
+import SignUp from './components/pages/authentic/SignUp';
 
 function App() {
+
+   //SỬA CHỖ NÀY THÀNH 
+   //TRUE THÌ VÔ ĐC TẤT CẢ ROUTE
+   //FALSE THÌ VÔ ĐC CHỈ VÀO TRANG LOGIN/SIGNUP
+   const user = false
+
    return (
       <BrowserRouter>
          <div className="App">
             <Routes>
-               {publicRoutes.map((route, index) => {
+               <Route path="/" exact element={user ? <Home /> : <Navigate to="/login" />} />
+               <Route path="/signup" exact element={!user ? <SignUp /> : <Navigate to="/" />} />
+               <Route path="/login" exact element={!user ? <Login /> : <Navigate to="/" />} />
+               {user && (publicRoutes.map((route, index) => {
                   const Page = route.component;
                   let props = null;
                   let Layout = DefaultLayout;
@@ -40,7 +53,8 @@ function App() {
                         }
                      />
                   );
-               })}
+               }))
+               }
             </Routes>
          </div>
       </BrowserRouter>

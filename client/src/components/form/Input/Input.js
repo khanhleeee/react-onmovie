@@ -8,8 +8,10 @@ const cx = classNames.bind(styles);
 
 function Input({ type, placeholder, value, errorMessage, onChange }) {
    const [inputValue, setInputValue] = useState(value || '');
-   let Icon = PenIcon;
+   
+   //Hông biết dùng ref như thế nào
 
+   let Icon = PenIcon;
    if (type == 'password') {
       Icon = LockIcon;
    } else if (type == 'email') {
@@ -23,7 +25,7 @@ function Input({ type, placeholder, value, errorMessage, onChange }) {
             <input
                type={type}
                placeholder={placeholder}
-               onChange={(e) => setInputValue(e.value)}
+               onChange={(e) => setInputValue(e.target.value)}
                value={inputValue}
             />
          </div>

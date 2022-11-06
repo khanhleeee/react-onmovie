@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
 import Button from '~/components/Button/Button';
 import CardForm from '~/components/form/CardForm/CardForm';
 import Input from '~/components/form/Input/Input';
@@ -11,11 +10,14 @@ import serverNode from '~/api/serverNode';
 
 const cx = classNames.bind(styles);
 
-function LogIn() {
+export default function LogIn() {
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
    const [data, setData] = useState('');
    const [sendStatus, setSendStatus] = useState('');
+   
+   //NÈ CHỖ NÀY LÀM SAO LẤY ĐC DATA USER NHẬP VÀO LÀ ĐC Á
+   console.log(email, password);
 
    const handleLogin = async (e) => {
       e.preventDefault();
@@ -25,8 +27,9 @@ function LogIn() {
             if (res.status === 401) {
                setSendStatus(res.data);
             } else if (res.status === 200) {
+               console.log(res.data);
                localStorage.setItem('user', JSON.stringify(res.data));
-               window.location.href = '/';
+               // window.location.href = '/';
             }
          })
          .catch((err) => {
@@ -47,12 +50,14 @@ function LogIn() {
                <Input
                   type="email"
                   placeholder="email@mail.com"
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   errorMessage={sendStatus}
                />
                <Input
                   type="password"
                   placeholder="password123"
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   errorMessage={sendStatus}
                />
@@ -73,4 +78,4 @@ function LogIn() {
    );
 }
 
-export default LogIn;
+
