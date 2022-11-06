@@ -2,10 +2,12 @@ import classNames from 'classnames/bind';
 
 import styles from '../Form.module.scss';
 import { EmailIcon, LockIcon, PenIcon } from '~/components/Icons/Icons';
+import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
-function Input({ type, placeholder, errorMessage, onChange }) {
+function Input({ type, placeholder, value, errorMessage, onChange }) {
+   const [inputValue, setInputValue] = useState(value || '');
    let Icon = PenIcon;
 
    if (type == 'password') {
@@ -18,7 +20,12 @@ function Input({ type, placeholder, errorMessage, onChange }) {
       <div className={cx('form-group')}>
          <div className={cx('input')}>
             <Icon classNames={cx('icon')} />
-            <input type={type} placeholder={placeholder} onChange={onChange} />
+            <input
+               type={type}
+               placeholder={placeholder}
+               onChange={(e) => setInputValue(e.value)}
+               value={inputValue}
+            />
          </div>
          <span className={cx('message')}>{errorMessage}</span>
       </div>

@@ -1,10 +1,10 @@
 import Footer from '~/components/Footer/Footer';
 import Header from '~/components/Header/Header';
 
-function DefaultLayout({ children }) {
+function DefaultLayout({ children, headerActive }) {
    return (
       <>
-         <Header />
+         <Header active={headerActive ? true : false} />
          {children}
          <Footer />
       </>
