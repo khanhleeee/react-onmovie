@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import classNames from 'classnames/bind';
 
 import styles from '../Form.module.scss';
@@ -6,10 +7,11 @@ import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
-function Input({ type, placeholder, value, errorMessage, onChange }) {
+function Input({ innerRef, type, placeholder, value, errorMessage }, ref) {
    const [inputValue, setInputValue] = useState(value || '');
-   
+
    //Hông biết dùng ref như thế nào
+   // Dùng như này nè :)))
 
    let Icon = PenIcon;
    if (type == 'password') {
@@ -23,6 +25,7 @@ function Input({ type, placeholder, value, errorMessage, onChange }) {
          <div className={cx('input')}>
             <Icon classNames={cx('icon')} />
             <input
+               ref={ref}
                type={type}
                placeholder={placeholder}
                onChange={(e) => setInputValue(e.target.value)}
@@ -34,16 +37,4 @@ function Input({ type, placeholder, value, errorMessage, onChange }) {
    );
 }
 
-export default Input;
-
-export const EmailInPut = ({}) => {};
-
-export const PassWordInPut = () => {
-   <div className={cx('form-group')}>
-      <div className={cx('input')}>
-         <LockIcon classNames={cx('icon')} />
-         <input type="password" placeholder="password123" />
-      </div>
-      <span className={cx('message')}>message</span>
-   </div>;
-};
+export default forwardRef(Input);

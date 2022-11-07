@@ -8,6 +8,7 @@ const cx = classNames.bind(styles);
 function Button({
    children,
    className,
+   disable = false,
    gray = false,
    fullfill = false,
    outline = false,
@@ -21,6 +22,7 @@ function Button({
          outline,
          fullfill,
          gray,
+         disable,
       },
       className,
    );
@@ -35,6 +37,7 @@ function Button({
       <Component
          className={classes}
          to={to ? to : null}
+         disable={disable.toString()}
          onClick={onClick ? onClick : null}
          {...otherProps}
       >

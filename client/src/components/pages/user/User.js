@@ -1,7 +1,7 @@
+import { createRef, forwardRef, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
 import Button from '~/components/Button/Button';
-import CardForm from '~/components/form/CardForm/CardForm';
+
 import Input from '~/components/form/Input/Input';
 import { UserIcon } from '~/components/Icons/Icons';
 import Modal, { ModalContent } from '~/components/Modal/Modal';
@@ -21,6 +21,7 @@ const user = {
 function User() {
    const [activePage, setActivePage] = useState('Account');
    const [activeModalLogout, setActiveModalLogout] = useState(false);
+
    return (
       <div className={cx('container')}>
          <div className={cx('side-bar')}>
@@ -73,8 +74,23 @@ function User() {
    );
 }
 
-const Account = (props) => {
+const Account = () => {
    const [activeModal, setActiveModal] = useState(false);
+
+   const nameRef = useRef();
+   const emailRef = useRef();
+   const phoneRef = useRef();
+
+   const handleSubmit = () => {
+      const data = {
+         U_NAME: nameRef.current.value,
+         U_EMAIL: emailRef.current.value,
+         U_PHONE: phoneRef.current.value,
+      };
+
+      // Dữ liệu nhập vào ở đây
+      console.log(data);
+   };
 
    return (
       <>
@@ -104,9 +120,12 @@ const Account = (props) => {
             {activeModal && (
                <Modal active={activeModal}>
                   <ModalContent onClose={() => setActiveModal(false)}>
-                     <Input value={user.U_EMAIL} type="email" />
-                     <Input value={user.U_PHONE} />
-                     <Button fullfill>Update</Button>
+                     <Input ref={nameRef} value={user.U_NAME} />
+                     <Input ref={emailRef} value={user.U_EMAIL} type="email" />
+                     <Input ref={phoneRef} value={user.U_PHONE} />
+                     <Button fullfill onClick={handleSubmit}>
+                        Update
+                     </Button>
                   </ModalContent>
                </Modal>
             )}

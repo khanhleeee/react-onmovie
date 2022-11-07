@@ -30,6 +30,15 @@ button {
       background-color: $primary-color;
       transition: background-color 0.6s ease;
    }
+
+   &.disable {
+      opacity: 0.4;
+      cursor: default;
+
+      &:hover {
+         opacity: 0.4;
+      }
+   }
 }
 
 .outline {

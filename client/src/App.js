@@ -14,47 +14,52 @@ import DefaultLayout from './components/Layouts/DefaultLayout/DefaultLayout';
 import SignUp from './components/pages/authentic/SignUp';
 
 function App() {
-
-   //SỬA CHỖ NÀY THÀNH 
-   //TRUE THÌ VÔ ĐC TẤT CẢ ROUTE
-   //FALSE THÌ VÔ ĐC CHỈ VÀO TRANG LOGIN/SIGNUP
-   const user = false
+   const user = false;
 
    return (
       <BrowserRouter>
          <div className="App">
             <Routes>
-               <Route path="/" exact element={user ? <Home /> : <Navigate to="/login" />} />
-               <Route path="/signup" exact element={!user ? <SignUp /> : <Navigate to="/" />} />
-               <Route path="/login" exact element={!user ? <Login /> : <Navigate to="/" />} />
-               {user && (publicRoutes.map((route, index) => {
-                  const Page = route.component;
-                  let props = null;
-                  let Layout = DefaultLayout;
+               <Route
+                  path="/signup"
+                  exact
+                  element={!user ? <SignUp /> : <Navigate to="/" />}
+               />
+               <Route
+                  path="/login"
+                  exact
+                  element={!user ? <Login /> : <Navigate to="/" />}
+               />
+               {user &&
+                  publicRoutes.map((route, index) => {
+                     const Page = route.component;
+                     let props = null;
+                     let Layout = DefaultLayout;
 
-                  if (route.headerActive) {
-                     props = { headerActive: route.headerActive };
-                  }
+                     if (route.headerActive) {
+                        props = { headerActive: route.headerActive };
+                     }
 
-                  if (route.layout) {
-                     Layout = route.layout;
-                  }
+                     if (route.layout) {
+                        Layout = route.layout;
+                     }
 
-                  return (
-                     <Route
-                        key={index}
-                        path={route.path}
-                        element={
-                           <Layout
-                              headerActive={props ? props.headerActive : null}
-                           >
-                              <Page />
-                           </Layout>
-                        }
-                     />
-                  );
-               }))
-               }
+                     return (
+                        <Route
+                           key={index}
+                           path={route.path}
+                           element={
+                              <Layout
+                                 headerActive={
+                                    props ? props.headerActive : null
+                                 }
+                              >
+                                 <Page />
+                              </Layout>
+                           }
+                        />
+                     );
+                  })}
             </Routes>
          </div>
       </BrowserRouter>
