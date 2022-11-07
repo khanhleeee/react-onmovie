@@ -7,11 +7,15 @@ module.exports = {
         try {
             let email = req.body.email;
             let password = req.body.password;
+            
             const result = await executeTwoParams('sp_getUser', [
                 { name: 'EMAIL', type: mssql.VarChar(25), value: email },
                 { name: 'PASS', type: mssql.Char(8), value: password },
             ]);
-            if (result.recordset.length != 0) {
+
+            if (password != result.recordset[0].U_PASS) {
+                return res.status(401).json('Password is incorrect');
+            } else {
                 return res.status(200).json({
                     message: 'Login successfully',
                     data: {
@@ -23,11 +27,9 @@ module.exports = {
                         role: result.recordset[0].R_ID,
                     },
                 });
-            } else {
-                return res.status(401).json('Wrong email or password');
             }
-        } catch (error) {
-            res.status(500).json(error.message);
+        } catch (err) {
+            return res.status(500).json(err);
         }
     },
     register: async (req, res) => {
