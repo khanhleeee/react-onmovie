@@ -1,4 +1,5 @@
-import { createRef, forwardRef, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Button from '~/components/Button/Button';
 
@@ -7,20 +8,21 @@ import { UserIcon } from '~/components/Icons/Icons';
 import Modal, { ModalContent } from '~/components/Modal/Modal';
 
 import styles from './User.module.scss';
+import serverNode from '~/api/serverNode';
 
 const cx = classNames.bind(styles);
 
-// Giả lập 1 người dùng lấy từ database
-const user = {
-   U_ID: 1,
-   U_NAME: 'Khánh Lê',
-   U_PHONE: '0123456789',
-   U_EMAIL: 'khanhle@gmail.com',
-};
-
-function User() {
+export default function User() {
    const [activePage, setActivePage] = useState('Account');
    const [activeModalLogout, setActiveModalLogout] = useState(false);
+
+   const location = useLocation();
+   const dataUser = location.state.user;
+   
+   const handleLogout = () => {
+      localStorage.removeItem('user');
+      window.location.href = "/login";
+   }
 
    return (
       <div className={cx('container')}>
@@ -28,7 +30,7 @@ function User() {
             <div className={cx('general-info')}>
                <UserIcon classNames={cx('icon')} />
                <div className={cx('info')}>
-                  <span className={cx('name')}>{user.U_NAME}</span>
+                  <span className={cx('name')}>{dataUser.fullName}</span>
                   <span className={cx('level')}>Member</span>
                </div>
             </div>
@@ -59,7 +61,7 @@ function User() {
                onClose={() => setActiveModalLogout(false)}
             >
                <h4 className={cx('title')}>Do you want to log out?</h4>
-               <Button fullfill>Logout</Button>
+               <Button fullfill onClick={handleLogout}>Logout</Button>
             </ModalContent>
          </Modal>
          <div className={cx('content')}>
@@ -77,19 +79,33 @@ function User() {
 const Account = () => {
    const [activeModal, setActiveModal] = useState(false);
 
+   const location = useLocation();
+   const dataUser = location.state.user;
+
    const nameRef = useRef();
    const emailRef = useRef();
    const phoneRef = useRef();
 
    const handleSubmit = () => {
-      const data = {
-         U_NAME: nameRef.current.value,
-         U_EMAIL: emailRef.current.value,
-         U_PHONE: phoneRef.current.value,
+      const dataUpdate = {
+         fullName: nameRef.current.value,
+         email: emailRef.current.value,
+         phoneNumber: phoneRef.current.value,
       };
 
-      // Dữ liệu nhập vào ở đây
-      console.log(data);
+      console.log(dataUpdate);
+
+      serverNode.upgradeUser(dataUser.id, {
+         fullName: dataUpdate.fullName,
+         email: dataUpdate.email,
+         phoneNumber: dataUpdate.phoneNumber
+      })
+         .then(res => {
+            console.log(res);
+         })
+         .catch(err => {
+            console.log(err);
+         })
    };
 
    return (
@@ -98,15 +114,15 @@ const Account = () => {
             <div className={cx('info')}>
                <UserIcon classNames={cx('icon')} />
                <div>
-                  <span className={cx('name')}>{user.U_NAME}</span>
+                  <span className={cx('name')}>{dataUser.fullName}</span>
                   <ul className={cx('info-details')}>
                      <li>
                         <span className={cx('title')}>Email: </span>
-                        <span>{user.U_EMAIL}</span>
+                        <span>{dataUser.email}</span>
                      </li>
                      <li>
                         <span className={cx('title')}>Phone: </span>
-                        <span>{user.U_PHONE}</span>
+                        <span>{dataUser.phoneNumber}</span>
                      </li>
                   </ul>
                </div>
@@ -120,9 +136,9 @@ const Account = () => {
             {activeModal && (
                <Modal active={activeModal}>
                   <ModalContent onClose={() => setActiveModal(false)}>
-                     <Input ref={nameRef} value={user.U_NAME} />
-                     <Input ref={emailRef} value={user.U_EMAIL} type="email" />
-                     <Input ref={phoneRef} value={user.U_PHONE} />
+                     <Input ref={nameRef} value={dataUser.fullName} />
+                     <Input ref={emailRef} value={dataUser.email} type="email" />
+                     <Input ref={phoneRef} value={dataUser.phoneNumber} />
                      <Button fullfill onClick={handleSubmit}>
                         Update
                      </Button>
@@ -133,5 +149,3 @@ const Account = () => {
       </>
    );
 };
-
-export default User;

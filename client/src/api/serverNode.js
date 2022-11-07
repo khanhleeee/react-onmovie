@@ -49,7 +49,17 @@ const serverNode = {
       } catch (error) {
          return error.response;
       }
-   }
+   },
+   upgradeUser: async(id, data) => {
+      try {
+         console.log(id, data);
+         const response = await axios.put(apiNode.baseUrl + 'auth/update/' + id, data);
+         console.log(response)
+         return response;
+      } catch (error) {
+         return error.response;
+      }
+   },
 };
 
 export default serverNode;

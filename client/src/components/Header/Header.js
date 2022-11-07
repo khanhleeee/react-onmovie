@@ -1,10 +1,11 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
 import styles from './Header.module.scss';
 import SearchBar from '../SearchBar/SearchBar';
 import { UserIcon } from '../Icons/Icons';
+import { AuthContext } from '~/authContext/AuthContext';
 
 const cx = classNames.bind(styles);
 
@@ -19,10 +20,10 @@ const headerNav = [
    },
 ];
 
-function Header(props) {
+export default function Header(props) {
    const { pathname } = useLocation();
    const headerRef = useRef(null);
-
+   const { user } = useContext(AuthContext);
    const active = headerNav.findIndex((e) => e.path === pathname);
 
    useEffect(() => {
@@ -38,7 +39,7 @@ function Header(props) {
          };
          window.addEventListener('scroll', shrinkHeader);
       }
-   }, []);
+   }, [props.active]);
 
    return (
       <div ref={headerRef} className={cx('header')}>
@@ -64,7 +65,7 @@ function Header(props) {
             </div>
             <div className={cx('right-side')}>
                <SearchBar />
-               <Link to="/user" className={cx('user-avatar')}>
+               <Link to={{pathname: "/user"}} state={{ user }} className={cx('user-avatar')}>
                   <UserIcon classNames={cx('icon')} />
                   Profile
                </Link>
@@ -73,5 +74,3 @@ function Header(props) {
       </div>
    );
 }
-
-export default Header;

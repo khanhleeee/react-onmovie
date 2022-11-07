@@ -1,7 +1,6 @@
 import classNames from 'classnames/bind';
 import { useRef, useState } from 'react';
 
-import { Link } from 'react-router-dom';
 import Button from '~/components/Button/Button';
 import CardForm from '~/components/form/CardForm/CardForm';
 import Input from '~/components/form/Input/Input';
@@ -29,28 +28,27 @@ function SignUp() {
       e.preventDefault();
 
       const data = {
-         U_NAME: nameRef.current.value,
-         U_EMAI: emailRef.current.value,
-         U_PHONE: phoneRef.current.value,
-         U_PASSWORD: passwordRef.current.value,
+         fullName: nameRef.current.value,
+         email: emailRef.current.value,
+         phoneNumber: phoneRef.current.value,
+         password: passwordRef.current.value,
+         confirmPassword: confirmPasswordRef.current.value,
       };
-
-      console.log(data);
 
       serverNode
          .checkRegister({
-            uid: '00019',
-            name,
-            email,
-            password,
-            confirmPassword,
+            fullName: data.fullName,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            password: data.password,
+            confirmPassword: data.confirmPassword,
          })
          .then((res) => {
             if (res.status === 200) {
                console.log(res.data);
                setData(res.data);
                localStorage.setItem('user', JSON.stringify(res.data));
-               // window.location.href = '/';
+               window.location.href = '/';
             } else {
                setSendStatus(res.data);
             }
