@@ -1,11 +1,14 @@
-import { DeleteOutline } from "@material-ui/icons";
-import { Link } from "react-router-dom";
-
-import "./movieList.css";
-import { DataGrid } from "@material-ui/data-grid";
 import { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import classname from "classnames/bind";
+import { DeleteOutline } from "@material-ui/icons";
+
+import styles from "./movieList.module.scss";
+import { DataGrid } from "@material-ui/data-grid";
 import { MovieContext } from "../../context/movieContext/MovieContext";
 import { getMovies, deleteMovie } from "../../context/movieContext/apiCall";
+
+const cx = classname.bind(styles);
 
 export default function ProductList() {
   const { movies, dispatch } = useContext(MovieContext);
@@ -18,16 +21,28 @@ export default function ProductList() {
     deleteMovie(id, dispatch);
   };
 
-  const columns = [
-    { field: "F_ID", headerName: "ID", width: 100 },
+  const userData = [
     {
-      field: "F_OFFICIAL_NAME",
+      fullname: "Jan",
+      user: 4000,
+    },
+  ];
+
+  const columns = [
+    { field: "user", headerName: "ID", width: 100 },
+    {
+      field: "fullname",
       headerName: "Official Name",
+      headerClassName: "super-app-theme--header",
       width: 220,
       renderCell: (params) => {
         return (
-          <div className="productListItem">
-            <img className="productListImg" src={params.row.F_POSTER} alt={params.row.F_OFFICIAL_NAME} />
+          <div className={cx("productListItem")}>
+            <img
+              className="productListImg"
+              src={params.row.F_POSTER}
+              alt={params.row.F_OFFICIAL_NAME}
+            />
             {params.row.F_OFFICIAL_NAME}
           </div>
         );
@@ -47,10 +62,10 @@ export default function ProductList() {
             <Link
               to={{ pathname: "/movie/" + params.row.F_ID, movie: params.row }}
             >
-              <button className="productListEdit">Edit</button>
+              <button className={cx("productListEdit")}>Edit</button>
             </Link>
             <DeleteOutline
-              className="productListDelete"
+              className={cx("productListDelete")}
               onClick={() => handleDelete(params.row.F_ID)}
             />
           </>
@@ -60,7 +75,7 @@ export default function ProductList() {
   ];
 
   return (
-    <div className="productList">
+    <div className={cx("productList")}>
       <DataGrid
         rows={movies.map((movie) => ({
           id: movie.F_ID,

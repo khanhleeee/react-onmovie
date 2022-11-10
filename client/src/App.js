@@ -14,7 +14,7 @@ import DefaultLayout from './components/Layouts/DefaultLayout/DefaultLayout';
 import SignUp from './components/pages/authentic/SignUp';
 
 function App() {
-   const user = false;
+   const user = true;
 
    return (
       <BrowserRouter>

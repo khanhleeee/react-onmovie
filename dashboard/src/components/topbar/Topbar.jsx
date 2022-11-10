@@ -1,49 +1,40 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import "./topbar.css";
+import classname from "classnames/bind";
+
+import styles from "./topbar.module.scss";
 import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import { AuthContext } from "../../context/authContext/AuthContext";
-import { logout } from "../../context/authContext/AuthAction";
+
+const cx = classname.bind(styles);
 
 export default function Topbar() {
   const { user, dispatch } = useContext(AuthContext);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    window.location.href="/login";
-  }
-
   return (
-    <div className="topbar">
-      <div className="topbarWrapper">
-        <div className="topLeft">
-          <Link to={`/`}>
-            <span className="logo">on</span>
-            <span className="logo">Movie</span>
+    <div className={cx("topbar")}>
+      <div className={cx("topbarWrapper")}>
+        <div className={cx("topLeft")}>
+          <Link to="/" className="logo">
+            <span>on</span>
+            <span>Movie</span>
           </Link>
         </div>
-        <div className="topRight">
-          <div className="topbarIconContainer">
-            <NotificationsNone />
-            {/* <span className="topIconBadge">2</span> */}
-          </div>
-          <div className="topbarIconContainer">
-            <Language />
-            {/* <span className="topIconBadge">2</span> */}
-          </div>
-          
-          <div className="dropdownProfile">
-            <Link to={{pathname: "/user/" + user._id, users: user}}>
-              <img src={user.avatar || "https://pbs.twimg.com/media/D8tCa48VsAA4lxn.jpg"} alt="" className="topAvatar" />
+        <div className={cx("topRight")}>
+          <div className={cx("dropdownProfile")}>
+            <Link to={{ pathname: "/user/" + user._id, users: user }}>
+              <img
+                src={
+                  user.avatar ||
+                  "https://pbs.twimg.com/media/D8tCa48VsAA4lxn.jpg"
+                }
+                alt="avatar"
+                className={cx("topAvatar")}
+              />
             </Link>
-            <div className="dropdownContent">
-              <div className="settingIcon">
-                <Settings />
-              </div>
-              <div className="dropdownLogout">
-                <span onClick={handleLogout}>Logout</span>
-              </div>
-            </div>
+            <ul className={cx("dropdown")}>
+              <li>Logout</li>
+            </ul>
           </div>
         </div>
       </div>
