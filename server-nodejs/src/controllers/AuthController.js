@@ -1,6 +1,6 @@
 const mssql = require('mssql');
 const bcrypt = require('bcrypt');
-const { queryStatement, executeSixParams, executeTwoParams } = require('../database/handleQuery');
+const { queryStatement, executeSixParams, executeTwoParams, executeThreeParams } = require('../database/handleQuery');
 
 module.exports = {
     login: async (req, res) => {
@@ -96,27 +96,22 @@ module.exports = {
             let userID = req.params.userID;
             let fullName = req.body.fullName;
             let phoneNumber = req.body.phoneNumber;
-            let email = req.body.email;
-            console.log(userID, fullName, phoneNumber, email);
-            // const result = await executeSixParams('sp_updateUser', [
-            //     { name: 'U_ID', type: mssql.Int, value: id },
-            //     { name: 'U_NAME', type: mssql.NVarChar(50), value: fullName },
-            //     { name: 'U_PHONE', type: mssql.VarChar(10), value: phoneNumber },
-            //     { name: 'U_EMAIL', type: mssql.VarChar(25), value: email },
-            //     { name: 'U_AVATAR', type: mssql.VarChar(100), value: avatar },
-            //     { name: 'R_ID', type: mssql.VarChar(10), value: role }
-            // ]);
-            // return res.status(200).json({
-            //     message: 'Update successfully',
-            //     data: {
-            //         id: result.recordset[0].U_ID,
-            //         email: result.recordset[0].U_EMAIL,
-            //         fullName: result.recordset[0].U_NAME,
-            //         phoneNumber: result.recordset[0].U_PHONE,
-            //         avatar: result.recordset[0].U_AVATAR,
-            //         role: result.recordset[0].R_ID,
-            //     },
-            // });
+            const result = await executeThreeParams('sp_editInforUser', [
+                { name: 'U_ID', type: mssql.Int, value: userID },
+                { name: 'U_NAME', type: mssql.NVarChar(50), value: fullName },
+                { name: 'U_PHONE', type: mssql.VarChar(11), value: phoneNumber },
+            ]);
+            return res.status(200).json({
+                message: 'Update successfully',
+                data: {
+                    id: result.recordset[0].U_ID,
+                    email: result.recordset[0].U_EMAIL,
+                    fullName: result.recordset[0].U_NAME,
+                    phoneNumber: result.recordset[0].U_PHONE,
+                    avatar: result.recordset[0].U_AVATAR,
+                    role: result.recordset[0].R_ID,
+                },
+            });
         } catch (error) {
             res.status(500).json(error.message);
         }

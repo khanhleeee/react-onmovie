@@ -83,25 +83,21 @@ const Account = () => {
    const dataUser = location.state.user;
 
    const nameRef = useRef();
-   const emailRef = useRef();
    const phoneRef = useRef();
 
    const handleSubmit = () => {
       const dataUpdate = {
          fullName: nameRef.current.value,
-         email: emailRef.current.value,
          phoneNumber: phoneRef.current.value,
       };
 
-      console.log(dataUpdate);
-
       serverNode.upgradeUser(dataUser.id, {
          fullName: dataUpdate.fullName,
-         email: dataUpdate.email,
          phoneNumber: dataUpdate.phoneNumber
       })
          .then(res => {
-            console.log(res);
+            localStorage.setItem('user', JSON.stringify(res.data.data));
+            window.location.href = '/user';
          })
          .catch(err => {
             console.log(err);
@@ -137,7 +133,6 @@ const Account = () => {
                <Modal active={activeModal}>
                   <ModalContent onClose={() => setActiveModal(false)}>
                      <Input ref={nameRef} value={dataUser.fullName} />
-                     <Input ref={emailRef} value={dataUser.email} type="email" />
                      <Input ref={phoneRef} value={dataUser.phoneNumber} />
                      <Button fullfill onClick={handleSubmit}>
                         Update

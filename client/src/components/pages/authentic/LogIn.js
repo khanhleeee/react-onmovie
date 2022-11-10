@@ -13,7 +13,6 @@ const cx = classNames.bind(styles);
 export default function LogIn() {
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
-   const [data, setData] = useState('');
    const [sendStatus, setSendStatus] = useState('');
 
    const emailRef = useRef();
@@ -27,7 +26,6 @@ export default function LogIn() {
             if (res.status === 401) {
                setSendStatus(res.data);
             } else if (res.status === 200) {
-               console.log(res.data);
                localStorage.setItem('user', JSON.stringify(res.data.data));
                window.location.href = '/';
             }

@@ -65,6 +65,24 @@ module.exports = {
         });
     });
   },
+  executeThreeParams: (procedure, [params1, params2, params3]) => {
+    return new Promise((resolve, reject) => {
+      pool
+        .then((pool) => {
+          return pool.request()
+            .input(params1.name, params1.type, params1.value)
+            .input(params2.name, params2.type, params2.value)
+            .input(params3.name, params3.type, params3.value)
+            .execute(procedure);
+        })
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
   executeSixParams: (procedure, [params1, params2, params3, params4, params5, params6]) => {
     return new Promise((resolve, reject) => {
       pool
