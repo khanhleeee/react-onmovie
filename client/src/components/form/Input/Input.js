@@ -10,13 +10,10 @@ const cx = classNames.bind(styles);
 function Input({ innerRef, type, placeholder, value, errorMessage }, ref) {
    const [inputValue, setInputValue] = useState(value || '');
 
-   //Hông biết dùng ref như thế nào
-   // Dùng như này nè :)))
-
    let Icon = PenIcon;
-   if (type == 'password') {
+   if (type === 'password') {
       Icon = LockIcon;
-   } else if (type == 'email') {
+   } else if (type === 'email') {
       Icon = EmailIcon;
    }
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import classNames from 'classnames/bind';
 import Button from '~/components/Button/Button';
 import CardForm from '~/components/form/CardForm/CardForm';
@@ -13,23 +13,21 @@ const cx = classNames.bind(styles);
 export default function LogIn() {
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
-   const [data, setData] = useState('');
    const [sendStatus, setSendStatus] = useState('');
-   
-   //NÈ CHỖ NÀY LÀM SAO LẤY ĐC DATA USER NHẬP VÀO LÀ ĐC Á
-   console.log(email, password);
 
+   const emailRef = useRef();
+   const passwordRef = useRef();
+   
    const handleLogin = async (e) => {
       e.preventDefault();
       serverNode
-         .checkLogin({ email, password })
+         .checkLogin({email: emailRef.current.value, password: passwordRef.current.value})
          .then((res) => {
             if (res.status === 401) {
                setSendStatus(res.data);
             } else if (res.status === 200) {
-               console.log(res.data);
-               localStorage.setItem('user', JSON.stringify(res.data));
-               // window.location.href = '/';
+               localStorage.setItem('user', JSON.stringify(res.data.data));
+               window.location.href = '/';
             }
          })
          .catch((err) => {
@@ -50,16 +48,16 @@ export default function LogIn() {
                <Input
                   type="email"
                   placeholder="email@mail.com"
-                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   errorMessage={sendStatus}
+                  ref={emailRef}
                />
                <Input
                   type="password"
                   placeholder="password123"
-                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   errorMessage={sendStatus}
+                  ref={passwordRef}
                />
                <Button
                   className={cx('card-button')}

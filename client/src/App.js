@@ -1,7 +1,5 @@
-import { useState } from 'react';
-import { Fragment } from 'react';
 import 'swiper/swiper.min.css';
-
+import { useContext } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
 import { publicRoutes } from './routes';
@@ -12,24 +10,23 @@ import Login from './components/pages/authentic/LogIn';
 // import CustomRoutes from './config/Routes';
 import DefaultLayout from './components/Layouts/DefaultLayout/DefaultLayout';
 import SignUp from './components/pages/authentic/SignUp';
+import { AuthContext } from './authContext/AuthContext';
 
-function App() {
-   const user = true;
-
+export default function App() {
+   const { user } = useContext(AuthContext);
    return (
       <BrowserRouter>
          <div className="App">
             <Routes>
-               <Route
-                  path="/signup"
-                  exact
-                  element={!user ? <SignUp /> : <Navigate to="/" />}
+               <Route path="/" exact element={user ?
+                  <DefaultLayout>
+                     <Home />
+                  </DefaultLayout>
+                  : 
+                  <Navigate to="/login" />} 
                />
-               <Route
-                  path="/login"
-                  exact
-                  element={!user ? <Login /> : <Navigate to="/" />}
-               />
+               <Route path="/signup" exact element={!user ? <SignUp /> : <Navigate to="/" />} />
+               <Route path="/login" exact element={!user ? <Login /> : <Navigate to="/" />} />
                {user &&
                   publicRoutes.map((route, index) => {
                      const Page = route.component;
@@ -65,5 +62,3 @@ function App() {
       </BrowserRouter>
    );
 }
-
-export default App;

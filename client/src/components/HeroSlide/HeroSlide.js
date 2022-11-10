@@ -40,7 +40,6 @@ function HeroSlide() {
             grabCursor={true}
             spaceBetween={0}
             slidesPerView={1}
-            onSlideNextTransitionStart
             autoplay={{ delay: 4000 }}
          >
             {movieItems.map((item, index) => (
