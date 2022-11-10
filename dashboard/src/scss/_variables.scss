@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
+
+$white: rgb(240, 240, 240);
+$black: rgb(20, 20, 20);
+
+$primary-color: #10b99e;
+$secondary-color: #f40000;
+$text-color: $white;
+$content-color: #dfdfdf;
+$primary-color-rgba: rgba(16, 185, 158, 0.5);
+
+$body-bg: rgb(17, 19, 25);
+$sub-bg: rgb(25, 27, 36);
+$card-bg: rgb(35, 37, 43);
+$box-shadow: rgba(48, 58, 78, 0.2) 0px 7px 29px 0px;
+$border-radius: 6px;
+
+$header-height: 8rem;
+$header-shrink-height: 5rem;
+
+$mobile-width: 600px;
+$tablet-width: 1024px;
+
+$font-family: "Cairo", sans-serif;
+$nd-font-family: "Montserrat", sans-serif;
