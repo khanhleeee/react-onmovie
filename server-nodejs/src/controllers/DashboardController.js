@@ -4,12 +4,12 @@ const {
     queryStatement,
     executeOneParam,
     executeTwoParams,
+    executeElevenParams,
 } = require("../database/handleQuery");
 const {
     per_page,
     firstPage,
     numberChar,
-    numberGenre,
 } = require("../constants/FilmConstants");
 
 module.exports = {
@@ -102,4 +102,66 @@ module.exports = {
             res.status(500).json(error);
         }
     },
+    editDetailMovie: async (req, res) => {
+        const movieID = req.params.movieID;
+        console.log(movieID);
+        const {
+            movieName,
+            preferenceName,
+            movieDesc,
+            movieRelease,
+            movieLimit,
+            movieRating,
+            movieBackdrop,
+            moviePoster,
+            C_ID,
+            S_ID,
+        } = req.body;
+        console.log(req.body);
+        try {
+            const result = await executeElevenParams("sp_editFilm", [
+                { name: "F_ID", type: mssql.Char(5), value: movieID },
+                {
+                    name: "F_OFFICIAL_NAME",
+                    type: mssql.NVarChar(80),
+                    value: movieName,
+                },
+                {
+                    name: "F_PREFERENCED_NAME",
+                    type: mssql.NVarChar(80),
+                    value: preferenceName,
+                },
+                { name: "F_DESC", type: mssql.NVarChar(1000), value: movieDesc },
+                {
+                    name: "F_RELEASEYEAR",
+                    type: mssql.Date,
+                    value: movieRelease,
+                },
+                {
+                    name: "F_LIMITEDAGE",
+                    type: mssql.TinyInt,
+                    value: movieLimit,
+                },
+                { name: "F_AVGRATING", type: mssql.Decimal, value: movieRating },
+                {
+                    name: "F_BACKDROP",
+                    type: mssql.VarChar(100),
+                    value: movieBackdrop,
+                },
+                {
+                    name: "F_POSTER",
+                    type: mssql.VarChar(100),
+                    value: moviePoster,
+                },
+                { name: "S_ID", type: mssql.Char(15), value: S_ID },
+                { name: "C_ID", type: mssql.VarChar(3), value: C_ID },
+            ]);
+            console.log(result);
+            res.status(200).json({
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
 }
