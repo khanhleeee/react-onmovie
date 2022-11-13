@@ -54,6 +54,12 @@
    padding-left: 4rem;
    position: relative;
 
+   & .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+   }
+
    .title {
       font-size: 4.5rem;
       font-weight: 700;
@@ -64,6 +70,8 @@
 
    .overview {
       padding: 2rem 0;
+      text-align: justify;
+      text-justify: inter-word;
    }
 
    .genres {
@@ -109,4 +117,48 @@
 .trailer {
    margin-top: 3rem;
    width: 1260px;
+}
+.feature-btns {
+   @include flex(center, unset);
+   margin-top: 5rem;
+}
+.rating {
+   @include flex(center, unset);
+
+   & .icon {
+      padding: 0.6rem;
+      width: 4rem;
+      height: 4rem;
+      margin-top: 0;
+      margin-right: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, color 0.2s ease;
+
+      &:hover,
+      &.active {
+         transform: scale(1.1);
+         color: #dbc108;
+      }
+      &.dislike:hover,
+      &.dislike.active {
+         color: #a81811;
+      }
+   }
+}
+.favorite {
+   & .icon {
+      @include flex(center, unset);
+      padding: 0.8rem;
+      width: 4.2rem;
+      height: 4.2rem;
+      color: rgb(218, 218, 218);
+      cursor: pointer;
+      transition: transform 0.2s ease, color 0.2s ease;
+
+      &:hover,
+      &.active {
+         transform: scale(1.2);
+         color: #db082f;
+      }
+   }
 }
