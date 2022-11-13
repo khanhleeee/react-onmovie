@@ -1,14 +1,15 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Button from '~/components/Button/Button';
 
 import Input from '~/components/form/Input/Input';
-import { UserIcon } from '~/components/Icons/Icons';
+import { DeleteIcon, UserIcon } from '~/components/Icons/Icons';
 import Modal, { ModalContent } from '~/components/Modal/Modal';
 
 import styles from './User.module.scss';
 import serverNode from '~/api/serverNode';
+import MovieCard from '~/components/MovieCard/MovieCard';
 
 const cx = classNames.bind(styles);
 
@@ -18,11 +19,11 @@ export default function User() {
 
    const location = useLocation();
    const dataUser = location.state.user;
-   
+
    const handleLogout = () => {
       localStorage.removeItem('user');
-      window.location.href = "/login";
-   }
+      window.location.href = '/login';
+   };
 
    return (
       <div className={cx('container')}>
@@ -61,16 +62,24 @@ export default function User() {
                onClose={() => setActiveModalLogout(false)}
             >
                <h4 className={cx('title')}>Do you want to log out?</h4>
-               <Button fullfill onClick={handleLogout}>Logout</Button>
+               <Button fullfill onClick={handleLogout}>
+                  Logout
+               </Button>
             </ModalContent>
          </Modal>
          <div className={cx('content')}>
-            {activePage === 'Account' && (
+            {(activePage === 'Account' && (
                <>
                   <h2 className={cx('title')}>My Account</h2>
                   <Account />
                </>
-            )}
+            )) ||
+               (activePage === 'Watchlist' && (
+                  <>
+                     <h2 className={cx('title')}>My Watchlist</h2>
+                     <Watchlist />
+                  </>
+               ))}
          </div>
       </div>
    );
@@ -91,17 +100,18 @@ const Account = () => {
          phoneNumber: phoneRef.current.value,
       };
 
-      serverNode.upgradeUser(dataUser.id, {
-         fullName: dataUpdate.fullName,
-         phoneNumber: dataUpdate.phoneNumber
-      })
-         .then(res => {
+      serverNode
+         .upgradeUser(dataUser.id, {
+            fullName: dataUpdate.fullName,
+            phoneNumber: dataUpdate.phoneNumber,
+         })
+         .then((res) => {
             localStorage.setItem('user', JSON.stringify(res.data.data));
             window.location.href = '/user';
          })
-         .catch(err => {
+         .catch((err) => {
             console.log(err);
-         })
+         });
    };
 
    return (
@@ -142,5 +152,72 @@ const Account = () => {
             )}
          </div>
       </>
+   );
+};
+const Watchlist = (props) => {
+   const [films, setFilms] = useState([]);
+   const [editActive, setEditActive] = useState(false);
+
+   // get watchlist
+   useEffect(() => {
+      const getList = async () => {
+         const watchlist = [
+            {
+               F_ID: '00003',
+               F_POSTER:
+                  'https://www.themoviedb.org/t/p/original/hcmIpkrvtHCyXRAqYPuusWjTADu.jpg',
+               F_RELEASEYEAR: '12/12/2022',
+               F_OFFICIAL_NAME: 'The dead',
+            },
+            {
+               F_ID: '00004',
+               F_POSTER:
+                  'https://www.themoviedb.org/t/p/original/hcmIpkrvtHCyXRAqYPuusWjTADu.jpg',
+               F_RELEASEYEAR: '12/12/2022',
+               F_OFFICIAL_NAME: 'The whole truth',
+            },
+         ];
+         setFilms(watchlist);
+      };
+      getList();
+   }, []);
+
+   const handleRemoveFilm = (id) => {
+      // Xoá film ra khỏi watchlist
+      for (let i in films) {
+         if (films[i].F_ID === id) {
+            films.splice(films.indexOf(id), 1);
+         }
+      }
+      setFilms(films);
+      setEditActive(false);
+   };
+   console.log(films);
+   return (
+      <div className={cx('watchlist-wrapper')}>
+         <div className={cx('feature')}>
+            <button
+               className={cx('edit-btn')}
+               onClick={() => setEditActive(!editActive)}
+            >
+               Edit
+            </button>
+         </div>
+         <div className={cx('watchlist')}>
+            {films.map((item, index) => (
+               <div key={index} className={cx('watchlist-item')}>
+                  <MovieCard item={item} />
+                  {editActive && (
+                     <span
+                        className={cx('edit-badge')}
+                        onClick={() => handleRemoveFilm(item.F_ID)}
+                     >
+                        <DeleteIcon className={cx('icon')} />
+                     </span>
+                  )}
+               </div>
+            ))}
+         </div>
+      </div>
    );
 };

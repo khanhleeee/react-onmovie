@@ -120,10 +120,11 @@ export const UserIcon = ({ classNames }) => {
    );
 };
 
-export const DeleteIcon = ({ classNames }) => {
+export const DeleteIcon = ({ className, onClick }) => {
    return (
       <svg
-         className={classNames}
+         className={className}
+         onClick={onClick ? onClick : () => {}}
          xmlns="http://www.w3.org/2000/svg"
          width="24"
          height="24"
