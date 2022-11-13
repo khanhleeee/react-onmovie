@@ -16,8 +16,12 @@ function Favorite({ id }) {
       const getUserWatchlist = () => {
          serverNode.getWatchList(userData.id)
             .then((res) => {
-               const user_watchlist = res.data.F_ID
-               if (user_watchlist.includes(id)) setActive(true);
+               const user_watchlist = res.data.data
+               user_watchlist.forEach((watchlist) => {
+                  if (watchlist.F_ID === id) {
+                     setActive(true);
+                  }
+               })
                setWatchlist(user_watchlist);
             })
             .catch((err) => {

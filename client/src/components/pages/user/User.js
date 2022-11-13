@@ -154,45 +154,43 @@ const Account = () => {
       </>
    );
 };
+
 const Watchlist = (props) => {
    const [films, setFilms] = useState([]);
    const [editActive, setEditActive] = useState(false);
 
-   // get watchlist
    useEffect(() => {
       const getList = async () => {
-         const watchlist = [
-            {
-               F_ID: '00003',
-               F_POSTER:
-                  'https://www.themoviedb.org/t/p/original/hcmIpkrvtHCyXRAqYPuusWjTADu.jpg',
-               F_RELEASEYEAR: '12/12/2022',
-               F_OFFICIAL_NAME: 'The dead',
-            },
-            {
-               F_ID: '00004',
-               F_POSTER:
-                  'https://www.themoviedb.org/t/p/original/hcmIpkrvtHCyXRAqYPuusWjTADu.jpg',
-               F_RELEASEYEAR: '12/12/2022',
-               F_OFFICIAL_NAME: 'The whole truth',
-            },
-         ];
-         setFilms(watchlist);
+         const userData = JSON.parse(localStorage.getItem('user'));
+         await serverNode.getWatchList(userData.id)
+            .then((res) => {
+               setFilms(res.data.data);
+            })
+            .catch((err) => {
+               console.log(err);
+            });
       };
       getList();
    }, []);
 
    const handleRemoveFilm = (id) => {
-      // Xoá film ra khỏi watchlist
-      for (let i in films) {
-         if (films[i].F_ID === id) {
+      // for (let i in films) {
+      //    if (films[i].F_ID === id) {
+      //       films.splice(films.indexOf(id), 1);
+      //    }
+      // }
+      const userData = JSON.parse(localStorage.getItem('user'));
+      serverNode.removeWatchList({ U_ID: userData.id, F_ID: id })
+         .then((res) => {
             films.splice(films.indexOf(id), 1);
-         }
-      }
-      setFilms(films);
-      setEditActive(false);
+            setFilms(films);
+            setEditActive(false);
+         })
+         .catch((err) => {
+            console.log(err);
+         });
    };
-   console.log(films);
+
    return (
       <div className={cx('watchlist-wrapper')}>
          <div className={cx('feature')}>
@@ -204,19 +202,25 @@ const Watchlist = (props) => {
             </button>
          </div>
          <div className={cx('watchlist')}>
-            {films.map((item, index) => (
-               <div key={index} className={cx('watchlist-item')}>
-                  <MovieCard item={item} />
-                  {editActive && (
-                     <span
-                        className={cx('edit-badge')}
-                        onClick={() => handleRemoveFilm(item.F_ID)}
-                     >
-                        <DeleteIcon className={cx('icon')} />
-                     </span>
-                  )}
-               </div>
-            ))}
+            {
+               films.length == 0 ? (
+                  <div className={cx('empty')}>No film in watchlist</div>
+               ) : (
+                  films.map((item, index) => (
+                     <div key={index} className={cx('watchlist-item')}>
+                        <MovieCard item={item} />
+                        {editActive && (
+                           <span
+                              className={cx('edit-badge')}
+                              onClick={() => handleRemoveFilm(item.F_ID)}
+                           >
+                              <DeleteIcon className={cx('icon')} />
+                           </span>
+                        )}
+                     </div>
+                  ))
+               )
+            }
          </div>
       </div>
    );
