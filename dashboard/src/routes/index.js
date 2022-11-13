@@ -5,7 +5,7 @@ import UserList from "../pages/userList/UserList";
 // Public routes
 const publicRoutes = [
   { path: "/", component: MovieList },
-  { path: "/users", component: UserList },
+  // { path: "/users", component: UserList },
   { path: "/movie", component: Movie },
 ];
 

@@ -3,11 +3,7 @@ import { Link } from "react-router-dom";
 import classname from "classnames/bind";
 
 import styles from "./sidebar.module.scss";
-import {
-  LineStyle,
-  PermIdentity,
-  PlayCircleFilledOutlined,
-} from "@material-ui/icons";
+import { PermIdentity, PlayCircleFilledOutlined } from "@material-ui/icons";
 
 const cx = classname.bind(styles);
 
@@ -25,15 +21,6 @@ export default function Sidebar() {
             <Link to="/">
               <PlayCircleFilledOutlined className={cx("icon")} />
               <span>Movie List</span>
-            </Link>
-          </li>
-          <li
-            className={active === "users" ? cx("active") : ""}
-            onClick={() => setActive("users")}
-          >
-            <Link to="/users">
-              <PermIdentity className={cx("icon")} />
-              <span>User List</span>
             </Link>
           </li>
         </ul>

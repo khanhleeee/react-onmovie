@@ -1,11 +1,16 @@
 {
-  "name": "netflix-dashboard",
+  "name": "dashboard",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@material-ui/core": "^4.11.4",
     "@material-ui/data-grid": "^4.0.0-alpha.29",
     "@material-ui/icons": "^4.11.2",
+    "@mui/material": "^5.10.13",
+    "@mui/styled-engine-sc": "^5.10.6",
+    "@mui/x-data-grid": "^5.17.11",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -17,8 +22,10 @@
     "react-scripts": "4.0.3",
     "recharts": "^2.0.9",
     "sass": "^1.56.0",
+    "styled-components": "^5.3.6",
     "web-vitals": "^1.0.1"
   },
+  "devDependencies": {},
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

@@ -9,6 +9,8 @@ import CastList from './CastList';
 import serverNode from '~/api/serverNode';
 import Trailers from './Trailers';
 import MovieList from '~/components/MovieList/MovieList';
+import Rating from './Rating';
+import Favorite from './Favorite';
 
 const cx = classNames.bind(styles);
 
@@ -37,9 +39,6 @@ function Detail() {
                <div
                   className={cx('banner')}
                   style={{
-                     // backgroundImage: `url(${apiConfig.originalImage(
-                     //    item.backdrop_path,
-                     // )})`,
                      backgroundImage: `url(${item.F_BACKCDROP})`,
                   }}
                ></div>
@@ -48,26 +47,32 @@ function Detail() {
                      <div
                         className={cx('poster-img')}
                         style={{
-                           // backgroundImage: `url(${apiConfig.originalImage(
-                           //    item.poster_path,
-                           // )})`,
                            backgroundImage: `url(${item.F_POSTER})`,
                         }}
                      ></div>
                   </div>
                   <div className={cx('info')}>
-                     <div className={cx('title')}>
-                        {item.title || item.name || item.F_OFFICIAL_NAME}
+                     <div className={cx('header')}>
+                        <div>
+                           <div className={cx('title')}>
+                              {item.title || item.name || item.F_OFFICIAL_NAME}
+                           </div>
+                           <div className={cx('genres')}>
+                              {item.G_NAME &&
+                                 item.G_NAME.slice(0, 5).map((gene, i) => (
+                                    <span key={i} className={cx('item')}>
+                                       {gene}
+                                       {/* {gene.name} */}
+                                    </span>
+                                 ))}
+                           </div>
+                        </div>
+                        <div className={cx('feature-btns')}>
+                           <Rating id={id} />
+                           <Favorite id={id} />
+                        </div>
                      </div>
-                     <div className={cx('genres')}>
-                        {item.G_NAME &&
-                           item.G_NAME.slice(0, 5).map((gene, i) => (
-                              <span key={i} className={cx('item')}>
-                                 {gene}
-                                 {/* {gene.name} */}
-                              </span>
-                           ))}
-                     </div>
+
                      <p className={cx('overview')}>{item.F_DESC}</p>
                      <div className={cx('cast')}>
                         <div className="section-header">

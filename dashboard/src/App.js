@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import "./App.css";
 import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
 import { AuthContext } from "./context/authContext/AuthContext";
@@ -18,7 +17,6 @@ function App() {
         {user &&
           publicRoutes.map((route, i) => {
             const Component = route.component;
-
             return (
               <Route
                 key={i}

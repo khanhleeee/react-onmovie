@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import classname from "classnames/bind";
 
 import styles from "./topbar.module.scss";
-import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import { AuthContext } from "../../context/authContext/AuthContext";
 
 const cx = classname.bind(styles);

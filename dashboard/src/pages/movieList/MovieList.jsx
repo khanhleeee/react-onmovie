@@ -4,89 +4,62 @@ import classname from "classnames/bind";
 import { DeleteOutline } from "@material-ui/icons";
 
 import styles from "./movieList.module.scss";
-import { DataGrid } from "@material-ui/data-grid";
 import { MovieContext } from "../../context/movieContext/MovieContext";
 import { getMovies, deleteMovie } from "../../context/movieContext/apiCall";
+import MovieCard from "../../components/MovieCard/MovieCard";
+import SearchBar from "../../components/SearchBar/SearchBar";
 
 const cx = classname.bind(styles);
 
-export default function ProductList() {
+export default function MovieList() {
   const { movies, dispatch } = useContext(MovieContext);
 
-  useEffect(() => {
-    getMovies(dispatch);
-  }, [dispatch]);
-
-  const handleDelete = (id) => {
-    deleteMovie(id, dispatch);
-  };
-
-  const userData = [
+  //Films from database
+  const films = [
     {
-      fullname: "Jan",
-      user: 4000,
+      id: 1,
+      F_RELEASEYEAR: "12/23/2022",
+      F_OFFICIAL_NAME: "Thợ Săn Quỷ",
+      F_POSTER:
+        "https://www.themoviedb.org/t/p/original/5DUMPBSnHOZsbBv81GFXZXvDpo6.jpg",
     },
-  ];
-
-  const columns = [
-    { field: "user", headerName: "ID", width: 100 },
     {
-      field: "fullname",
-      headerName: "Official Name",
-      headerClassName: "super-app-theme--header",
-      width: 220,
-      renderCell: (params) => {
-        return (
-          <div className={cx("productListItem")}>
-            <img
-              className="productListImg"
-              src={params.row.F_POSTER}
-              alt={params.row.F_OFFICIAL_NAME}
-            />
-            {params.row.F_OFFICIAL_NAME}
-          </div>
-        );
-      },
+      id: 2,
+      F_RELEASEYEAR: "10/1/2008",
+      F_OFFICIAL_NAME: "Avatar",
+      F_POSTER:
+        "https://www.themoviedb.org/t/p/original/5DUMPBSnHOZsbBv81GFXZXvDpo6.jpg",
     },
-    { field: "F_DESC", headerName: "Description", width: 250 },
-    { field: "F_LIMITEDAGE", headerName: "Limited Age", width: 150 },
-    { field: "F_AVGRATING", headerName: "Ratting", width: 130 },
-    { field: "F_RELEASEYEAR", headerName: "Release Year", width: 200 },
     {
-      field: "action",
-      headerName: "Action",
-      width: 120,
-      renderCell: (params) => {
-        return (
-          <>
-            <Link
-              to={{ pathname: "/movie/" + params.row.F_ID, movie: params.row }}
-            >
-              <button className={cx("productListEdit")}>Edit</button>
-            </Link>
-            <DeleteOutline
-              className={cx("productListDelete")}
-              onClick={() => handleDelete(params.row.F_ID)}
-            />
-          </>
-        );
-      },
+      id: 3,
+      F_RELEASEYEAR: "8/2/2022",
+      F_OFFICIAL_NAME: "Hope",
+      F_POSTER:
+        "https://www.themoviedb.org/t/p/original/5DUMPBSnHOZsbBv81GFXZXvDpo6.jpg",
+    },
+    {
+      id: 4,
+      F_RELEASEYEAR: "8/2/2022",
+      F_OFFICIAL_NAME: "Hope",
+      F_POSTER:
+        "https://www.themoviedb.org/t/p/original/5DUMPBSnHOZsbBv81GFXZXvDpo6.jpg",
     },
   ];
 
   return (
-    <div className={cx("productList")}>
-      <DataGrid
-        rows={movies.map((movie) => ({
-          id: movie.F_ID,
-          ...movie,
-        }))}
-        getRowId={(row) => row.F_ID}
-        disableSelectionOnClick
-        columns={columns}
-        pageSize={11}
-        checkboxSelection
-      />
+    <div className={cx("container")}>
+      <div className={cx("feature")}>
+        <SearchBar />
+        <button>Create new</button>
+      </div>
+
+      <div className={cx("list")}>
+        <div className={cx("grid")}>
+          {films.map((item, index) => (
+            <MovieCard key={index} item={item} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
