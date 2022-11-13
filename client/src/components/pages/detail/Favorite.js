@@ -1,37 +1,54 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
+import serverNode from '~/api/serverNode';
 
 import { HeartIcon } from '~/components/Icons/Icons';
 import styles from './Detail.module.scss';
 
 const cx = classNames.bind(styles);
 
-//Fake data
-const user_watchlist = ['00003', '00001', '020123'];
-
 function Favorite({ id }) {
    const [active, setActive] = useState(false);
    const [watchlist, setWatchlist] = useState([]);
 
    useEffect(() => {
-      const getWatchlist = () => {
-         if (user_watchlist.includes(id)) setActive(true);
-         setWatchlist(user_watchlist);
+      const userData = JSON.parse(localStorage.getItem('user'));
+      const getUserWatchlist = () => {
+         serverNode.getWatchList(userData.id)
+            .then((res) => {
+               const user_watchlist = res.data.F_ID
+               if (user_watchlist.includes(id)) setActive(true);
+               setWatchlist(user_watchlist);
+            })
+            .catch((err) => {
+               console.log(err);
+            });
       };
-      getWatchlist();
+      getUserWatchlist();
    }, [active]);
 
-   // console.log('Active: ', active, 'List: ', watchlist);
    const handleAddToFavorite = () => {
       if (active) {
-         watchlist.splice(watchlist.indexOf(id), 1);
-         setWatchlist(watchlist);
-         setActive(false);
-         console.log('xoa', watchlist);
+         const userData = JSON.parse(localStorage.getItem('user'));
+         serverNode.removeWatchList({ U_ID: userData.id, F_ID: id })
+            .then((res) => {
+               watchlist.splice(watchlist.indexOf(id), 1);
+               setWatchlist(watchlist);
+               setActive(false);
+            })
+            .catch((err) => {
+               console.log(err);
+            });
       } else {
-         setWatchlist(watchlist.push(id));
-         setActive(true);
-         console.log('them', watchlist);
+         const userData = JSON.parse(localStorage.getItem('user'));
+         serverNode.addWatchList({ F_ID: id, U_ID: userData.id })
+            .then((res) => {
+               setWatchlist(res.data.F_ID);
+               setActive(true);
+            })
+            .catch((err) => {
+               console.log(err);
+            });
       }
    };
 

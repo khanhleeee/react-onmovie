@@ -58,6 +58,30 @@ const serverNode = {
          return error.response;
       }
    },
+   getWatchList: async (id) => {
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'user/getWatchList/' + id);
+         return data
+      } catch (error) {
+         return error.response;
+      }
+   },
+   addWatchList: async (data) => {
+      try {
+         const response = await axios.post(apiNode.baseUrl + 'user/addWatchList', data);
+         return response;
+      } catch (error) {
+         return error.response;
+      }
+   },
+   removeWatchList: async (data) => {
+      try {
+         const response = await axios.post(apiNode.baseUrl + 'user/removeWatchList', data);
+         return response;
+      } catch (error) {
+         return error.response;
+      }
+   },
 };
 
 export default serverNode;
