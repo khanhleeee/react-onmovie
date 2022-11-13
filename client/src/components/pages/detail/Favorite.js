@@ -27,11 +27,9 @@ function Favorite({ id }) {
          watchlist.splice(watchlist.indexOf(id), 1);
          setWatchlist(watchlist);
          setActive(false);
-         console.log('xoa', watchlist);
       } else {
          setWatchlist(watchlist.push(id));
          setActive(true);
-         console.log('them', watchlist);
       }
    };
 
