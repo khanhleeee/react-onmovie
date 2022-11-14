@@ -18,15 +18,29 @@ export default function App() {
       <BrowserRouter>
          <div className="App">
             <Routes>
-               <Route path="/" exact element={user ?
-                  <DefaultLayout>
-                     <Home />
-                  </DefaultLayout>
-                  : 
-                  <Navigate to="/login" />} 
+               <Route
+                  path="/"
+                  exact
+                  element={
+                     user ? (
+                        <DefaultLayout>
+                           <Home />
+                        </DefaultLayout>
+                     ) : (
+                        <Navigate to="/login" />
+                     )
+                  }
                />
-               <Route path="/signup" exact element={!user ? <SignUp /> : <Navigate to="/" />} />
-               <Route path="/login" exact element={!user ? <Login /> : <Navigate to="/" />} />
+               <Route
+                  path="/signup"
+                  exact
+                  element={!user ? <SignUp /> : <Navigate to="/" />}
+               />
+               <Route
+                  path="/login"
+                  exact
+                  element={!user ? <Login /> : <Navigate to="/" />}
+               />
                {user &&
                   publicRoutes.map((route, index) => {
                      const Page = route.component;

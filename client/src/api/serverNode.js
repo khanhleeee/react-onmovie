@@ -4,40 +4,43 @@ import { apiNode } from './apiConfig';
 const serverNode = {
    getFilmList: async (page) => {
       const data = await axios.get(apiNode.baseUrl + 'film?page=' + page);
-      return data
+      return data;
    },
    searchFilmList: async (keyword) => {
-      const data = await axios.get(apiNode.baseUrl + 'film/search?q=' + keyword);
-      return data
+      const data = await axios.get(
+         apiNode.baseUrl + 'film/search?q=' + keyword,
+      );
+      return data;
    },
    getFilmDetail: async (id) => {
       const data = await axios.get(apiNode.baseUrl + 'film/' + id);
-      return data
+      return data;
    },
    getSimilarFilm: async (id) => {
       const data = await axios.get(apiNode.baseUrl + 'film/' + id + '/similar');
-      return data
+      return data;
    },
    getActorFilm: async (id) => {
       const data = await axios.get(apiNode.baseUrl + 'film/actor/' + id);
-      return data
+      return data;
    },
    getGenres: async () => {
       const data = await axios.get(apiNode.baseUrl + 'film/genres');
-      return data
+      return data;
    },
    getContries: async () => {
       const data = await axios.get(apiNode.baseUrl + 'film/countries');
-      return data
+      return data;
    },
    getFilmsByGenre: async (genre) => {
       const data = await axios.get(apiNode.baseUrl + 'film/genres/' + genre);
-      return data
+      return data;
    },
    checkLogin: async (user) => {
+      console.log(user);
       try {
          const data = await axios.post(apiNode.baseUrl + 'auth/login', user);
-         return data
+         return data;
       } catch (error) {
          return error.response;
       }
@@ -45,14 +48,17 @@ const serverNode = {
    checkRegister: async (user) => {
       try {
          const data = await axios.post(apiNode.baseUrl + 'auth/register', user);
-         return data
+         return data;
       } catch (error) {
          return error.response;
       }
    },
-   upgradeUser: async(id, data) => {
+   upgradeUser: async (id, data) => {
       try {
-         const response = await axios.put(apiNode.baseUrl + 'auth/update/' + id, data);
+         const response = await axios.put(
+            apiNode.baseUrl + 'auth/update/' + id,
+            data,
+         );
          return response;
       } catch (error) {
          return error.response;
@@ -60,15 +66,20 @@ const serverNode = {
    },
    getWatchList: async (id) => {
       try {
-         const data = await axios.get(apiNode.baseUrl + 'user/getWatchList/' + id);
-         return data
+         const data = await axios.get(
+            apiNode.baseUrl + 'user/getWatchList/' + id,
+         );
+         return data;
       } catch (error) {
          return error.response;
       }
    },
    addWatchList: async (data) => {
       try {
-         const response = await axios.post(apiNode.baseUrl + 'user/addWatchList', data);
+         const response = await axios.post(
+            apiNode.baseUrl + 'user/addWatchList',
+            data,
+         );
          return response;
       } catch (error) {
          return error.response;
@@ -76,7 +87,10 @@ const serverNode = {
    },
    removeWatchList: async (data) => {
       try {
-         const response = await axios.post(apiNode.baseUrl + 'user/removeWatchList', data);
+         const response = await axios.post(
+            apiNode.baseUrl + 'user/removeWatchList',
+            data,
+         );
          return response;
       } catch (error) {
          return error.response;
