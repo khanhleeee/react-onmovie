@@ -230,4 +230,38 @@ module.exports = {
       res.status(500).json(error);
     }
   },
+  getFilmsByCountry: async (req, res) => {
+    const countryID = req.params.countryID;
+    try {
+      const result = await executeMultipleParams("sp_getFilmsByNation", [{
+        name: "C_ID",
+        type: mssql.Char(3),
+        value: countryID,
+      }]);
+      if (result.recordset.length >= 5) {
+        var obj = {
+          page: firstPage,
+          per_page: per_page,
+          total: result.recordset.length,
+          // total_pages: result.recordset.length / per_page,
+          data: [],
+        };
+        for (let i = 0; i < result.recordset.length; i++) {
+          obj.data.push(result.recordset[i]);
+        }
+        res.status(200).json(obj);
+      } else {
+        var obj = {
+          page: null,
+          data: [],
+        };
+        for (let i = 0; i < result.recordset.length; i++) {
+          obj.data.push(result.recordset[i]);
+        }
+        res.status(200).json(obj);
+      }
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
 };
