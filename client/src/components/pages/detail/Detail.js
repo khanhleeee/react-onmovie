@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
-import onmoviedbApi from '~/api/onmoviedb';
-import apiConfig from '~/api/apiConfig';
 import styles from './Detail.module.scss';
 import CastList from './CastList';
 import serverNode from '~/api/serverNode';
@@ -22,8 +20,6 @@ function Detail() {
 
    useEffect(() => {
       const getDetail = async () => {
-         //const response = await onmoviedbApi.detail('movie', id);
-         //setItem(response);
          window.scrollTo(0, 0);
          const response = await serverNode.getFilmDetail(id);
          setItem(response.data);
@@ -62,7 +58,6 @@ function Detail() {
                                  item.G_NAME.slice(0, 5).map((gene, i) => (
                                     <span key={i} className={cx('item')}>
                                        {gene}
-                                       {/* {gene.name} */}
                                     </span>
                                  ))}
                            </div>

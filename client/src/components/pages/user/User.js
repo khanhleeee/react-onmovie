@@ -203,7 +203,7 @@ const Watchlist = (props) => {
          </div>
          <div className={cx('watchlist')}>
             {
-               films.length == 0 ? (
+               films.length === 0 ? (
                   <div className={cx('empty')}>No film in watchlist</div>
                ) : (
                   films.map((item, index) => (

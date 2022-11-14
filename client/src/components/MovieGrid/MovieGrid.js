@@ -3,7 +3,6 @@ import classNames from 'classnames/bind';
 
 import styles from './MovieGrid.module.scss';
 import MovieCard from '../MovieCard/MovieCard';
-import onmoviedbApi, { movieType } from '~/api/onmoviedb';
 import serverNode from '~/api/serverNode';
 
 import Button from '../Button/Button';
@@ -13,9 +12,7 @@ const cx = classNames.bind(styles);
 
 function MovieGrid(props) {
    const [items, setItems] = useState([]);
-
    const [page, setPage] = useState(1);
-
    const [totalPage, setTotalPage] = useState(0);
 
    const keyword = props.keyword;
@@ -51,21 +48,6 @@ function MovieGrid(props) {
       response = await serverNode.getFilmList(page + 1);
       setItems([...items, ...response.data.data]);
       setPage(page + 1);
-      // if (keyword === undefined) {
-      //    const params = {
-      //       page: page + 1,
-      //    };
-      //    response = await serverNode.getFilmList(params);
-      //    // response = await onmoviedbApi.getMovieList(movieType.upcoming, {
-      //    //    params,
-      //    // });
-      // } else {
-      //    const params = {
-      //       page: page + 1,
-      //       query: keyword.category,
-      //    };
-      //    response = await onmoviedbApi.search(props.category, { params });
-      // }
    };
 
    return (
@@ -83,12 +65,12 @@ function MovieGrid(props) {
          {page == null
             ? ''
             : page < totalPage && (
-                 <div className={cx('loadmore')}>
-                    <Button outline onClick={loadMore}>
-                       Load More
-                    </Button>
-                 </div>
-              )}
+               <div className={cx('loadmore')}>
+                  <Button outline onClick={loadMore}>
+                     Load More
+                  </Button>
+               </div>
+            )}
       </>
    );
 }
