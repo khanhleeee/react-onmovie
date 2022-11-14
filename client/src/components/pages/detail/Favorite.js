@@ -13,10 +13,13 @@ function Favorite({ id }) {
 
    useEffect(() => {
       const userData = JSON.parse(localStorage.getItem('user'));
+
+      console.log(userData.data);
       const getUserWatchlist = () => {
-         serverNode.getWatchList(userData.id)
+         serverNode
+            .getWatchList(userData.id)
             .then((res) => {
-               const user_watchlist = res.data.F_ID
+               const user_watchlist = res.data.F_ID;
                if (user_watchlist.includes(id)) setActive(true);
                setWatchlist(user_watchlist);
             })
@@ -30,7 +33,8 @@ function Favorite({ id }) {
    const handleAddToFavorite = () => {
       if (active) {
          const userData = JSON.parse(localStorage.getItem('user'));
-         serverNode.removeWatchList({ U_ID: userData.id, F_ID: id })
+         serverNode
+            .removeWatchList({ U_ID: userData.id, F_ID: id })
             .then((res) => {
                watchlist.splice(watchlist.indexOf(id), 1);
                setWatchlist(watchlist);
@@ -41,7 +45,8 @@ function Favorite({ id }) {
             });
       } else {
          const userData = JSON.parse(localStorage.getItem('user'));
-         serverNode.addWatchList({ F_ID: id, U_ID: userData.id })
+         serverNode
+            .addWatchList({ F_ID: id, U_ID: userData.id })
             .then((res) => {
                setWatchlist(res.data.F_ID);
                setActive(true);
