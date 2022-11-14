@@ -7,5 +7,4 @@ router.get('/movies', dashboardController.movieList);
 router.get('/movie/:movieID', dashboardController.getDetailMovie);
 router.post('/movie/:movieID', dashboardController.editDetailMovie);
 
-
 module.exports = router;

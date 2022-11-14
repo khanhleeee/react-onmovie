@@ -1,9 +1,7 @@
 const mssql = require("mssql");
 const {
-  execute,
   queryStatement,
-  executeOneParam,
-  executeTwoParams,
+  executeMultipleParams,
 } = require("../database/handleQuery");
 const {
   per_page,
@@ -20,7 +18,7 @@ module.exports = {
         var obj = {
           data: [],
         };
-        const result = await execute("sp_getFilmsByDate");
+        const result = await executeMultipleParams("sp_getFilmsByDate", []);
         for (let i = 0; i < result.recordset.length; i++) {
           obj.data.push(result.recordset[i]);
         }
@@ -37,11 +35,7 @@ module.exports = {
             total_pages: total[0][0][""] / per_page,
             data: [],
           };
-          // const result = await pool.request()
-          //     .input("PAGENUMBER", mssql.Int, firstPage)
-          //     .input("PAGESIZE", mssql.Int, per_page)
-          //     .execute("sp_pagination");
-          const result = await executeTwoParams("sp_pagination", [
+          const result = await executeMultipleParams("sp_pagination", [
             { name: "PAGENUMBER", type: mssql.Int, value: firstPage },
             { name: "PAGESIZE", type: mssql.Int, value: per_page },
           ]);
@@ -63,11 +57,7 @@ module.exports = {
             total_pages: total[0][0][""] / per_page,
             data: [],
           };
-          // const result = await pool.request()
-          //     .input("PAGENUMBER", mssql.Int, page)
-          //     .input("PAGESIZE", mssql.Int, per_page)
-          //     .execute("sp_pagination");
-          const result = await executeTwoParams("sp_pagination", [
+          const result = await executeMultipleParams("sp_pagination", [
             { name: "PAGENUMBER", type: mssql.Int, value: page },
             { name: "PAGESIZE", type: mssql.Int, value: per_page },
           ]);
@@ -84,11 +74,11 @@ module.exports = {
   searchFilm: async (req, res) => {
     const q = req.query.q;
     try {
-      const result = await executeOneParam("sp_searchFilms", {
+      const result = await executeMultipleParams("sp_searchFilms", [{
         name: "KW_TITLE",
         type: mssql.NVarChar,
         value: q,
-      });
+      }]);
       if (result.recordset.length == 0) {
         const offset = (firstPage - 1) * per_page;
         const query =
@@ -125,16 +115,16 @@ module.exports = {
   getDetailFilm: async (req, res) => {
     const filmID = req.params.filmID;
     try {
-      const result = await executeOneParam("sp_getFilmDetail", {
+      const result = await executeMultipleParams("sp_getFilmDetail", [{
         name: "F_ID",
         type: mssql.Char(numberChar),
         value: filmID,
-      });
-      const findTrailer = await executeOneParam("sp_getFilmTrailers", {
+      }]);
+      const findTrailer = await executeMultipleParams("sp_getFilmTrailers", [{
         name: "ID_FILM",
         type: mssql.Char(numberChar),
         value: filmID,
-      });
+      }]);
       var obj = {
         F_ID: result.recordset[0].F_ID,
         F_OFFICIAL_NAME: result.recordset[0].F_OFFICIAL_NAME,
@@ -161,11 +151,11 @@ module.exports = {
   getSimilarFilm: async (req, res) => {
     const filmID = req.params.filmID;
     try {
-      const result = await executeOneParam("sp_getSimilarFilms", {
+      const result = await executeMultipleParams("sp_getSimilarFilms", [{
         name: "F_ID",
         type: mssql.Char(numberChar),
         value: filmID,
-      });
+      }]);
       var obj = {
         data: [],
       };
@@ -180,11 +170,11 @@ module.exports = {
   getActorFilm: async (req, res) => {
     const filmID = req.params.filmID;
     try {
-      const result = await executeOneParam("sp_getFilmCredit", {
+      const result = await executeMultipleParams("sp_getFilmCredit", [{
         name: "F_ID",
         type: mssql.Char(numberChar),
         value: filmID,
-      });
+      }]);
       res.status(200).json(result.recordset);
     } catch (error) {
       res.status(500).json(error);
@@ -192,7 +182,7 @@ module.exports = {
   },
   getGenres: async (req, res) => {
     try {
-      const result = await execute("sp_getGenres");
+      const result = await executeMultipleParams("sp_getGenres", []);
       res.status(200).json(result.recordset);
     } catch (error) {
       res.status(500).json(error);
@@ -200,7 +190,7 @@ module.exports = {
   },
   getContries: async (req, res) => {
     try {
-      const result = await execute("sp_getCountries");
+      const result = await executeMultipleParams("sp_getCountries", []);
       res.status(200).json(result.recordset);
     } catch (error) {
       res.status(500).json(error);
@@ -209,11 +199,11 @@ module.exports = {
   getFilmsByGenre: async (req, res) => {
     const genreID = req.params.genreID;
     try {
-      const result = await executeOneParam("sp_getFilmsByGenre", {
+      const result = await executeMultipleParams("sp_getFilmsByGenre", [{
         name: "G_ID",
         type: mssql.VarChar(numberGenre),
         value: genreID,
-      });
+      }]);
       if (result.recordset.length >= 5) {
         var obj = {
           page: firstPage,

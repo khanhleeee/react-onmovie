@@ -1,13 +1,13 @@
 const mssql = require('mssql');
-const { executeTwoParams, queryStatement, executeOneParam } = require('../database/handleQuery');
+const { executeMultipleParams } = require('../database/handleQuery');
 
 module.exports = {
   getWatchList: async (req, res) => {
     const userID = req.params.userID;
     try {
-      const result = await executeOneParam('sp_getWatchlist', {
+      const result = await executeMultipleParams('sp_getWatchlist', [{
         name: 'U_ID', type: mssql.Int, value: userID,
-      });
+      }]);
       res.status(200).json({
         data: result.recordset
       });
@@ -19,11 +19,10 @@ module.exports = {
     try {
       let filmID = req.body.F_ID;
       let userID = req.body.U_ID;
-      const result = await executeTwoParams('sp_addFilmToWatchList', [
+      const result = await executeMultipleParams('sp_addFilmToWatchList', [
         { name: 'F_ID', type: mssql.Char(5), value: filmID },
         { name: 'U_ID', type: mssql.Char(5), value: userID },
       ]);
-      console.log(result.recordset);
       if (result.recordset == undefined) {
         res.status(200).json('Film already in watch list');
       } else {
@@ -44,7 +43,7 @@ module.exports = {
     try {
       let filmID = req.body.F_ID;
       let userID = req.body.U_ID;
-      const result = await executeTwoParams('sp_removeFilmFromWatchList', [
+      const result = await executeMultipleParams('sp_removeFilmFromWatchList', [
         { name: 'F_ID', type: mssql.Char(5), value: filmID },
         { name: 'U_ID', type: mssql.Char(5), value: userID },
       ]);
