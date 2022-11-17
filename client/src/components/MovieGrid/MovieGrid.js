@@ -54,7 +54,7 @@ function MovieGrid(props) {
       <>
          {!items.length && (
             <h2 className={cx('no-result')}>
-               No result for keywod '{keyword}'
+               No result for keyword "{keyword}"
             </h2>
          )}
          <div className={cx('movie-grid')}>

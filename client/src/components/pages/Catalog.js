@@ -7,37 +7,55 @@ import PageHeader from '../PageHeader/PageHeader';
 
 function Catalog() {
    const [films, setFilms] = useState([]);
-   const [activeGenre, setActiveGenre] = useState('All');
+   const [activeGenre, setActiveGenre] = useState('AllGenre');
+   const [activeCountry, setActiveCountry] = useState('AllCountry');
 
    useEffect(() => {
-      if (activeGenre !== 'All') {
-         const getFilms = async () => {
+      if (activeGenre !== 'AllGenre') {
+         const getGenreFilms = async () => {
             const response = await serverNode.getFilmsByGenre(activeGenre);
             setFilms(response.data);
          };
-         getFilms();
+         getGenreFilms();
       }
-
    }, [activeGenre]);
+
+   useEffect(() => {
+      if (activeCountry !== 'AllCountry') {
+         const getCountryFilms = async () => {
+            const response = await serverNode.getFilmsByCountry(activeCountry);
+            setFilms(response.data);
+         };
+         getCountryFilms();
+      }
+   }, [activeCountry]);
+
+   useEffect(() => {
+      if (activeGenre !== 'AllGenre' && activeCountry !== 'AllCountry') {
+         const getGenreCountryFilms = async () => {
+            const response = await serverNode.getFilmsByGenreAndCountry(
+               activeGenre,
+               activeCountry
+            );
+            setFilms(response.data);
+         };
+         getGenreCountryFilms();
+      }
+   }, [activeGenre, activeCountry]);
 
    return (
       <>
          <PageHeader>
             <FilterList
-               activeGenre={activeGenre}
+               active={{ activeGenre, activeCountry }}
                setActiveGenre={setActiveGenre}
+               setActiveCountry={setActiveCountry}
             />
          </PageHeader>
          {
-            films.length < 0 ? "No films for this genre" : (
-               activeGenre === 'All' ? (
-                  <MovieGrid />
-               ) : (
-                  <div className="section mb-3">
-                     <MovieGrid films={films.length !== 0 ? films : null} />
-                  </div>
-               )
-            )
+            <MovieGrid
+               films={films.length !== 0 ? films : null}
+            />
          }
       </>
    );

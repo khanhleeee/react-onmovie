@@ -74,6 +74,14 @@ const serverNode = {
          console.log(error);
       }         
    },
+   getFilmsByGenreAndCountry: async (genre, country) => {
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'film/filter/?g=' + genre + '&c=' + country);
+         return data;
+      } catch (error) {
+         console.log(error);
+      }
+   },
    checkLogin: async (user) => {
       try {
          const data = await axios.post(apiNode.baseUrl + 'auth/login', user);

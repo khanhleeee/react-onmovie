@@ -5,24 +5,18 @@ import styles from './FilterList.module.scss';
 
 const cx = classNames.bind(styles);
 
-function FilterList({ activeGenre, setActiveGenre }) {
+export default function FilterList({ active, setActiveGenre, setActiveCountry }) {
    const [genres, setGenres] = useState([]);
    const [coutries, setCountries] = useState([]);
 
-   /*
-   nay t moi them phan filter country ne
-   co tao api getFilmByCountry roi a trong serverNode
-   ---> co gi sua lai cai filter list them country nha
-    */
-
    const itemGenreAll = {
-      G_ID: 'All',
-      G_NAME: 'All',
+      G_ID: 'AllGenre',
+      G_NAME: 'All Genre',
    };
 
    const itemCountryAll = {
-      C_ID: 'All',
-      C_NAME: 'All',
+      C_ID: 'AllCountry',
+      C_NAME: 'All Country',
    };
 
    useEffect(() => {
@@ -46,14 +40,14 @@ function FilterList({ activeGenre, setActiveGenre }) {
                <FilterItemGenre
                   item={itemGenreAll}
                   onClick={() => setActiveGenre(itemGenreAll.G_ID)}
-                  isCheck={activeGenre === itemGenreAll.G_ID}
+                  isCheck={active.activeGenre === itemGenreAll.G_ID}
                />
                {genres.map((item, index) => (
                   <FilterItemGenre
                      key={index}
                      item={item}
                      onClick={() => setActiveGenre(item.G_ID)}
-                     isCheck={activeGenre === item.G_ID}
+                     isCheck={active.activeGenre === item.G_ID}
                   />
                ))}
             </div>
@@ -63,15 +57,15 @@ function FilterList({ activeGenre, setActiveGenre }) {
             <div className={cx('container')}>
                <FilterItemCountry
                   item={itemCountryAll}
-                  onClick={() => setActiveGenre(itemCountryAll.C_ID)}
-                  isCheck={activeGenre === itemCountryAll.C_ID}
+                  onClick={() => setActiveCountry(itemCountryAll.C_ID)}
+                  isCheck={active.activeCountry === itemCountryAll.C_ID}
                />
                {coutries.map((item, index) => (
                   <FilterItemCountry
                      key={index}
                      item={item}
-                     onClick={() => setActiveGenre(item.C_ID)}
-                     isCheck={activeGenre === item.C_ID}
+                     onClick={() => setActiveCountry(item.C_ID)}
+                     isCheck={active.activeCountry === item.C_ID}
                   />
                ))}
             </div>
@@ -104,4 +98,3 @@ const FilterItemCountry = (props) => {
    );
 };
 
-export default FilterList;
