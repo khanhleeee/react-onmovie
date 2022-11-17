@@ -264,4 +264,42 @@ module.exports = {
       res.status(500).json(error);
     }
   },
+  getFilmsByGenreAndCountry: async (req, res) => {
+    const genreID = req.query.g;
+    const countryID = req.query.c;
+    try {
+      const result = await executeMultipleParams("sp_FilmByGenreAndNation", [{
+        name: "GENRE_ID",
+        type: mssql.VarChar(20),
+        value: genreID,
+      }, {
+        name: "COUNTRY_ID",
+        type: mssql.Char(5),
+        value: countryID,
+      }]);
+      if (result.recordset.length >= 5) {
+        var obj = {
+          page: firstPage,
+          per_page: per_page,
+          total: result.recordset.length,
+          // total_pages: result.recordset.length / per_page,
+          data: [],
+        };
+        for (let i = 0; i < result.recordset.length; i++) {
+          obj.data.push(result.recordset[i]);
+        }
+        res.status(200).json(obj);
+      } else {
+        var obj = {
+          data: [],
+        };
+        for (let i = 0; i < result.recordset.length; i++) {
+          obj.data.push(result.recordset[i]);
+        }
+        res.status(200).json(obj);
+      }
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
 };
