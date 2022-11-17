@@ -37,7 +37,6 @@ button,
 input {
   outline: 0;
 }
-
 ul {
   list-style-type: none;
 }
@@ -46,6 +45,14 @@ img {
 }
 iframe {
   border: 0;
+}
+a {
+  color: $text-color;
+  cursor: pointer;
+
+  &:hover {
+    color: $text-color;
+  }
 }
 
 // Classes
@@ -82,4 +89,19 @@ iframe {
 }
 .section-header {
   @include flex(center, space-between);
+}
+.grid {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto;
+  gap: 1rem;
+
+  .c-1 {
+    grid-column: 1 / span 6;
+  }
+  .c-2 {
+    grid-column: 1 / span 3;
+  }
+  .c-3 {
+    grid-column: 1 / span 2;
+  }
 }

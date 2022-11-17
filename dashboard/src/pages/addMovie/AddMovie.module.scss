@@ -1,0 +1,78 @@
+@use "../../scss" as *;
+
+.container {
+  width: 100%;
+  padding: 0 2rem;
+  margin-top: 2rem;
+}
+.title {
+  font-size: 3rem;
+  line-height: 3rem;
+  background-color: $sub-bg;
+  border-radius: 4px;
+  padding: 1rem 2rem;
+  margin-bottom: 5rem;
+}
+.sub-title {
+  width: 100%;
+  border-bottom: 2px solid $primary-color-rgba;
+  padding: 0.8rem 0.6rem;
+  border-radius: 4px;
+  margin: 2rem 0;
+}
+.detail-form {
+  padding: 0 6rem;
+
+  .submit-wrapper {
+    @include flex(unset, end);
+    margin-top: 1rem;
+
+    .submit-btn {
+      background-color: $primary-color;
+      color: $white;
+      border-radius: 4px;
+      justify-content: end;
+      padding: 0.8rem 1.2rem;
+      cursor: pointer;
+      transform: opacity 0.3s ease;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+}
+.genres-container {
+  margin-top: 1rem;
+}
+.genres-list,
+.keywords-list,
+.casts-list {
+  width: 100%;
+  overflow-y: scroll;
+  height: 20rem;
+  padding: 1rem;
+  margin-top: 1rem;
+  border: 3px solid $sub-bg;
+
+  .genre,
+  .keyword,
+  .cast {
+    display: flex;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid $sub-bg;
+    user-select: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $sub-bg;
+    }
+    &:active {
+      opacity: 0.9;
+    }
+
+    & .number {
+      width: 20rem;
+    }
+  }
+}

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 import App from "./App";
 import GlobalStyles from "../src/components/GlobalStyles/index";
+
 import { AuthContextProvider } from "../src/context/authContext/AuthContext";
 import { MovieContextProvider } from "../src/context/movieContext/MovieContext";
 import { ListContextProvider } from "../src/context/listContext/ListContext";
