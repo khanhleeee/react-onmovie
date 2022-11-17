@@ -203,19 +203,25 @@ const Watchlist = (props) => {
             </button>
          </div>
          <div className={cx('watchlist')}>
-            {films.map((item, index) => (
-               <div key={index} className={cx('watchlist-item')}>
-                  <MovieCard item={item} />
-                  {editActive && (
-                     <span
-                        className={cx('edit-badge')}
-                        onClick={() => handleRemoveFilm(item.F_ID)}
-                     >
-                        <DeleteIcon className={cx('icon')} />
-                     </span>
-                  )}
-               </div>
-            ))}
+            {
+               films.length === 0 ? (
+                  <div className={cx('empty')}>No film in watchlist</div>
+               ) : (
+                  films.map((item, index) => (
+                     <div key={index} className={cx('watchlist-item')}>
+                        <MovieCard item={item} />
+                        {editActive && (
+                           <span
+                              className={cx('edit-badge')}
+                              onClick={() => handleRemoveFilm(item.F_ID)}
+                           >
+                              <DeleteIcon className={cx('icon')} />
+                           </span>
+                        )}
+                     </div>
+                  ))
+               )
+            }
          </div>
       </div>
    );

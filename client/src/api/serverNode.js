@@ -3,41 +3,86 @@ import { apiNode } from './apiConfig';
 
 const serverNode = {
    getFilmList: async (page) => {
-      const data = await axios.get(apiNode.baseUrl + 'film?page=' + page);
-      return data;
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'film?page=' + page);
+         return data;
+      } catch (error) {
+         console.log(error);
+      }
    },
    searchFilmList: async (keyword) => {
-      const data = await axios.get(
-         apiNode.baseUrl + 'film/search?q=' + keyword,
-      );
-      return data;
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'film/search?q=' + keyword);
+         return data;
+      } catch (error) {
+         console.log(error);
+      }
    },
    getFilmDetail: async (id) => {
-      const data = await axios.get(apiNode.baseUrl + 'film/' + id);
-      return data;
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'film/' + id);
+         return data;
+      } catch (error) {
+         console.log(error);
+      }
    },
    getSimilarFilm: async (id) => {
-      const data = await axios.get(apiNode.baseUrl + 'film/' + id + '/similar');
-      return data;
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'film/' + id + '/similar');
+         return data;
+      } catch (error) {
+         console.log(error);
+      }
    },
    getActorFilm: async (id) => {
-      const data = await axios.get(apiNode.baseUrl + 'film/actor/' + id);
-      return data;
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'film/actor/' + id);
+         return data;
+      } catch (error) {
+         console.log(error);
+      }
    },
    getGenres: async () => {
-      const data = await axios.get(apiNode.baseUrl + 'film/genres');
-      return data;
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'film/genres');
+         return data;
+      } catch (error) {
+         console.log(error);
+      }
    },
    getContries: async () => {
-      const data = await axios.get(apiNode.baseUrl + 'film/countries');
-      return data;
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'film/countries');
+         return data;
+      } catch (error) {
+         console.log(error);
+      }
    },
    getFilmsByGenre: async (genre) => {
-      const data = await axios.get(apiNode.baseUrl + 'film/genres/' + genre);
-      return data;
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'film/genres/' + genre);
+         return data;
+      } catch (error) {
+         console.log(error);
+      }         
+   },
+   getFilmsByCountry: async (country) => {
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'film/countries/' + country);
+         return data;
+      } catch (error) {
+         console.log(error);
+      }         
+   },
+   getFilmsByGenreAndCountry: async (genre, country) => {
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'film/filter/?g=' + genre + '&c=' + country);
+         return data;
+      } catch (error) {
+         console.log(error);
+      }
    },
    checkLogin: async (user) => {
-      console.log(user);
       try {
          const data = await axios.post(apiNode.baseUrl + 'auth/login', user);
          return data;
