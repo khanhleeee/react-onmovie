@@ -1,7 +1,6 @@
 import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import classname from "classnames/bind";
-import { DeleteOutline } from "@material-ui/icons";
 
 import styles from "./movieList.module.scss";
 import { MovieContext } from "../../context/movieContext/MovieContext";
@@ -50,7 +49,9 @@ export default function MovieList() {
     <div className={cx("container")}>
       <div className={cx("feature")}>
         <SearchBar />
-        <button>Create new</button>
+        <Link to="/movie/add" className={cx("create-btn")}>
+          Create new
+        </Link>
       </div>
 
       <div className={cx("list")}>

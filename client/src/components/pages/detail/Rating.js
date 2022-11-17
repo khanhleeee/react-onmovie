@@ -73,7 +73,6 @@ function Rating({ id }) {
                ratings.splice(ratings.indexOf(id), 1);
             }
          }
-         console.log(ratings);
          setRatings(ratings);
          setActive(false);
       } else {

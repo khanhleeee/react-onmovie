@@ -1,0 +1,33 @@
+@use "../../scss" as *;
+
+.tag {
+  display: inline-block;
+  width: fit-content;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: $primary-color-rgba;
+  border-radius: 50px;
+  padding: 0.4rem 0.8rem;
+  margin-right: 0.4rem;
+  margin-bottom: 0.4rem;
+  user-select: none;
+
+  .name {
+    font-size: 1.6rem;
+    line-height: 1.6rem;
+    padding-right: 1rem;
+    margin-right: 1rem;
+    border-right: 1px solid $white;
+  }
+
+  .remove-btn {
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}

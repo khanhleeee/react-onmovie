@@ -10,21 +10,19 @@ const cx = classNames.bind(styles);
 function Favorite({ id }) {
    const [active, setActive] = useState(false);
    const [watchlist, setWatchlist] = useState([]);
+   const userData = JSON.parse(localStorage.getItem('user'));
 
    useEffect(() => {
-      const userData = JSON.parse(localStorage.getItem('user'));
-
-      console.log(userData.data);
       const getUserWatchlist = () => {
          serverNode
-            .getWatchList(userData.id)
+            .getWatchList(userData.U_ID)
             .then((res) => {
-               const user_watchlist = res.data.data
+               const user_watchlist = res.data.data;
                user_watchlist.forEach((watchlist) => {
                   if (watchlist.F_ID === id) {
                      setActive(true);
                   }
-               })
+               });
                setWatchlist(user_watchlist);
             })
             .catch((err) => {
@@ -36,9 +34,8 @@ function Favorite({ id }) {
 
    const handleAddToFavorite = () => {
       if (active) {
-         const userData = JSON.parse(localStorage.getItem('user'));
          serverNode
-            .removeWatchList({ U_ID: userData.id, F_ID: id })
+            .removeWatchList({ U_ID: userData.U_ID, F_ID: id })
             .then((res) => {
                watchlist.splice(watchlist.indexOf(id), 1);
                setWatchlist(watchlist);
@@ -48,10 +45,10 @@ function Favorite({ id }) {
                console.log(err);
             });
       } else {
-         const userData = JSON.parse(localStorage.getItem('user'));
          serverNode
-            .addWatchList({ F_ID: id, U_ID: userData.id })
+            .addWatchList({ F_ID: id, U_ID: userData.U_ID })
             .then((res) => {
+               console.log(res);
                setWatchlist(res.data.F_ID);
                setActive(true);
             })

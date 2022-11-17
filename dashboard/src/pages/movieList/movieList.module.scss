@@ -9,8 +9,9 @@
   display: flex;
   justify-content: end;
 
-  button {
-    width: 120px;
+  .create-btn {
+    @include flex(center, center);
+    padding: 1rem 1.6rem;
     border: none;
     background-color: $primary-color;
     color: $text-color;
@@ -18,8 +19,10 @@
     border-radius: 4px;
     margin-left: 1rem;
     cursor: pointer;
+    transition: opacity 0.4s ease;
 
     &:hover {
+      opacity: 0.8;
     }
   }
 }
