@@ -25,7 +25,8 @@ export default function LogIn() {
          .then((res) => {
             if (res.status === 401) {
                setSendStatus(res.data);
-            } else if (res.status === 200) {
+            } 
+            else if (res.status === 200) {
                localStorage.setItem('user', JSON.stringify(res.data.data));
                window.location.href = '/';
             }

@@ -45,10 +45,8 @@ function SignUp() {
          })
          .then((res) => {
             if (res.status === 200) {
-               console.log(res.data);
-               setData(res.data);
-               localStorage.setItem('user', JSON.stringify(res.data));
-               window.location.href = '/';
+               setData(res.data.messsage);
+               window.location.href = '/login';
             } else {
                setSendStatus(res.data);
             }
