@@ -25,7 +25,6 @@ function Detail() {
          const response = await serverNode.getFilmDetail(id);
          setItem(response.data);
       };
-
       getDetail();
    }, [category, id]);
 
@@ -53,12 +52,12 @@ function Detail() {
                         <div>
                            <div className={cx('title')}>{item[MOVIE.name]}</div>
                            <div className={cx('genres')}>
-                              {/* {item.G_NAME &&
+                              {item.G_NAME &&
                                  item.G_NAME.slice(0, 5).map((gene, i) => (
                                     <span key={i} className={cx('item')}>
                                        {gene}
                                     </span>
-                                 ))} */}
+                                 ))}
                            </div>
                         </div>
                         <div className={cx('feature-btns')}>

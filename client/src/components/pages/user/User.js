@@ -15,8 +15,6 @@ import { MOVIE, USER } from '~/constants';
 const cx = classNames.bind(styles);
 const user = JSON.parse(localStorage.getItem('user'));
 
-console.log(user);
-
 export default function User() {
    const [activePage, setActivePage] = useState('Account');
    const [activeModalLogout, setActiveModalLogout] = useState(false);
@@ -156,7 +154,6 @@ const Watchlist = () => {
    const [films, setFilms] = useState([]);
    const [editActive, setEditActive] = useState(false);
 
-   // get watchlist
    useEffect(() => {
       const getList = async () => {
          const res = await serverNode.getWatchList(user[USER.id]);
@@ -165,16 +162,23 @@ const Watchlist = () => {
       getList();
    }, []);
 
-   const handleRemoveFilm = (id) => {
-      // Xoá film ra khỏi watchlist
-      for (let i in films) {
-         if (films[i].F_ID === id) {
-            films.splice(films.indexOf(id), 1);
-         }
-      }
-      setFilms(films);
-      setEditActive(false);
+   const handleRemoveFilm = async (id) => {
+      await serverNode
+         .removeWatchList({ [MOVIE.id]: id, [USER.id]: user[USER.id] })
+         .then((res) => {
+            setFilms(films);
+            setEditActive(false);
+         })
+         .catch((err) => {
+            console.log(err);
+         });
+      const getList = async () => {
+         const res = await serverNode.getWatchList(user[USER.id]);
+         setFilms(res.data.data);
+      };
+      getList();
    };
+
    return (
       <div className={cx('watchlist-wrapper')}>
          <div className={cx('feature')}>
@@ -186,7 +190,7 @@ const Watchlist = () => {
             </button>
          </div>
          <div className={cx('watchlist')}>
-            {films.length === 0 ? (
+            {!films || films.length === 0 ? (
                <div className={cx('empty')}>No film in watchlist</div>
             ) : (
                films.map((item, index) => (
