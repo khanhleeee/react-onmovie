@@ -80,6 +80,11 @@
          font-size: 8rem;
          font-weight: 700;
          line-height: 1;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         display: -webkit-box;
+         -webkit-box-orient: vertical;
+         -webkit-line-clamp: 2;
 
          @include tablet {
             font-size: 6rem;
