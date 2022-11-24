@@ -1,12 +1,9 @@
 @use "../../scss" as *;
 
-.container {
-  width: 100%;
-  padding: 0 2rem;
-  margin-top: 2rem;
-}
 .title {
-  font-size: 3rem;
+  color: $primary-color;
+  text-align: center;
+  text-transform: uppercase;
   line-height: 3rem;
   background-color: $sub-bg;
   border-radius: 4px;
@@ -16,13 +13,10 @@
 .sub-title {
   width: 100%;
   border-bottom: 2px solid $primary-color-rgba;
-  padding: 0.8rem 0.6rem;
-  border-radius: 4px;
+  padding: 0.8rem 0;
   margin: 2rem 0;
 }
 .detail-form {
-  padding: 0 6rem;
-
   .submit-wrapper {
     @include flex(unset, end);
     margin-top: 1rem;
