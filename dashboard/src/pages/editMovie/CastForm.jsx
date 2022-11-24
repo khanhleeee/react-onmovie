@@ -5,7 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-import styles from "./AddMovie.module.scss";
+import styles from "./editMovie.module.scss";
+import Tag from "../../components/Tag/Tag";
 import CastCard from "../../components/CastCard/CastCard";
 
 const CASTS = [
@@ -92,6 +93,9 @@ export const CastForm = () => {
           </ul>
         </Col>
       </Row>
+      <div className={cx("btn-wrapper")}>
+        <button className={cx("update-btn")}>UPDATE</button>
+      </div>
     </>
   );
 };

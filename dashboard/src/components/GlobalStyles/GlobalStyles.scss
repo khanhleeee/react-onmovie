@@ -72,8 +72,8 @@ a {
   @include flex(unset, unset);
 }
 .container {
-  max-width: 1660px;
-  margin: auto;
+  margin-left: 1rem;
+  padding: 2rem 4rem;
 }
 .mt-3 {
   margin-top: 3rem;

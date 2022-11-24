@@ -29,6 +29,8 @@ function AddMovie() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setActiveForm("genres");
+
+    console.log(new FormData(e.target));
   };
 
   return (
@@ -45,7 +47,7 @@ function AddMovie() {
         <Row>
           <Col className={cx("submit-wrapper")} md={{ span: 6, offset: 6 }}>
             <button className={cx("submit-btn")} type="submit">
-              Next step
+              Create new
             </button>
           </Col>
         </Row>

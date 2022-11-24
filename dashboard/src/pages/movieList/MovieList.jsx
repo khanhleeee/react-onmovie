@@ -7,6 +7,7 @@ import { MovieContext } from "../../context/movieContext/MovieContext";
 import { getMovies, deleteMovie } from "../../context/movieContext/apiCall";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import { MOVIE } from "../../constants";
 
 const cx = classname.bind(styles);
 
@@ -16,29 +17,29 @@ export default function MovieList() {
   //Films from database
   const films = [
     {
-      id: 1,
+      F_ID: 1,
       F_RELEASEYEAR: "12/23/2022",
       F_OFFICIAL_NAME: "Thợ Săn Quỷ",
       F_POSTER:
         "https://www.themoviedb.org/t/p/original/5DUMPBSnHOZsbBv81GFXZXvDpo6.jpg",
     },
     {
-      id: 2,
-      F_RELEASEYEAR: "10/1/2008",
+      F_ID: 2,
+      [MOVIE.date]: "10/1/2008",
       F_OFFICIAL_NAME: "Avatar",
       F_POSTER:
         "https://www.themoviedb.org/t/p/original/5DUMPBSnHOZsbBv81GFXZXvDpo6.jpg",
     },
     {
-      id: 3,
-      F_RELEASEYEAR: "8/2/2022",
+      F_ID: 3,
+      [MOVIE.date]: "8/2/2022",
       F_OFFICIAL_NAME: "Hope",
       F_POSTER:
         "https://www.themoviedb.org/t/p/original/5DUMPBSnHOZsbBv81GFXZXvDpo6.jpg",
     },
     {
-      id: 4,
-      F_RELEASEYEAR: "8/2/2022",
+      F_ID: 4,
+      [MOVIE.date]: "8/2/2022",
       F_OFFICIAL_NAME: "Hope",
       F_POSTER:
         "https://www.themoviedb.org/t/p/original/5DUMPBSnHOZsbBv81GFXZXvDpo6.jpg",

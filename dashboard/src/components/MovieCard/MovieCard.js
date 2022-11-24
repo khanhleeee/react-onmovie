@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 import { Link } from "react-router-dom";
+import { MOVIE } from "../../constants";
 
-import { getMovies, deleteMovie } from "../../context/movieContext/apiCall";
 import styles from "./MovieCard.module.scss";
 
 const cx = classNames.bind(styles);
@@ -24,25 +24,24 @@ const monthNames = [
 function MovieCard(props) {
   const item = props.item;
 
-  const date = new Date(
-    item.F_RELEASEYEAR ? item.F_RELEASEYEAR : item.release_date
-  );
+  const date = new Date(item[MOVIE.date]);
 
   const formatDate = `${monthNames[date.getMonth()]}, ${date.getFullYear()}`;
+  const link = `movie/edit/${item[MOVIE.id]}`;
 
   return (
     <div className={cx("container")}>
       <div className={cx("movie-card")}>
         <div
           className={cx("poster")}
-          style={{ backgroundImage: `url(${item.F_POSTER})` }}
+          style={{ backgroundImage: `url(${item[MOVIE.poster]})` }}
         ></div>
         <div className={cx("info")}>
-          <h2 className={cx("info-title")}>{item.F_OFFICIAL_NAME}</h2>
+          <h2 className={cx("info-title")}>{item[MOVIE.name]}</h2>
           <ul className={cx("list")}>
             <li>
               <span className={cx("title")}>id: </span>
-              <span className={cx("value")}>{item.id}</span>
+              <span className={cx("value")}>{item[MOVIE.id]}</span>
             </li>
 
             <li>
@@ -56,7 +55,7 @@ function MovieCard(props) {
           </ul>
         </div>
         <div className={cx("feature-btn")}>
-          <button>Edit</button>
+          <Link to={link}>Edit</Link>
         </div>
       </div>
     </div>
