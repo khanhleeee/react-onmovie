@@ -10,6 +10,7 @@ import MovieList from '~/components/MovieList/MovieList';
 import Rating from './Rating';
 import Favorite from './Favorite';
 import { MOVIE } from '~/constants';
+import { StarIcon } from '~/components/Icons/Icons';
 
 const cx = classNames.bind(styles);
 
@@ -24,6 +25,7 @@ function Detail() {
          window.scrollTo(0, 0);
          const response = await serverNode.getFilmDetail(id);
          setItem(response.data);
+         console.log(response.data);
       };
       getDetail();
    }, [category, id]);
@@ -59,6 +61,7 @@ function Detail() {
                                     </span>
                                  ))}
                            </div>
+                           <div className={cx('genres')}></div>
                         </div>
                         <div className={cx('feature-btns')}>
                            <Rating id={id} />

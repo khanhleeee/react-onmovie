@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import apiConfig from '~/api/apiConfig';
 import { MOVIE } from '~/constants';
+import { StarIcon } from '../Icons/Icons';
 import styles from './MovieCard.module.scss';
 
 const cx = classNames.bind(styles);
@@ -27,7 +28,6 @@ function MovieCard(props) {
 
    const classes = cx('movie-card', props.className);
 
-   // const link = '/' + category[props.category] + '/' + item.id;
    const link = '/' + 'movie' + '/' + item[MOVIE.id];
 
    const backgroud = apiConfig.w500Image(
@@ -47,6 +47,10 @@ function MovieCard(props) {
             <div className={cx('info')}>
                <h3 className={cx('title')}>{item[MOVIE.name]}</h3>
                <span className={cx('release-date')}>{formatDate}</span>
+               <div className={cx('rating')}>
+                  <StarIcon classNames={cx('icon')} />
+                  <span>{Math.round(item[MOVIE.avg] * 100) / 100}</span>
+               </div>
             </div>
          </div>
       </Link>
