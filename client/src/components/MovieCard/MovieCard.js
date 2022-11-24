@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 
 import apiConfig from '~/api/apiConfig';
-import { category } from '~/api/onmoviedb';
+import { MOVIE } from '~/constants';
 import styles from './MovieCard.module.scss';
 
 const cx = classNames.bind(styles);
@@ -28,16 +28,13 @@ function MovieCard(props) {
    const classes = cx('movie-card', props.className);
 
    // const link = '/' + category[props.category] + '/' + item.id;
-   const link = '/' + 'movie' + '/' + item.F_ID;
+   const link = '/' + 'movie' + '/' + item[MOVIE.id];
 
    const backgroud = apiConfig.w500Image(
-      item.F_POSTER ? item.F_POSTER : item.poster_path,
+      item[MOVIE.poster] || item[MOVIE.backdrop],
    );
 
-   const date = new Date(
-      item.F_RELEASEYEAR ? item.F_RELEASEYEAR : item.release_date,
-   );
-
+   const date = new Date(item[MOVIE.release_date]);
    const formatDate = `${monthNames[date.getMonth()]}, ${date.getFullYear()}`;
 
    return (
@@ -48,9 +45,7 @@ function MovieCard(props) {
                style={{ backgroundImage: `url(${backgroud})` }}
             ></div>
             <div className={cx('info')}>
-               <h3 className={cx('title')}>
-                  {item.F_OFFICIAL_NAME ? item.F_OFFICIAL_NAME : item.title}
-               </h3>
+               <h3 className={cx('title')}>{item[MOVIE.name]}</h3>
                <span className={cx('release-date')}>{formatDate}</span>
             </div>
          </div>

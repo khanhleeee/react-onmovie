@@ -5,11 +5,11 @@ import classNames from 'classnames/bind';
 import SwiperCore, { Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import onmoviedbApi, { category, movieType } from '~/api/onmoviedb';
 import apiConfig from '~/api/apiConfig';
 import styles from './HeroSlide.module.scss';
 import Button from '../Button/Button';
 import serverNode from '~/api/serverNode';
+import { MOVIE } from '~/constants';
 
 const cx = classNames.bind(styles);
 
@@ -19,9 +19,9 @@ function HeroSlide() {
 
    useEffect(() => {
       const getMovies = async () => {
-         const params = { page: 1 };
          try {
             const movies = await serverNode.getFilmList(1);
+            console.log(movies);
             // const movies = await onmoviedbApi.getMovieList(movieType.popular, {
             //    params,
             // });
@@ -63,7 +63,7 @@ const HeroSlideItem = (props) => {
    const item = props.item;
 
    const background = apiConfig.originalImage(
-      item.F_BACKCDROP ? item.F_BACKCDROP : item.poster_path,
+      item[MOVIE.backdrop] || item[MOVIE.poster],
    );
 
    return (
@@ -73,10 +73,10 @@ const HeroSlideItem = (props) => {
       >
          <div className={cx('content', 'container')}>
             <div className={cx('info')}>
-               <h2 className={cx('title')}>{item.F_OFFICIAL_NAME}</h2>
-               <div className={cx('overview')}>{item.F_DESC}</div>
+               <h2 className={cx('title')}>{item[MOVIE.name]}</h2>
+               <div className={cx('overview')}>{item[MOVIE.desc]}</div>
                <div className={cx('btns')}>
-                  <Button onClick={() => navigate('/movie/' + item.F_ID)}>
+                  <Button onClick={() => navigate('/movie/' + item[MOVIE.id])}>
                      See Details
                   </Button>
                </div>

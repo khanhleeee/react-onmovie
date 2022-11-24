@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
-import { category } from '~/api/onmoviedb';
 import styles from './SearchBar.module.scss';
 import { SearchIcon } from '../Icons/Icons';
 import { useDebounce } from '~/hooks';

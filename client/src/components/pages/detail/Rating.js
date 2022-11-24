@@ -2,6 +2,7 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { LikeIcon, UnlikeIcon } from '~/components/Icons/Icons';
 
+import { MOVIE, MOVIE_RATING } from '~/constants';
 import styles from './Detail.module.scss';
 
 const cx = classNames.bind(styles);
@@ -33,8 +34,8 @@ function Rating({ id }) {
    useEffect(() => {
       // Lấy dữ liệu ratings của user
       for (let item of user_ratings) {
-         if (item.F_ID === id) {
-            setActive(item.ISLIKE);
+         if (item[MOVIE.id] === id) {
+            setActive(item[MOVIE_RATING.islike]);
          }
       }
       setRatings(user_ratings);
@@ -43,11 +44,11 @@ function Rating({ id }) {
    const handleLike = () => {
       if (!active) {
          // Goi procedure them like vao film
-         setRatings(ratings.push({ F_ID: id, ISLIKE: 1 }));
+         setRatings(ratings.push({ [MOVIE.id]: id, [MOVIE_RATING.islike]: 1 }));
          setActive(1);
       } else if (active === 1) {
          for (let i in ratings) {
-            if (ratings[i].F_ID === id) {
+            if (ratings[i][MOVIE.id] === id) {
                ratings.splice(ratings.indexOf(id), 1);
             }
          }
@@ -55,8 +56,8 @@ function Rating({ id }) {
          setActive(false);
       } else {
          for (let item of ratings) {
-            if (item.F_ID === id) {
-               item.ISLIKE = 0;
+            if (item[MOVIE.id] === id) {
+               item[MOVIE_RATING.islike] = 0;
             }
          }
          setActive(0);
@@ -65,11 +66,11 @@ function Rating({ id }) {
    const handleDisLike = () => {
       if (!active) {
          // Goi procedure them like vao film
-         setRatings(ratings.push({ F_ID: id, ISLIKE: 0 }));
+         setRatings(ratings.push({ [MOVIE.id]: id, [MOVIE_RATING.islike]: 0 }));
          setActive(0);
       } else if (active === 0) {
          for (let i in ratings) {
-            if (ratings[i].F_ID === id) {
+            if (ratings[i][MOVIE.id] === id) {
                ratings.splice(ratings.indexOf(id), 1);
             }
          }
@@ -77,11 +78,10 @@ function Rating({ id }) {
          setActive(false);
       } else {
          for (let item of ratings) {
-            if (item.F_ID === id) {
-               item.ISLIKE = 0;
+            if (item[MOVIE.id] === id) {
+               item[MOVIE_RATING.islike] = 0;
             }
          }
-         console.log(ratings);
          setActive(0);
       }
    };
