@@ -7,35 +7,39 @@ import PageHeader from '../PageHeader/PageHeader';
 
 function Catalog() {
    const [films, setFilms] = useState([]);
-   const [activeGenre, setActiveGenre] = useState('AllGenre');
-   const [activeCountry, setActiveCountry] = useState('AllCountry');
+   const [activeGenre, setActiveGenre] = useState(-1);
+   const [activeCountry, setActiveCountry] = useState(-1);
 
    useEffect(() => {
-      if (activeGenre !== 'AllGenre') {
-         const getGenreFilms = async () => {
+      let getFilms = null;
+      if (activeGenre !== -1 && activeCountry === -1) {
+         getFilms = async () => {
             const response = await serverNode.getFilmsByGenre(activeGenre);
             setFilms(response.data);
          };
-         getGenreFilms();
-      }
-   }, [activeGenre]);
-
-   useEffect(() => {
-      if (activeCountry !== 'AllCountry') {
-         const getCountryFilms = async () => {
+      } else if (activeGenre === -1 && activeCountry !== -1) {
+         getFilms = async () => {
             const response = await serverNode.getFilmsByCountry(activeCountry);
             setFilms(response.data);
          };
-         getCountryFilms();
+      } else {
+         getFilms = async () => {
+            const response = await serverNode.getFilmsByGenreAndCountry(
+               activeGenre,
+               activeCountry,
+            );
+            setFilms(response.data);
+         };
       }
-   }, [activeCountry]);
+      getFilms();
+   }, [activeGenre, activeCountry]);
 
    useEffect(() => {
-      if (activeGenre !== 'AllGenre' && activeCountry !== 'AllCountry') {
+      if (activeGenre !== -1 && activeCountry !== -1) {
          const getGenreCountryFilms = async () => {
             const response = await serverNode.getFilmsByGenreAndCountry(
                activeGenre,
-               activeCountry
+               activeCountry,
             );
             setFilms(response.data);
          };
@@ -52,11 +56,7 @@ function Catalog() {
                setActiveCountry={setActiveCountry}
             />
          </PageHeader>
-         {
-            <MovieGrid
-               films={films.length !== 0 ? films : null}
-            />
-         }
+         {<MovieGrid films={films.length !== 0 ? films : null} />}
       </>
    );
 }

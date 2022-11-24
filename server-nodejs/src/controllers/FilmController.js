@@ -74,11 +74,13 @@ module.exports = {
   searchFilm: async (req, res) => {
     const q = req.query.q;
     try {
-      const result = await executeMultipleParams("sp_searchFilms", [{
-        name: "KW_TITLE",
-        type: mssql.NVarChar,
-        value: q,
-      }]);
+      const result = await executeMultipleParams("sp_searchFilms", [
+        {
+          name: "KW_TITLE",
+          type: mssql.NVarChar,
+          value: q,
+        },
+      ]);
       if (result.recordset.length == 0) {
         const offset = (firstPage - 1) * per_page;
         const query =
@@ -115,16 +117,20 @@ module.exports = {
   getDetailFilm: async (req, res) => {
     const filmID = req.params.filmID;
     try {
-      const result = await executeMultipleParams("sp_getFilmDetail", [{
-        name: "F_ID",
-        type: mssql.Char(numberChar),
-        value: filmID,
-      }]);
-      const findTrailer = await executeMultipleParams("sp_getFilmTrailers", [{
-        name: "ID_FILM",
-        type: mssql.Char(numberChar),
-        value: filmID,
-      }]);
+      const result = await executeMultipleParams("sp_getFilmDetail", [
+        {
+          name: "F_ID",
+          type: mssql.Char(numberChar),
+          value: filmID,
+        },
+      ]);
+      const findTrailer = await executeMultipleParams("sp_getFilmTrailers", [
+        {
+          name: "ID_FILM",
+          type: mssql.Char(numberChar),
+          value: filmID,
+        },
+      ]);
       var obj = {
         F_ID: result.recordset[0].F_ID,
         F_OFFICIAL_NAME: result.recordset[0].F_OFFICIAL_NAME,
@@ -133,7 +139,7 @@ module.exports = {
         F_RELEASEYEAR: result.recordset[0].F_RELEASEYEAR,
         F_AVGRATING: result.recordset[0].F_AVGRATING,
         F_LIMITEDAGE: result.recordset[0].F_LIMITEDAGE,
-        F_BACKCDROP: result.recordset[0].F_BACKCDROP,
+        F_BACKDROP: result.recordset[0].F_BACKCDROP,
         F_POSTER: result.recordset[0].F_POSTER,
         C_ID: result.recordset[0].C_ID,
         S_ID: result.recordset[0].S_ID,
@@ -151,11 +157,13 @@ module.exports = {
   getSimilarFilm: async (req, res) => {
     const filmID = req.params.filmID;
     try {
-      const result = await executeMultipleParams("sp_getSimilarFilms", [{
-        name: "F_ID",
-        type: mssql.Char(numberChar),
-        value: filmID,
-      }]);
+      const result = await executeMultipleParams("sp_getSimilarFilms", [
+        {
+          name: "F_ID",
+          type: mssql.Char(numberChar),
+          value: filmID,
+        },
+      ]);
       var obj = {
         data: [],
       };
@@ -170,11 +178,13 @@ module.exports = {
   getActorFilm: async (req, res) => {
     const filmID = req.params.filmID;
     try {
-      const result = await executeMultipleParams("sp_getFilmCredit", [{
-        name: "F_ID",
-        type: mssql.Char(numberChar),
-        value: filmID,
-      }]);
+      const result = await executeMultipleParams("sp_getFilmCredit", [
+        {
+          name: "F_ID",
+          type: mssql.Char(numberChar),
+          value: filmID,
+        },
+      ]);
       res.status(200).json(result.recordset);
     } catch (error) {
       res.status(500).json(error);
@@ -199,11 +209,13 @@ module.exports = {
   getFilmsByGenre: async (req, res) => {
     const genreID = req.params.genreID;
     try {
-      const result = await executeMultipleParams("sp_getFilmsByGenre", [{
-        name: "G_ID",
-        type: mssql.VarChar(numberGenre),
-        value: genreID,
-      }]);
+      const result = await executeMultipleParams("sp_getFilmsByGenre", [
+        {
+          name: "G_ID",
+          type: mssql.VarChar(numberGenre),
+          value: genreID,
+        },
+      ]);
       if (result.recordset.length >= 5) {
         var obj = {
           page: firstPage,
@@ -233,11 +245,13 @@ module.exports = {
   getFilmsByCountry: async (req, res) => {
     const countryID = req.params.countryID;
     try {
-      const result = await executeMultipleParams("sp_getFilmsByNation", [{
-        name: "C_ID",
-        type: mssql.Char(3),
-        value: countryID,
-      }]);
+      const result = await executeMultipleParams("sp_getFilmsByNation", [
+        {
+          name: "C_ID",
+          type: mssql.Char(3),
+          value: countryID,
+        },
+      ]);
       if (result.recordset.length >= 5) {
         var obj = {
           page: firstPage,
@@ -268,15 +282,18 @@ module.exports = {
     const genreID = req.query.g;
     const countryID = req.query.c;
     try {
-      const result = await executeMultipleParams("sp_FilmByGenreAndNation", [{
-        name: "GENRE_ID",
-        type: mssql.VarChar(20),
-        value: genreID,
-      }, {
-        name: "COUNTRY_ID",
-        type: mssql.Char(5),
-        value: countryID,
-      }]);
+      const result = await executeMultipleParams("sp_FilmByGenreAndNation", [
+        {
+          name: "GENRE_ID",
+          type: mssql.VarChar(20),
+          value: genreID,
+        },
+        {
+          name: "COUNTRY_ID",
+          type: mssql.Char(5),
+          value: countryID,
+        },
+      ]);
       if (result.recordset.length >= 5) {
         var obj = {
           page: firstPage,

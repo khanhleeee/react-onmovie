@@ -10,15 +10,16 @@ import Modal, { ModalContent } from '~/components/Modal/Modal';
 import styles from './User.module.scss';
 import serverNode from '~/api/serverNode';
 import MovieCard from '~/components/MovieCard/MovieCard';
+import { MOVIE, USER } from '~/constants';
 
 const cx = classNames.bind(styles);
+const user = JSON.parse(localStorage.getItem('user'));
+
+console.log(user);
 
 export default function User() {
    const [activePage, setActivePage] = useState('Account');
    const [activeModalLogout, setActiveModalLogout] = useState(false);
-
-   const location = useLocation();
-   const dataUser = location.state.user;
 
    const handleLogout = () => {
       localStorage.removeItem('user');
@@ -31,7 +32,7 @@ export default function User() {
             <div className={cx('general-info')}>
                <UserIcon classNames={cx('icon')} />
                <div className={cx('info')}>
-                  <span className={cx('name')}>{dataUser.fullName}</span>
+                  <span className={cx('name')}>{user[USER.name]}</span>
                   <span className={cx('level')}>Member</span>
                </div>
             </div>
@@ -88,9 +89,6 @@ export default function User() {
 const Account = () => {
    const [activeModal, setActiveModal] = useState(false);
 
-   const location = useLocation();
-   const dataUser = location.state.user;
-
    const nameRef = useRef();
    const phoneRef = useRef();
 
@@ -101,7 +99,7 @@ const Account = () => {
       };
 
       serverNode
-         .upgradeUser(dataUser.id, {
+         .upgradeUser(user[USER.id], {
             fullName: dataUpdate.fullName,
             phoneNumber: dataUpdate.phoneNumber,
          })
@@ -120,15 +118,15 @@ const Account = () => {
             <div className={cx('info')}>
                <UserIcon classNames={cx('icon')} />
                <div>
-                  <span className={cx('name')}>{dataUser.fullName}</span>
+                  <span className={cx('name')}>{user[USER.name]}</span>
                   <ul className={cx('info-details')}>
                      <li>
                         <span className={cx('title')}>Email: </span>
-                        <span>{dataUser.email}</span>
+                        <span>{user[USER.email]}</span>
                      </li>
                      <li>
                         <span className={cx('title')}>Phone: </span>
-                        <span>{dataUser.phoneNumber}</span>
+                        <span>{user[USER.phone]}</span>
                      </li>
                   </ul>
                </div>
@@ -142,8 +140,8 @@ const Account = () => {
             {activeModal && (
                <Modal active={activeModal}>
                   <ModalContent onClose={() => setActiveModal(false)}>
-                     <Input ref={nameRef} value={dataUser.fullName} />
-                     <Input ref={phoneRef} value={dataUser.phoneNumber} />
+                     <Input ref={nameRef} value={user[USER.name]} />
+                     <Input ref={phoneRef} value={user[USER.phone]} />
                      <Button fullfill onClick={handleSubmit}>
                         Update
                      </Button>
@@ -154,30 +152,15 @@ const Account = () => {
       </>
    );
 };
-const Watchlist = (props) => {
+const Watchlist = () => {
    const [films, setFilms] = useState([]);
    const [editActive, setEditActive] = useState(false);
 
    // get watchlist
    useEffect(() => {
       const getList = async () => {
-         const watchlist = [
-            {
-               F_ID: '00003',
-               F_POSTER:
-                  'https://www.themoviedb.org/t/p/original/hcmIpkrvtHCyXRAqYPuusWjTADu.jpg',
-               F_RELEASEYEAR: '12/12/2022',
-               F_OFFICIAL_NAME: 'The dead',
-            },
-            {
-               F_ID: '00004',
-               F_POSTER:
-                  'https://www.themoviedb.org/t/p/original/hcmIpkrvtHCyXRAqYPuusWjTADu.jpg',
-               F_RELEASEYEAR: '12/12/2022',
-               F_OFFICIAL_NAME: 'The whole truth',
-            },
-         ];
-         setFilms(watchlist);
+         const res = await serverNode.getWatchList(user[USER.id]);
+         setFilms(res.data.data);
       };
       getList();
    }, []);
@@ -203,25 +186,23 @@ const Watchlist = (props) => {
             </button>
          </div>
          <div className={cx('watchlist')}>
-            {
-               films.length === 0 ? (
-                  <div className={cx('empty')}>No film in watchlist</div>
-               ) : (
-                  films.map((item, index) => (
-                     <div key={index} className={cx('watchlist-item')}>
-                        <MovieCard item={item} />
-                        {editActive && (
-                           <span
-                              className={cx('edit-badge')}
-                              onClick={() => handleRemoveFilm(item.F_ID)}
-                           >
-                              <DeleteIcon className={cx('icon')} />
-                           </span>
-                        )}
-                     </div>
-                  ))
-               )
-            }
+            {films.length === 0 ? (
+               <div className={cx('empty')}>No film in watchlist</div>
+            ) : (
+               films.map((item, index) => (
+                  <div key={index} className={cx('watchlist-item')}>
+                     <MovieCard item={item} />
+                     {editActive && (
+                        <span
+                           className={cx('edit-badge')}
+                           onClick={() => handleRemoveFilm(item[MOVIE.id])}
+                        >
+                           <DeleteIcon className={cx('icon')} />
+                        </span>
+                     )}
+                  </div>
+               ))
+            )}
          </div>
       </div>
    );

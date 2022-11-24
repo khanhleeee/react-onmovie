@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import serverNode from '~/api/serverNode';
 
 import { HeartIcon } from '~/components/Icons/Icons';
+import { MOVIE, USER } from '~/constants';
 import styles from './Detail.module.scss';
 
 const cx = classNames.bind(styles);
@@ -15,11 +16,11 @@ function Favorite({ id }) {
    useEffect(() => {
       const getUserWatchlist = () => {
          serverNode
-            .getWatchList(userData.U_ID)
+            .getWatchList(userData[USER.id])
             .then((res) => {
                const user_watchlist = res.data.data;
                user_watchlist.forEach((watchlist) => {
-                  if (watchlist.F_ID === id) {
+                  if (watchlist[MOVIE.id] === id) {
                      setActive(true);
                   }
                });
@@ -35,7 +36,7 @@ function Favorite({ id }) {
    const handleAddToFavorite = () => {
       if (active) {
          serverNode
-            .removeWatchList({ U_ID: userData.U_ID, F_ID: id })
+            .removeWatchList({ [USER.id]: userData[USER.id], [MOVIE.id]: id })
             .then((res) => {
                watchlist.splice(watchlist.indexOf(id), 1);
                setWatchlist(watchlist);
@@ -46,10 +47,10 @@ function Favorite({ id }) {
             });
       } else {
          serverNode
-            .addWatchList({ F_ID: id, U_ID: userData.U_ID })
+            .addWatchList({ [MOVIE.id]: id, [USER.id]: userData[USER.id] })
             .then((res) => {
                console.log(res);
-               setWatchlist(res.data.F_ID);
+               setWatchlist(res.data[MOVIE.id]);
                setActive(true);
             })
             .catch((err) => {

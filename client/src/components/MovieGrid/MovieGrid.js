@@ -32,7 +32,6 @@ function MovieGrid(props) {
                setTotalPage(response.data.total_pages);
             } else {
                response = await serverNode.searchFilmList(keyword);
-               console.log(response);
                setItems(response.data.data);
                setTotalPage(response.data.total_pages);
             }
@@ -65,12 +64,12 @@ function MovieGrid(props) {
          {page == null
             ? ''
             : page < totalPage && (
-               <div className={cx('loadmore')}>
-                  <Button outline onClick={loadMore}>
-                     Load More
-                  </Button>
-               </div>
-            )}
+                 <div className={cx('loadmore')}>
+                    <Button outline onClick={loadMore}>
+                       Load More
+                    </Button>
+                 </div>
+              )}
       </>
    );
 }

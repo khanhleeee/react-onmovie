@@ -3,8 +3,6 @@ import classNames from 'classnames/bind';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import styles from './MovieList.module.scss';
-import onmoviedbApi, { category } from '~/api/onmoviedb';
-import apiConfig from '~/api/apiConfig';
 import MovieCard from '../MovieCard/MovieCard';
 import serverNode from '~/api/serverNode';
 
@@ -19,6 +17,7 @@ function MovieList(props) {
          try {
             response = await serverNode.getFilmList();
             setItems(response.data.data);
+
             if (props.type === 'similar') {
                const similarFilm = await serverNode.getSimilarFilm(props.id);
                setItems(similarFilm.data.data);
@@ -26,11 +25,10 @@ function MovieList(props) {
          } catch (error) {
             console.error(error);
          }
-
       };
       getList();
    }, []);
-   
+
    return (
       <div className={cx('movie-list')}>
          <Swiper grabCursor={true} spaceBetween={10} slidesPerView={'auto'}>

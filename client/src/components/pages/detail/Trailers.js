@@ -5,6 +5,7 @@ import onmoviedbApi from '~/api/onmoviedb';
 import serverNode from '~/api/serverNode';
 
 import styles from './Detail.module.scss';
+import { TRAILER } from '~/constants';
 
 const cx = classNames.bind(styles);
 
@@ -16,7 +17,7 @@ function Trailers(props) {
       const getVideos = async () => {
          const getFilmDetail = await serverNode.getFilmDetail(props.id);
 
-         const trailerId = getFilmDetail.data.F_TRAILER.TR_ID;
+         const trailerId = getFilmDetail.data.F_TRAILER[TRAILER.id];
          const response = await onmoviedbApi.getVideos(category, trailerId);
          setVideos(response.results.slice(0, 2));
       };
@@ -34,7 +35,6 @@ function Trailers(props) {
 
 const Video = (props) => {
    const item = props.item;
-
    const iframeRef = useRef(null);
 
    useEffect(() => {

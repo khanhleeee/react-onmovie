@@ -6,12 +6,12 @@ import onmoviedbApi from '~/api/onmoviedb';
 import styles from './Detail.module.scss';
 import apiConfig from '~/api/apiConfig';
 import serverNode from '~/api/serverNode';
+import { ACTORS } from '~/constants';
 
 const cx = classNames.bind(styles);
 
 function CastList(props) {
    const category = 'movie';
-
    const [casts, setCasts] = useState([]);
 
    useEffect(() => {
@@ -31,15 +31,12 @@ function CastList(props) {
                <div
                   className={cx('cast-img')}
                   style={{
-                     // backgroundImage: `url(${apiConfig.w500Image(
-                     //    cast.profile_path,
-                     // )})`,
                      backgroundImage: `url(${apiConfig.w500Image(
-                        cast.ANC_AVATAR,
+                        cast[ACTORS.avatar],
                      )})`,
                   }}
                ></div>
-               <p className={cx('cast-name')}>{cast.ANC_NAME}</p>
+               <p className={cx('cast-name')}>{cast[ACTORS.name]}</p>
             </div>
          ))}
       </div>

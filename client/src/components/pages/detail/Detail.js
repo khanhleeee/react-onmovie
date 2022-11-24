@@ -9,6 +9,7 @@ import Trailers from './Trailers';
 import MovieList from '~/components/MovieList/MovieList';
 import Rating from './Rating';
 import Favorite from './Favorite';
+import { MOVIE } from '~/constants';
 
 const cx = classNames.bind(styles);
 
@@ -35,7 +36,7 @@ function Detail() {
                <div
                   className={cx('banner')}
                   style={{
-                     backgroundImage: `url(${item.F_BACKCDROP})`,
+                     backgroundImage: `url(${item[MOVIE.backdrop]})`,
                   }}
                ></div>
                <div className={cx('content', 'mb-3')}>
@@ -43,23 +44,21 @@ function Detail() {
                      <div
                         className={cx('poster-img')}
                         style={{
-                           backgroundImage: `url(${item.F_POSTER})`,
+                           backgroundImage: `url(${item[MOVIE.poster]})`,
                         }}
                      ></div>
                   </div>
                   <div className={cx('info')}>
                      <div className={cx('header')}>
                         <div>
-                           <div className={cx('title')}>
-                              {item.title || item.name || item.F_OFFICIAL_NAME}
-                           </div>
+                           <div className={cx('title')}>{item[MOVIE.name]}</div>
                            <div className={cx('genres')}>
-                              {item.G_NAME &&
+                              {/* {item.G_NAME &&
                                  item.G_NAME.slice(0, 5).map((gene, i) => (
                                     <span key={i} className={cx('item')}>
                                        {gene}
                                     </span>
-                                 ))}
+                                 ))} */}
                            </div>
                         </div>
                         <div className={cx('feature-btns')}>
@@ -67,19 +66,18 @@ function Detail() {
                            <Favorite id={id} />
                         </div>
                      </div>
-
-                     <p className={cx('overview')}>{item.F_DESC}</p>
+                     <p className={cx('overview')}>{item[MOVIE.desc]}</p>
                      <div className={cx('cast')}>
                         <div className="section-header">
                            <h2>Casts</h2>
                         </div>
-                        <CastList id={item.F_ID} />
+                        <CastList id={item[MOVIE.id]} />
                      </div>
                   </div>
                </div>
                <div className={cx('trailer', 'container')}>
                   <div className="section mb-3">
-                     <Trailers id={item.F_ID} />
+                     <Trailers id={item[MOVIE.id]} />
                   </div>
                   <div className="section mb-3">
                      <div className="section-header mb-2">
@@ -88,7 +86,7 @@ function Detail() {
                      <MovieList
                         category={category}
                         type="similar"
-                        id={item.F_ID}
+                        id={item[MOVIE.id]}
                      />
                   </div>
                </div>

@@ -1,23 +1,29 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
+
+import { MOVIE, GENRE, COUNTRY } from '~/constants';
 import serverNode from '~/api/serverNode';
 import styles from './FilterList.module.scss';
 
 const cx = classNames.bind(styles);
 
-export default function FilterList({ active, setActiveGenre, setActiveCountry }) {
+const itemGenreAll = {
+   [GENRE.id]: -1,
+   [GENRE.name]: 'All',
+};
+
+const itemCountryAll = {
+   [COUNTRY.id]: -1,
+   [COUNTRY.name]: 'All',
+};
+
+export default function FilterList({
+   active,
+   setActiveGenre,
+   setActiveCountry,
+}) {
    const [genres, setGenres] = useState([]);
    const [coutries, setCountries] = useState([]);
-
-   const itemGenreAll = {
-      G_ID: 'AllGenre',
-      G_NAME: 'All Genre',
-   };
-
-   const itemCountryAll = {
-      C_ID: 'AllCountry',
-      C_NAME: 'All Country',
-   };
 
    useEffect(() => {
       const getGenres = async () => {
@@ -39,15 +45,15 @@ export default function FilterList({ active, setActiveGenre, setActiveCountry })
             <div className={cx('container')}>
                <FilterItemGenre
                   item={itemGenreAll}
-                  onClick={() => setActiveGenre(itemGenreAll.G_ID)}
-                  isCheck={active.activeGenre === itemGenreAll.G_ID}
+                  onClick={() => setActiveGenre(itemGenreAll[GENRE.id])}
+                  isCheck={active.activeGenre === itemGenreAll[GENRE.id]}
                />
                {genres.map((item, index) => (
                   <FilterItemGenre
                      key={index}
                      item={item}
-                     onClick={() => setActiveGenre(item.G_ID)}
-                     isCheck={active.activeGenre === item.G_ID}
+                     onClick={() => setActiveGenre(item[GENRE.id])}
+                     isCheck={active.activeGenre === item[GENRE.id]}
                   />
                ))}
             </div>
@@ -57,15 +63,15 @@ export default function FilterList({ active, setActiveGenre, setActiveCountry })
             <div className={cx('container')}>
                <FilterItemCountry
                   item={itemCountryAll}
-                  onClick={() => setActiveCountry(itemCountryAll.C_ID)}
-                  isCheck={active.activeCountry === itemCountryAll.C_ID}
+                  onClick={() => setActiveCountry(itemCountryAll[COUNTRY.id])}
+                  isCheck={active.activeCountry === itemCountryAll[COUNTRY.id]}
                />
                {coutries.map((item, index) => (
                   <FilterItemCountry
                      key={index}
                      item={item}
-                     onClick={() => setActiveCountry(item.C_ID)}
-                     isCheck={active.activeCountry === item.C_ID}
+                     onClick={() => setActiveCountry(item[COUNTRY.id])}
+                     isCheck={active.activeCountry === item[COUNTRY.id]}
                   />
                ))}
             </div>
@@ -81,7 +87,7 @@ const FilterItemGenre = (props) => {
          onClick={props.onClick ? props.onClick : null}
          className={props.isCheck ? cx('card', 'checked') : cx('card')}
       >
-         {item.G_NAME}
+         {item[GENRE.name]}
       </div>
    );
 };
@@ -93,8 +99,7 @@ const FilterItemCountry = (props) => {
          onClick={props.onClick ? props.onClick : null}
          className={props.isCheck ? cx('card', 'checked') : cx('card')}
       >
-         {item.C_NAME}
+         {item[COUNTRY.name]}
       </div>
    );
 };
-
