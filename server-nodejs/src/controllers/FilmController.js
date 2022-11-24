@@ -39,6 +39,7 @@ module.exports = {
             { name: "PAGENUMBER", type: mssql.Int, value: firstPage },
             { name: "PAGESIZE", type: mssql.Int, value: per_page },
           ]);
+          console.log(result.recordset);
           for (let i = 0; i < result.recordset.length; i++) {
             obj.data.push(result.recordset[i]);
           }
@@ -139,7 +140,7 @@ module.exports = {
         F_RELEASEYEAR: result.recordset[0].F_RELEASEYEAR,
         F_AVGRATING: result.recordset[0].F_AVGRATING,
         F_LIMITEDAGE: result.recordset[0].F_LIMITEDAGE,
-        F_BACKDROP: result.recordset[0].F_BACKCDROP,
+        F_BACKDROP: result.recordset[0].F_BACKDROP,
         F_POSTER: result.recordset[0].F_POSTER,
         C_ID: result.recordset[0].C_ID,
         S_ID: result.recordset[0].S_ID,

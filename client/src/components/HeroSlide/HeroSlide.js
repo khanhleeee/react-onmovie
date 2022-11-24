@@ -21,10 +21,11 @@ function HeroSlide() {
       const getMovies = async () => {
          try {
             const movies = await serverNode.getFilmList(1);
-            console.log(movies);
+
             // const movies = await onmoviedbApi.getMovieList(movieType.popular, {
             //    params,
             // });
+            console.log(movies);
             setMovieItems(movies.data.data.slice(0, 6));
          } catch {
             console.error('error');
@@ -62,9 +63,7 @@ const HeroSlideItem = (props) => {
 
    const item = props.item;
 
-   const background = apiConfig.originalImage(
-      item[MOVIE.backdrop] || item[MOVIE.poster],
-   );
+   const background = item[MOVIE.backdrop] || item[MOVIE.poster];
 
    return (
       <div
