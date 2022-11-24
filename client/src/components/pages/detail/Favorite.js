@@ -19,11 +19,13 @@ function Favorite({ id }) {
             .getWatchList(userData[USER.id])
             .then((res) => {
                const user_watchlist = res.data.data;
-               user_watchlist.forEach((watchlist) => {
-                  if (watchlist[MOVIE.id] === id) {
-                     setActive(true);
-                  }
-               });
+               if(user_watchlist) {
+                  user_watchlist.forEach((watchlist) => {
+                     if (watchlist[MOVIE.id] == id) {
+                        setActive(true);
+                     }
+                  });
+               }
                setWatchlist(user_watchlist);
             })
             .catch((err) => {

@@ -27,7 +27,6 @@ function Detail() {
          setItem(response.data);
          console.log(response.data);
       };
-
       getDetail();
    }, [category, id]);
 
@@ -53,14 +52,14 @@ function Detail() {
                   <div className={cx('info')}>
                      <div className={cx('header')}>
                         <div>
-                           <div className={cx('title-rating')}>
-                              <div className={cx('title')}>
-                                 {item[MOVIE.name]}
-                              </div>
-                              <div className={cx('rating')}>
-                                 <StarIcon classNames={cx('icon')} />
-                                 <span>5.4</span>
-                              </div>
+                           <div className={cx('title')}>{item[MOVIE.name]}</div>
+                           <div className={cx('genres')}>
+                              {item.G_NAME &&
+                                 item.G_NAME.slice(0, 5).map((gene, i) => (
+                                    <span key={i} className={cx('item')}>
+                                       {gene}
+                                    </span>
+                                 ))}
                            </div>
                            <div className={cx('genres')}></div>
                         </div>

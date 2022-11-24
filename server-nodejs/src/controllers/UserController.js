@@ -20,8 +20,8 @@ module.exports = {
       let filmID = req.body.F_ID;
       let userID = req.body.U_ID;
       const result = await executeMultipleParams('sp_addFilmToWatchList', [
-        { name: 'F_ID', type: mssql.Char(5), value: filmID },
-        { name: 'U_ID', type: mssql.Char(5), value: userID },
+        { name: 'F_ID', type: mssql.Int, value: filmID },
+        { name: 'U_ID', type: mssql.Int, value: userID },
       ]);
       if (result.recordset == undefined) {
         res.status(200).json('Film already in watch list');
@@ -44,8 +44,8 @@ module.exports = {
       let filmID = req.body.F_ID;
       let userID = req.body.U_ID;
       const result = await executeMultipleParams('sp_removeFilmFromWatchList', [
-        { name: 'F_ID', type: mssql.Char(5), value: filmID },
-        { name: 'U_ID', type: mssql.Char(5), value: userID },
+        { name: 'F_ID', type: mssql.Int, value: filmID },
+        { name: 'U_ID', type: mssql.Int, value: userID },
       ]);
       if (result.recordset == undefined) {
         res.status(200).json('Film not in watch list');

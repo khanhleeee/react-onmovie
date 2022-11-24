@@ -76,8 +76,8 @@ module.exports = {
     try {
       const result = await executeMultipleParams("sp_searchFilms", [
         {
-          name: "KW_TITLE",
-          type: mssql.NVarChar,
+          name: "KEYWORD",
+          type: mssql.NVarChar(100),
           value: q,
         },
       ]);
@@ -124,6 +124,13 @@ module.exports = {
           value: filmID,
         },
       ]);
+      const findGenre = await executeMultipleParams("sp_getGenresOfFilm", [
+        {
+          name: "F_ID",
+          type: mssql.Char(numberChar),
+          value: filmID,
+        },
+      ]);
       const findTrailer = await executeMultipleParams("sp_getFilmTrailers", [
         {
           name: "ID_FILM",
@@ -144,10 +151,10 @@ module.exports = {
         C_ID: result.recordset[0].C_ID,
         S_ID: result.recordset[0].S_ID,
         F_TRAILER: findTrailer.recordset[0],
-        G_NAME: [],
+        G_NAME: []
       };
-      for (let i = 0; i < result.recordset.length; i++) {
-        obj.G_NAME.push(result.recordset[i].G_NAME);
+      for (let i = 0; i < findGenre.recordset.length; i++) {
+        obj.G_NAME.push(findGenre.recordset[i].G_NAME);
       }
       res.status(200).json(obj);
     } catch (error) {
