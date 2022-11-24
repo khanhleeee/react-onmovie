@@ -52,7 +52,15 @@ function Detail() {
                   <div className={cx('info')}>
                      <div className={cx('header')}>
                         <div>
-                           <div className={cx('title')}>{item[MOVIE.name]}</div>
+                           <div className={cx('title-rating')}>
+                              <div className={cx('title')}>
+                                 {item[MOVIE.name]}
+                              </div>
+                              <div className={cx('rating')}>
+                                 <StarIcon classNames={cx('icon')} />
+                                 <span>{Math.round(item[MOVIE.avg] * 100)/100}</span>
+                              </div>
+                           </div>
                            <div className={cx('genres')}>
                               {item.G_NAME &&
                                  item.G_NAME.slice(0, 5).map((gene, i) => (

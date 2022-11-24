@@ -39,7 +39,6 @@ module.exports = {
             { name: "PAGENUMBER", type: mssql.Int, value: firstPage },
             { name: "PAGESIZE", type: mssql.Int, value: per_page },
           ]);
-          console.log(result.recordset);
           for (let i = 0; i < result.recordset.length; i++) {
             obj.data.push(result.recordset[i]);
           }
@@ -142,15 +141,14 @@ module.exports = {
       var obj = {
         F_ID: result.recordset[0].F_ID,
         F_OFFICIAL_NAME: result.recordset[0].F_OFFICIAL_NAME,
-        F_PREFERENCED_NAME: result.recordset[0].F_PREFERENCED_NAME,
         F_DESC: result.recordset[0].F_DESC,
-        F_RELEASEYEAR: result.recordset[0].F_RELEASEYEAR,
-        F_AVGRATING: result.recordset[0].F_AVGRATING,
-        F_LIMITEDAGE: result.recordset[0].F_LIMITEDAGE,
+        F_RELEASE_DATE: result.recordset[0].F_RELEASE_DATE,
+        F_AVG: result.recordset[0].F_AVG,
+        F_AGE: result.recordset[0].F_AGE,
         F_BACKDROP: result.recordset[0].F_BACKDROP,
         F_POSTER: result.recordset[0].F_POSTER,
-        C_ID: result.recordset[0].C_ID,
-        S_ID: result.recordset[0].S_ID,
+        C_NAME: result.recordset[0].C_NAME,
+        S_NAME: result.recordset[0].S_NAME,
         F_TRAILER: findTrailer.recordset[0],
         G_NAME: []
       };
