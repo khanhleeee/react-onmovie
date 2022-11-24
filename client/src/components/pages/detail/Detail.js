@@ -10,6 +10,7 @@ import MovieList from '~/components/MovieList/MovieList';
 import Rating from './Rating';
 import Favorite from './Favorite';
 import { MOVIE } from '~/constants';
+import { StarIcon } from '~/components/Icons/Icons';
 
 const cx = classNames.bind(styles);
 
@@ -24,6 +25,7 @@ function Detail() {
          window.scrollTo(0, 0);
          const response = await serverNode.getFilmDetail(id);
          setItem(response.data);
+         console.log(response.data);
       };
 
       getDetail();
@@ -51,15 +53,16 @@ function Detail() {
                   <div className={cx('info')}>
                      <div className={cx('header')}>
                         <div>
-                           <div className={cx('title')}>{item[MOVIE.name]}</div>
-                           <div className={cx('genres')}>
-                              {/* {item.G_NAME &&
-                                 item.G_NAME.slice(0, 5).map((gene, i) => (
-                                    <span key={i} className={cx('item')}>
-                                       {gene}
-                                    </span>
-                                 ))} */}
+                           <div className={cx('title-rating')}>
+                              <div className={cx('title')}>
+                                 {item[MOVIE.name]}
+                              </div>
+                              <div className={cx('rating')}>
+                                 <StarIcon classNames={cx('icon')} />
+                                 <span>5.4</span>
+                              </div>
                            </div>
+                           <div className={cx('genres')}></div>
                         </div>
                         <div className={cx('feature-btns')}>
                            <Rating id={id} />
