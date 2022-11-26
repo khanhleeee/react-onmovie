@@ -20,12 +20,7 @@ function HeroSlide() {
    useEffect(() => {
       const getMovies = async () => {
          try {
-            const movies = await serverNode.getFilmList(1);
-
-            // const movies = await onmoviedbApi.getMovieList(movieType.popular, {
-            //    params,
-            // });
-            console.log(movies);
+            const movies = await serverNode.getFilmList(0);
             setMovieItems(movies.data.data.slice(0, 6));
          } catch {
             console.error('error');

@@ -24,8 +24,7 @@ function Detail() {
       const getDetail = async () => {
          window.scrollTo(0, 0);
          const response = await serverNode.getFilmDetail(id);
-         setItem(response.data);
-         console.log(response.data);
+         setItem(response.data.data);
       };
       getDetail();
    }, [category, id]);

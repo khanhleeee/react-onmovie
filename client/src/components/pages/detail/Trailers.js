@@ -16,8 +16,7 @@ function Trailers(props) {
    useEffect(() => {
       const getVideos = async () => {
          const getFilmDetail = await serverNode.getFilmDetail(props.id);
-
-         const trailerId = getFilmDetail.data.F_TRAILER[TRAILER.id];
+         const trailerId = getFilmDetail.data.data.F_TRAILER[TRAILER.id];
          const response = await onmoviedbApi.getVideos(category, trailerId);
          setVideos(response.results.slice(0, 2));
       };

@@ -16,29 +16,30 @@ function CastList(props) {
 
    useEffect(() => {
       const getCredits = async () => {
-         // const response = await onmoviedbApi.credits(category, props.id);
-         // setCasts(response.cast.slice(0, 5));
          const response = await serverNode.getActorFilm(props.id);
-         setCasts(response.data.slice(0, 5));
+         setCasts(response.data.data.slice(0, 5));
       };
       getCredits();
    }, [category, props.id]);
 
    return (
       <div className={cx('casts')}>
-         {casts.map((cast, i) => (
-            <div key={i} className={cx('cast')}>
-               <div
-                  className={cx('cast-img')}
-                  style={{
-                     backgroundImage: `url(${apiConfig.w500Image(
-                        cast[ACTORS.avatar],
-                     )})`,
-                  }}
-               ></div>
-               <p className={cx('cast-name')}>{cast[ACTORS.name]}</p>
-            </div>
-         ))}
+         {casts.length === 0 ?
+            <div>No information</div>
+            :
+            casts.map((cast, i) => (
+               <div key={i} className={cx('cast')}>
+                  <div
+                     className={cx('cast-img')}
+                     style={{
+                        backgroundImage: `url(${apiConfig.w500Image(
+                           cast[ACTORS.avatar],
+                        )})`,
+                     }}
+                  ></div>
+                  <p className={cx('cast-name')}>{cast[ACTORS.name]}</p>
+               </div>
+            ))}
       </div>
    );
 }
