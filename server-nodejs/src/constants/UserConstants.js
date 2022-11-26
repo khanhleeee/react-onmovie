@@ -1,4 +1,3 @@
-
 module.exports.USER = {
    id: 'U_ID',
    name: 'U_NAME',
