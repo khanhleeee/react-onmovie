@@ -1,61 +1,38 @@
+const { executeMultipleParams, queryStatement } = require("../database/handleQuery");
+const { FILM } = require("../constants/FilmConstants");
+const { GENRE } = require("../constants/GenreConstants");
+const { COUNTRY } = require("../constants/CountryConstants");
+const { TYPE } = require("../constants/TypeConstants");
 const mssql = require("mssql");
-const {
-    queryStatement,
-    executeMultipleParams,
-} = require("../database/handleQuery");
-const {
-    per_page,
-    firstPage,
-    numberChar,
-} = require("../constants/FilmConstants");
 
 module.exports = {
-    movieList: async (req, res) => {
+    getMoviesList: async (req, res) => {
         try {
             const page = parseInt(req.query.page);
-            if (isNaN(page)) {
+            const perPage = parseInt(req.query.perPage);
+            if (isNaN(page) || page === 0) {
+                const result = await executeMultipleParams("sp_getFilmsByDate", []);
                 var obj = {
+                    total: result.recordset.length,
                     data: [],
                 };
-                const result = await executeMultipleParams("sp_getFilmsByDate", []);
                 for (let i = 0; i < result.recordset.length; i++) {
                     obj.data.push(result.recordset[i]);
                 }
             } else {
-                const statement = "SELECT COUNT (*) FROM FILMS";
-                const count = await queryStatement(statement);
-                const total = count.recordsets;
-                const offset = (page - 1) * per_page;
-                if (offset == 0) {
-                    var obj = {
-                        page: firstPage,
-                        per_page: per_page,
-                        total: total[0][0][""],
-                        total_pages: total[0][0][""] / per_page,
-                        data: [],
-                    };
-                    const result = await executeMultipleParams("sp_pagination", [
-                        { name: "PAGENUMBER", type: mssql.Int, value: firstPage },
-                        { name: "PAGESIZE", type: mssql.Int, value: per_page },
-                    ]);
-                    for (let i = 0; i < result.recordset.length; i++) {
-                        obj.data.push(result.recordset[i]);
-                    }
-                } else {
-                    var obj = {
-                        page: page,
-                        per_page: per_page,
-                        total: total[0][0][""],
-                        total_pages: total[0][0][""] / per_page,
-                        data: [],
-                    };
-                    const result = await executeMultipleParams("sp_pagination", [
-                        { name: "PAGENUMBER", type: mssql.Int, value: firstPage },
-                        { name: "PAGESIZE", type: mssql.Int, value: per_page },
-                    ]);
-                    for (let i = 0; i < result.recordset.length; i++) {
-                        obj.data.push(result.recordset[i]);
-                    }
+                const result = await executeMultipleParams("sp_pagination", [
+                    { name: "PAGENUMBER", type: TYPE.int, value: page },
+                    { name: "PAGESIZE", type: TYPE.int, value: perPage },
+                ]);
+                var obj = {
+                    page: page,
+                    per_page: perPage,
+                    // total: result.recordset.length,
+                    // total_pages: Math.ceil(result.recordset.length / perPage),
+                    data: [],
+                };
+                for (let i = 0; i < result.recordset.length; i++) {
+                    obj.data.push(result.recordset[i]);
                 }
             }
             res.status(200).json(obj);
@@ -64,94 +41,135 @@ module.exports = {
         }
     },
     getDetailMovie: async (req, res) => {
-        const movieID = req.params.movieID;
+        const filmID = req.params.filmID;
         try {
-            const result = await executeMultipleParams("sp_getFilmDetail", [{
-                name: "F_ID",
-                type: mssql.Char(numberChar),
-                value: movieID,
-            }]);
-            const findTrailer = await executeMultipleParams("sp_getFilmTrailers", [{
-                name: "ID_FILM",
-                type: mssql.Char(numberChar),
-                value: movieID,
-            }]);
+            const result = await executeMultipleParams("sp_getFilmDetail", [
+                {
+                    name: "F_ID",
+                    type: TYPE.int,
+                    value: filmID,
+                },
+            ]);
+            const findGenre = await executeMultipleParams("sp_getGenresOfFilm", [
+                {
+                    name: "F_ID",
+                    type: TYPE.charFive,
+                    value: filmID,
+                },
+            ]);
+            const findTrailer = await executeMultipleParams("sp_getFilmTrailers", [
+                {
+                    name: "ID_FILM",
+                    type: TYPE.charFive,
+                    value: filmID,
+                },
+            ]);
             var obj = {
-                F_ID: result.recordset[0].F_ID,
-                F_OFFICIAL_NAME: result.recordset[0].F_OFFICIAL_NAME,
-                F_PREFERENCED_NAME: result.recordset[0].F_PREFERENCED_NAME,
-                F_DESC: result.recordset[0].F_DESC,
-                F_RELEASEYEAR: result.recordset[0].F_RELEASEYEAR,
-                F_AVGRATING: result.recordset[0].F_AVGRATING,
-                F_LIMITEDAGE: result.recordset[0].F_LIMITEDAGE,
-                F_BACKCDROP: result.recordset[0].F_BACKCDROP,
-                F_POSTER: result.recordset[0].F_POSTER,
-                C_ID: result.recordset[0].C_ID,
-                S_ID: result.recordset[0].S_ID,
+                F_ID: result.recordset[0][FILM.id],
+                F_OFFICIAL_NAME: result.recordset[0][FILM.name],
+                F_DESC: result.recordset[0][FILM.desc],
+                F_RELEASE_DATE: result.recordset[0][FILM.release_date],
+                F_AVG: result.recordset[0][FILM.avg],
+                F_AGE: result.recordset[0][FILM.age],
+                F_BACKDROP: result.recordset[0][FILM.backdrop],
+                F_POSTER: result.recordset[0][FILM.poster],
+                S_NAME: result.recordset[0][FILM.status],
+                C_NAME: result.recordset[0][COUNTRY.name],
                 F_TRAILER: findTrailer.recordset[0],
-                G_NAME: [],
+                G_NAME: []
             };
-            for (let i = 0; i < result.recordset.length; i++) {
-                obj.G_NAME.push(result.recordset[i].G_NAME);
+            for (let i = 0; i < findGenre.recordset.length; i++) {
+                obj.G_NAME.push(findGenre.recordset[i][GENRE.name]);
             }
-            res.status(200).json(obj);
+            res.status(200).json({ data: obj });
         } catch (error) {
             res.status(500).json(error);
         }
     },
     editDetailMovie: async (req, res) => {
-        const movieID = req.params.movieID;
+        const filmID = req.params.filmID;
+        const status = 2;
+        const cID = 'USA';
+        const avg = 8.0;
+        const age = 18;
         const {
-            movieName,
-            preferenceName,
-            movieDesc,
-            movieRelease,
-            movieLimit,
-            movieRating,
-            movieBackdrop,
-            moviePoster,
-            C_ID,
-            S_ID,
+            [FILM.name]: name,
+            [FILM.release_date]: release_date,
+            [FILM.backdrop]: backdrop,
+            [FILM.poster]: poster,
+            [FILM.desc]: desc,
+            // [FILM.age]: age,
+            // [FILM.avg]: avg,
+            // [FILM.status]: status,
+            // [COUNTRY.id]: cID,            
         } = req.body;
         try {
-            const result = await executeMultipleParams("sp_editFilm", [
-                { name: "F_ID", type: mssql.Char(5), value: movieID },
+            const result = await executeMultipleParams("sp_editDetailsFilm", [
+                { name: "F_ID", type: mssql.Int, value: filmID },
                 {
                     name: "F_OFFICIAL_NAME",
-                    type: mssql.NVarChar(80),
-                    value: movieName,
+                    type: mssql.NVarChar(100),
+                    value: name,
+                },
+                { name: "F_DESC", type: mssql.NVarChar(1000), value: desc },
+                {
+                    name: "F_RELEASE_DATE",
+                    type: mssql.SmallDateTime,
+                    value: release_date,
                 },
                 {
-                    name: "F_PREFERENCED_NAME",
-                    type: mssql.NVarChar(80),
-                    value: preferenceName,
+                    name: "F_AVG",
+                    type: mssql.Real,
+                    value: avg,
                 },
-                { name: "F_DESC", type: mssql.NVarChar(1000), value: movieDesc },
-                {
-                    name: "F_RELEASEYEAR",
-                    type: mssql.Date,
-                    value: movieRelease,
-                },
-                {
-                    name: "F_LIMITEDAGE",
-                    type: mssql.TinyInt,
-                    value: movieLimit,
-                },
-                { name: "F_AVGRATING", type: mssql.Decimal, value: movieRating },
+                { name: "F_AGE", type: mssql.TinyInt, value: age },
                 {
                     name: "F_BACKDROP",
                     type: mssql.VarChar(100),
-                    value: movieBackdrop,
+                    value: backdrop,
                 },
                 {
                     name: "F_POSTER",
                     type: mssql.VarChar(100),
-                    value: moviePoster,
+                    value: poster,
                 },
-                { name: "S_ID", type: mssql.Char(15), value: S_ID },
-                { name: "C_ID", type: mssql.VarChar(3), value: C_ID },
+                { name: "S_ID", type: mssql.Int, value: status },
+                { name: "C_ID", type: mssql.Char(3), value: cID },
             ]);
             res.status(200).json({
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+    getAllGenres: async (req, res) => {
+        try {
+            const result = await executeMultipleParams("sp_getGenres", []);
+            res.status(200).json({
+                total: result.recordset.length,
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+    getAllCasts: async (req, res) => {
+        try {
+            const result = await queryStatement("SELECT ANC_ID, ANC_NAME, ANC_AVATAR FROM ACTORS_CREATORS");
+            res.status(200).json({
+                total: result.recordset.length,
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+    getAllKeywords: async (req, res) => {
+        try {
+            const result = await queryStatement("SELECT KW_ID, KW_NAME FROM KEYWORDS");
+            res.status(200).json({
+                total: result.recordset.length,
                 data: result.recordset,
             });
         } catch (error) {
