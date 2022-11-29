@@ -7,36 +7,26 @@ import Col from "react-bootstrap/Col";
 
 import styles from "./editMovie.module.scss";
 import Tag from "../../components/Tag/Tag";
+import { serverNode } from "../../api/serverNode";
 
 const cx = classname.bind(styles);
-
-const KEYWORDS = [
-  {
-    KW_ID: 1,
-    KW_NAME: "The movie",
-  },
-  {
-    KW_ID: 2,
-    KW_NAME: "STAN1",
-  },
-  {
-    KW_ID: 3,
-    KW_NAME: "STAN1",
-  },
-];
 
 export const KeywordForm = () => {
   const [movieKeywords, setMovieKeywords] = useState([]);
   const [keywords, setKeywords] = useState([]);
 
   useEffect(() => {
-    // Lấy danh sách kw
-    setKeywords(KEYWORDS);
+    const getAllKeyword = async () => {
+      const response = await serverNode.getAllKeywords();
+      setKeywords(response.data.data);
+    };
+    getAllKeyword();
   }, []);
 
   const handleAddKeyword = (item) => {
     if (item) {
       if (!movieKeywords.some((keyword) => keyword.KW_ID === item.KW_ID)) {
+        //call api here
         setMovieKeywords([...movieKeywords, item]);
       } else {
         alert(`Already add keyword ${item.KW_NAME} to movie`);
