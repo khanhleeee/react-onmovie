@@ -1,14 +1,12 @@
-import { useContext } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
-import { AuthContext } from "./context/authContext/AuthContext";
 
 import { publicRoutes } from "./routes";
 
 function App() {
-  const { user } = useContext(AuthContext);
+  const  user  = true;
 
   return (
     <Router>

@@ -1,14 +1,19 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import classname from "classnames/bind";
 
 import styles from "./topbar.module.scss";
-import { AuthContext } from "../../context/authContext/AuthContext";
+// import { AuthContext } from "../../context/authContext/AuthContext";
 
 const cx = classname.bind(styles);
 
 export default function Topbar() {
-  const { user, dispatch } = useContext(AuthContext);
+  // const { user, dispatch } = useContext(AuthContext);
+
+  const user = {
+    id: '1',
+    username: "John Doe",
+  }
 
   return (
     <div className={cx("topbar")}>
