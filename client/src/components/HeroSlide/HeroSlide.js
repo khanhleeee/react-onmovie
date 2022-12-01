@@ -35,7 +35,7 @@ function HeroSlide() {
    useEffect(() => {
       const getMovies = async () => {
          try {
-            const movies = await serverNode.getFilmList(1);
+            const movies = await serverNode.getFilmList(0);
             setMovieItems(movies.data.data.slice(0, 6));
          } catch {
             console.error('error');
@@ -89,7 +89,7 @@ const HeroSlideItem = (props) => {
                <div className={cx('hightlight')}>
                   <span className={cx('rating')}>
                      <StarIcon classNames={cx('icon')} />
-                     {item[MOVIE.avg]}
+                     {Math.round(item[MOVIE.avg] * 100) / 100}
                   </span>
                   <span className={cx('date')}>{formatDate}</span>
                </div>

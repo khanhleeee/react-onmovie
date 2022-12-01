@@ -22,7 +22,7 @@ function Catalog() {
             const response = await serverNode.getFilmsByCountry(activeCountry);
             setFilms(response.data);
          };
-      } else {
+      } else if (activeGenre !== -1 && activeCountry !== -1) {
          getFilms = async () => {
             const response = await serverNode.getFilmsByGenreAndCountry(
                activeGenre,
@@ -30,21 +30,13 @@ function Catalog() {
             );
             setFilms(response.data);
          };
-      }
-      getFilms();
-   }, [activeGenre, activeCountry]);
-
-   useEffect(() => {
-      if (activeGenre !== -1 && activeCountry !== -1) {
-         const getGenreCountryFilms = async () => {
-            const response = await serverNode.getFilmsByGenreAndCountry(
-               activeGenre,
-               activeCountry,
-            );
+      } else {
+         getFilms = async () => {
+            const response = await serverNode.getFilmList(0);
             setFilms(response.data);
          };
-         getGenreCountryFilms();
       }
+      getFilms();
    }, [activeGenre, activeCountry]);
 
    return (

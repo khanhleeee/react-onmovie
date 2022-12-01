@@ -28,12 +28,12 @@ export default function FilterList({
    useEffect(() => {
       const getGenres = async () => {
          const response = await serverNode.getGenres();
-         setGenres(response.data);
+         setGenres(response.data.data);
       };
       getGenres();
       const getContries = async () => {
          const response = await serverNode.getContries();
-         setCountries(response.data);
+         setCountries(response.data.data);
       };
       getContries();
    }, []);
