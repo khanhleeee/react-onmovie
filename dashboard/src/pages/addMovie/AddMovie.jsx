@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classname from "classnames/bind";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,17 +10,21 @@ import styles from "./AddMovie.module.scss";
 import { GenresForm } from "./GenreForm";
 import { KeywordForm } from "./KeywordForm ";
 import { CastForm } from "./CastForm";
+import { COUNTRY, MOVIE } from "../../../src/constants";
 
 const cx = classname.bind(styles);
 
 function AddMovie() {
   const [detailValues, setDetailValues] = useState({
-    F_OFFICIAL_NAME: "",
-    F_RELEASE_DATE: "",
-    F_BACKDROP: "",
-    F_POSTER: "",
-    F_DESC: "",
+    [MOVIE.name]: "",
+    [MOVIE.date]: "",
+    [MOVIE.backdrop]: "",
+    [MOVIE.poster]: "",
+    [MOVIE.desc]: "",
+    [MOVIE.age]: "",
+    [MOVIE.country]: "",
   });
+  console.log(detailValues);
 
   const [movieGenres, setMovieGenres] = useState([]);
   const [movieCasts, setMovieCasts] = useState([]);
@@ -39,6 +43,7 @@ function AddMovie() {
       <form onSubmit={handleSubmit} className={cx("detail-form")}>
         <MovieDetailForm
           detailValues={detailValues}
+          setDetailValues={setDetailValues}
           handleOnchange={handleOnchange}
         />
         <GenresForm movieGenres={movieGenres} setMovieGenres={setMovieGenres} />
@@ -59,7 +64,7 @@ function AddMovie() {
   );
 }
 
-const MovieDetailForm = ({ detailValues, handleOnchange }) => {
+const MovieDetailForm = ({ detailValues, setDetailValues, handleOnchange }) => {
   const DETAIL_INPUTS = [
     {
       name: "F_OFFICIAL_NAME",
@@ -97,10 +102,62 @@ const MovieDetailForm = ({ detailValues, handleOnchange }) => {
       columns: "12",
     },
   ];
+  const COUNTRIES = [
+    { [COUNTRY.id]: "VIE", [COUNTRY.name]: "Viet Nam" },
+    { [COUNTRY.id]: "USA", [COUNTRY.name]: "My" },
+    { [COUNTRY.id]: "JPN", [COUNTRY.name]: "Nhat Ban" },
+  ];
+
+  const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    setCountries(COUNTRIES);
+  }, []);
 
   return (
     <>
       <h2 className={cx("sub-title")}>Movie's details</h2>
+      <Row>
+        <Col sm={12} lg={3}>
+          <label>Nation</label>
+          <select
+            className={cx("dropdown")}
+            name="C_ID"
+            value={detailValues.C_ID}
+            onChange={(e) =>
+              setDetailValues({
+                ...detailValues,
+                C_ID: e.target.value,
+              })
+            }
+          >
+            {countries.map((item, index) => (
+              <option key={index} value={item[COUNTRY.id]}>
+                {item[COUNTRY.name]}
+              </option>
+            ))}
+          </select>
+        </Col>
+        <Col sm={12} lg={3}>
+          <label>Limited age</label>
+          <select
+            className={cx("dropdown")}
+            name="F_AGE"
+            value={detailValues.F_AGE}
+            onChange={(e) =>
+              setDetailValues({
+                ...detailValues,
+                F_AGE: e.target.value,
+              })
+            }
+          >
+            <option value="13">Above 13</option>
+            <option value="16">Above 16</option>
+            <option value="18">Above 18</option>
+            <option value="21">Above 21</option>
+          </select>
+        </Col>
+      </Row>
       <Row>
         {DETAIL_INPUTS.map((input, index) => (
           <Col key={index} sm={12} lg={input.columns}>
