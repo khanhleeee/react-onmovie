@@ -45,7 +45,8 @@
    &.active > .content > .info {
       .btns,
       .overview,
-      .title {
+      .title,
+      .hightlight {
          opacity: 1;
          transform: translateX(0);
       }
@@ -77,7 +78,7 @@
          width: 100%;
       }
       .title {
-         font-size: 8rem;
+         font-size: 7.2rem;
          font-weight: 700;
          line-height: 1;
          overflow: hidden;
@@ -90,11 +91,32 @@
             font-size: 6rem;
          }
       }
+      .hightlight {
+         @include flex(center, unset);
+         padding: 2rem 0;
+
+         .rating {
+            @include flex(center, unset);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-right: 2rem;
+
+            .icon {
+               width: 2rem;
+               height: 2rem;
+               color: rgb(231, 213, 13);
+            }
+         }
+         .date {
+            font-size: 1.8rem;
+            line-height: 1.8rem;
+            color: rgb(176, 176, 176);
+         }
+      }
       .overview {
          text-align: justify;
          text-justify: inter-word;
-         font-size: 1.8rem;
-         margin-top: 3rem;
+         font-size: 1.6rem;
          font-weight: 600;
          color: $content-color;
          overflow: hidden;
@@ -112,7 +134,8 @@
 
       .btns,
       .overview,
-      .title {
+      .title,
+      .hightlight {
          opacity: 0;
          transform: translateX(-200px);
          transition: transform 0.5s ease, opacity 0.5s ease;

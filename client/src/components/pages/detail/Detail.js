@@ -19,6 +19,7 @@ function Detail() {
    const category = 'movie';
 
    const [item, setItem] = useState(null);
+   const [genres, setGenres] = useState([]);
 
    useEffect(() => {
       const getDetail = async () => {
@@ -58,7 +59,9 @@ function Detail() {
                               </div>
                               <div className={cx('rating')}>
                                  <StarIcon classNames={cx('icon')} />
-                                 <span>{Math.round(item[MOVIE.avg] * 100)/100}</span>
+                                 <span>
+                                    {Math.round(item[MOVIE.avg] * 100) / 100}
+                                 </span>
                               </div>
                            </div>
                            <div className={cx('genres')}>

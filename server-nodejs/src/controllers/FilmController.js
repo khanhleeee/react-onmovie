@@ -120,21 +120,21 @@ module.exports = {
       const result = await executeMultipleParams("sp_getFilmDetail", [
         {
           name: "F_ID",
-          type: mssql.Char(numberChar),
+          type: mssql.Int(),
           value: filmID,
         },
       ]);
       const findGenre = await executeMultipleParams("sp_getGenresOfFilm", [
         {
           name: "F_ID",
-          type: mssql.Char(numberChar),
+          type: mssql.Int(),
           value: filmID,
         },
       ]);
       const findTrailer = await executeMultipleParams("sp_getFilmTrailers", [
         {
-          name: "ID_FILM",
-          type: mssql.Char(numberChar),
+          name: "F_ID",
+          type: mssql.Int(),
           value: filmID,
         },
       ]);
@@ -150,7 +150,7 @@ module.exports = {
         C_NAME: result.recordset[0].C_NAME,
         S_NAME: result.recordset[0].S_NAME,
         F_TRAILER: findTrailer.recordset[0],
-        G_NAME: []
+        G_NAME: [],
       };
       for (let i = 0; i < findGenre.recordset.length; i++) {
         obj.G_NAME.push(findGenre.recordset[i].G_NAME);
@@ -166,7 +166,7 @@ module.exports = {
       const result = await executeMultipleParams("sp_getSimilarFilms", [
         {
           name: "F_ID",
-          type: mssql.Char(numberChar),
+          type: mssql.Int(),
           value: filmID,
         },
       ]);

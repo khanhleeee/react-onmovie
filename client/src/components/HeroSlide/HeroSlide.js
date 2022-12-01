@@ -5,13 +5,28 @@ import classNames from 'classnames/bind';
 import SwiperCore, { Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import apiConfig from '~/api/apiConfig';
 import styles from './HeroSlide.module.scss';
 import Button from '../Button/Button';
 import serverNode from '~/api/serverNode';
 import { MOVIE } from '~/constants';
+import { StarIcon } from '../Icons/Icons';
 
 const cx = classNames.bind(styles);
+
+const monthNames = [
+   'Jan',
+   'Feb',
+   'Mar',
+   'Apr',
+   'May',
+   'Jun',
+   'Jul',
+   'Aug',
+   'Sep',
+   'Oct',
+   'Nov',
+   'Dec',
+];
 
 function HeroSlide() {
    SwiperCore.use([Autoplay]);
@@ -21,11 +36,6 @@ function HeroSlide() {
       const getMovies = async () => {
          try {
             const movies = await serverNode.getFilmList(1);
-
-            // const movies = await onmoviedbApi.getMovieList(movieType.popular, {
-            //    params,
-            // });
-            console.log(movies);
             setMovieItems(movies.data.data.slice(0, 6));
          } catch {
             console.error('error');
@@ -63,6 +73,9 @@ const HeroSlideItem = (props) => {
 
    const item = props.item;
 
+   const date = new Date(item[MOVIE.release_date]);
+   const formatDate = `${monthNames[date.getMonth()]}, ${date.getFullYear()}`;
+
    const background = item[MOVIE.backdrop] || item[MOVIE.poster];
 
    return (
@@ -73,7 +86,15 @@ const HeroSlideItem = (props) => {
          <div className={cx('content', 'container')}>
             <div className={cx('info')}>
                <h2 className={cx('title')}>{item[MOVIE.name]}</h2>
+               <div className={cx('hightlight')}>
+                  <span className={cx('rating')}>
+                     <StarIcon classNames={cx('icon')} />
+                     {item[MOVIE.avg]}
+                  </span>
+                  <span className={cx('date')}>{formatDate}</span>
+               </div>
                <div className={cx('overview')}>{item[MOVIE.desc]}</div>
+
                <div className={cx('btns')}>
                   <Button onClick={() => navigate('/movie/' + item[MOVIE.id])}>
                      See Details
