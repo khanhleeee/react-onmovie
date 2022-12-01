@@ -3,6 +3,8 @@ const { FILM } = require("../constants/FilmConstants");
 const { GENRE } = require("../constants/GenreConstants");
 const { COUNTRY } = require("../constants/CountryConstants");
 const { TYPE } = require("../constants/TypeConstants");
+const { CAST } = require("../constants/CastConstants");
+const { KEYWORD } = require("../constants/KeywordConstants");
 const mssql = require("mssql");
 
 module.exports = {
@@ -86,6 +88,93 @@ module.exports = {
             res.status(500).json(error);
         }
     },
+    addMovie: async (req, res) => {
+        const data = req.body.film;
+
+        try {
+            const converToString = (array) => {
+                let result = "";
+                array.forEach((item) => {
+                    if (Object.keys(item)[0] === "G_ID") {
+                        result += " 0, " + item.G_ID + ";";
+                    } else if (Object.keys(item)[0] === "ANC_ID") {
+                        result += " 0, " + item.ANC_ID + ";";
+                    } else if (Object.keys(item)[0] === "KW_ID") {
+                        result += " 0, " + item.KW_ID + ";";
+                    }
+                });
+                return "(" + result + " )";
+            };
+    
+            const details = {
+                F_OFFICIAL_NAME: data.detailValues[FILM.name],
+                F_DESC: data.detailValues[FILM.desc],
+                F_RELEASE_DATE: data.detailValues[FILM.release_date],
+                F_BACKDROP: data.detailValues[FILM.backdrop],
+                F_POSTER: data.detailValues[FILM.poster],
+                F_AGE: 18,
+                C_ID: 'USA',
+                strGenres: converToString(data.movieGenres),
+                strCasts: converToString(data.movieCasts),
+                strKeywords: converToString(data.movieKeywords),
+            }
+            await executeMultipleParams("sp_ADDFILM", [
+                {
+                    name: "F_OFFCIAL_NAME",
+                    type: TYPE.nvarcharHundred,
+                    value: details.F_OFFICIAL_NAME,
+                },
+                {
+                    name: "F_DESC",
+                    type: TYPE.nvarcharThousand,
+                    value: details.F_DESC,
+                },
+                {
+                    name: "F_RELEASE_DATE",
+                    type: TYPE.smallDateTime,
+                    value: details.F_RELEASE_DATE,
+                },
+                {
+                    name: "F_AGE",
+                    type: TYPE.int,
+                    value: details.F_AGE,
+                },
+                {
+                    name: "F_BACKDROP",
+                    type: TYPE.varcharHundred,
+                    value: details.F_BACKDROP,
+                },
+                {
+                    name: "F_POSTER",
+                    type: TYPE.varcharHundred,
+                    value: details.F_POSTER,
+                },
+                {
+                    name: "C_ID",
+                    type: TYPE.charThree,
+                    value: details.C_ID,
+                },
+                {
+                    name: "GENRES",
+                    type: TYPE.max,
+                    value: details.strGenres,
+                },
+                {
+                    name: "KEYWORDS",
+                    type: TYPE.max,
+                    value: details.strKeywords,
+                },
+                {
+                    name: "CASTS",
+                    type: TYPE.max,
+                    value: details.strCasts,
+                },
+            ]);
+            res.status(200).json('Add movie successfully');
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
     editDetailMovie: async (req, res) => {
         const filmID = req.params.filmID;
         const status = 2;
@@ -156,10 +245,17 @@ module.exports = {
     },
     getAllCasts: async (req, res) => {
         try {
-            const result = await queryStatement("SELECT ANC_ID, ANC_NAME, ANC_AVATAR FROM ACTORS_CREATORS");
+            const result = await executeMultipleParams("sp_getCasts", []);
+            const obj = result.recordset.map((item) => {
+                return {
+                    [CAST.id]: item[CAST.id],
+                    [CAST.name]: item[CAST.name],
+                    [CAST.avatar]: item[CAST.avatar],
+                };
+            });
             res.status(200).json({
                 total: result.recordset.length,
-                data: result.recordset,
+                data: obj,
             });
         } catch (error) {
             res.status(500).json(error);
@@ -167,10 +263,16 @@ module.exports = {
     },
     getAllKeywords: async (req, res) => {
         try {
-            const result = await queryStatement("SELECT KW_ID, KW_NAME FROM KEYWORDS");
+            const result = await executeMultipleParams("sp_getKeywords", []);
+            const obj = result.recordset.map((item) => {
+                return {
+                    [KEYWORD.id]: item[KEYWORD.id],
+                    [KEYWORD.name]: item[KEYWORD.name],
+                };
+            });
             res.status(200).json({
                 total: result.recordset.length,
-                data: result.recordset,
+                data: obj,
             });
         } catch (error) {
             res.status(500).json(error);

@@ -66,5 +66,13 @@ export const serverNode = {
          return error.response;
       }
    },
+   addMovie: async (film) => {
+      try {
+         const data = await axios.post(apiNode.baseUrl + 'films', {film});
+         return data;
+      } catch (error) {
+         return error.response;
+      }
+   },
 };
 

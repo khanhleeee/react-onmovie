@@ -11,7 +11,7 @@ import { GenresForm } from "./GenreForm";
 import { KeywordForm } from "./KeywordForm ";
 import { CastForm } from "./CastForm";
 import { COUNTRY, MOVIE } from "../../../src/constants";
-
+import { serverNode } from "../../api/serverNode";
 const cx = classname.bind(styles);
 
 function AddMovie() {
@@ -24,17 +24,19 @@ function AddMovie() {
     [MOVIE.age]: "",
     [MOVIE.country]: "",
   });
-  console.log(detailValues);
 
   const [movieGenres, setMovieGenres] = useState([]);
   const [movieCasts, setMovieCasts] = useState([]);
   const [movieKeywords, setMovieKeywords] = useState([]);
 
-  const handleOnchange = (e) => {
-    setDetailValues({ ...detailValues, [e.target.name]: e.target.value });
+  const handleOnchange = async (e) => {
+    setDetailValues({ ...detailValues, [e.target.name]: e.target.value,});
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    serverNode.addMovie({detailValues, movieGenres, movieCasts, movieKeywords});
+    window.location.href="/";
   };
 
   return (
