@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState } from "react";
 
 import "./movie.css";
-import { MovieContext } from "../../context/movieContext/MovieContext";
-import { getDetailMovie, upgradeMovie } from "../../actions/index";
+// import { MovieContext } from "../../context/movieContext/MovieContext";
+// import { getDetailMovie, upgradeMovie } from "../../api/index";
 import { useEffect } from "react";
 
 export default function Movie() {
@@ -13,34 +13,34 @@ export default function Movie() {
   const [movieDetail, setMovieDetail] = useState({});
 
   const [updateMovieObject, setUpdateMovie] = useState(null);
-  const [subtitle, setSubtitle] = useState(null);
-  const { dispatch } = useContext(MovieContext);
+  // const [subtitle, setSubtitle] = useState(null);
+  // const { dispatch } = useContext(MovieContext);
 
   console.log(movie);
 
   useEffect(() => {
     const detail = async () => {
-      await getDetailMovie(movie.F_ID).then((res) => {
-        console.log(res.data);
-        setMovieDetail(res.data);
-      });
+      // await getDetailMovie(movie.F_ID).then((res) => {
+      //   console.log(res.data);
+      //   setMovieDetail(res.data);
+      // });
     };
     detail();
   }, []);
 
-  const handleInput = (e) => {
-    const value = e.target.value;
-    setSubtitle({ ...subtitle, [e.target.name]: value });
-  };
+  // const handleInput = (e) => {
+  //   const value = e.target.value;
+  //   setSubtitle({ ...subtitle, [e.target.name]: value });
+  // };
 
   const handleChange = (e) => {
     const value = e.target.value;
-    setUpdateMovie({ ...updateMovieObject, [e.target.name]: value, subtitle });
+    setUpdateMovie({ ...updateMovieObject, [e.target.name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    upgradeMovie(movie.F_ID, updateMovieObject, dispatch);
+    // upgradeMovie(movie.F_ID, updateMovieObject, dispatch);
     // .then((res) => {
     //     console.log(res)
     // //     dispatch({

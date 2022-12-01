@@ -7,27 +7,7 @@ import Col from "react-bootstrap/Col";
 
 import styles from "./AddMovie.module.scss";
 import CastCard from "../../components/CastCard/CastCard";
-
-const CASTS = [
-  {
-    ANC_ID: 1,
-    ANC_NAME: "Tinne Oltmans",
-    ANC_AVATAR:
-      "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/61AFRRWijpO2DxubHrVoGucWZBf.jpg",
-  },
-  {
-    ANC_ID: 2,
-    ANC_NAME: "Tinne Oltmans 2",
-    ANC_AVATAR:
-      "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/61AFRRWijpO2DxubHrVoGucWZBf.jpg",
-  },
-  {
-    ANC_ID: 3,
-    ANC_NAME: "Tinne Oltman 3",
-    ANC_AVATAR:
-      "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/61AFRRWijpO2DxubHrVoGucWZBf.jpg",
-  },
-];
+import { serverNode } from "../../api/serverNode";
 
 const cx = classname.bind(styles);
 
@@ -35,10 +15,11 @@ export const CastForm = () => {
   const [movieCasts, setMovieCasts] = useState([]);
   const [casts, setCasts] = useState([]);
 
-  useEffect(() => {
-    // Lấy danh sách dien vien
-    setCasts(CASTS);
-  }, []);
+  const getAllCast = async () => {
+    const response = await serverNode.getAllCasts();
+    setCasts(response.data.data);
+  };
+  getAllCast();
 
   const handleAddCast = (item) => {
     if (item) {

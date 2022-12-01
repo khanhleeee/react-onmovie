@@ -1,7 +1,6 @@
-const mssql = require('mssql');
-const bcrypt = require('bcrypt');
-const { queryStatement, executeMultipleParams } = require('../database/handleQuery');
+const { executeMultipleParams } = require('../database/handleQuery');
 const { USER } = require('../constants/UserConstants');
+const { TYPE } = require('../constants/TypeConstants');
 
 module.exports = {
   login: async (req, res) => {
@@ -9,8 +8,8 @@ module.exports = {
       let email = req.body.email;
       let password = req.body.password;
       const result = await executeMultipleParams('sp_getUser', [
-        { name: 'EMAIL', type: mssql.VarChar(30), value: email },
-        { name: 'PASS', type: mssql.Char(100), value: password },
+        { name: 'EMAIL', type: TYPE.varcharThirty, value: email },
+        { name: 'PASS', type: TYPE.charHundred, value: password },
       ]);
       if (result.recordset === undefined) {
         return res.status(401).json("Email or Password is incorrect");
@@ -39,8 +38,6 @@ module.exports = {
       let email = req.body.email;
       let password = req.body.password;
       let confirmPassword = req.body.confirmPassword;
-      let avatar = "https://pbs.twimg.com/media/D8tCa48VsAA4lxn.jpg";
-      let role = "USER";
 
       if (
         fullName == "" ||
@@ -52,37 +49,13 @@ module.exports = {
         return res.status(400).json("Please fill all fields");
       }
 
-      const statementCheckEmail =
-        "SELECT * FROM USERS WHERE U_EMAIL = '" + email + "'";
-      const checkEmail = await queryStatement(statementCheckEmail);
-
-      if (checkEmail.recordset.length != 0) {
-        return res.status(401).json('Email already exists');
-      }
-
-      if (password.length < 8) {
-        return res.status(401).json('Password must be at least 8 characters');
-      }
-
-      if (confirmPassword.length < 8) {
-        return res
-          .status(401)
-          .json("Confirm Password must be at least 8 characters");
-      }
-
-      if (password != confirmPassword) {
-        return res.status(401).json("Password and confirm password must match");
-      }
-
-      // const salt = await bcrypt.genSalt(10);
-      // const hashPassword = await bcrypt.hash(password, salt);
-
       const result = await executeMultipleParams('sp_addInforUser', [
-        { name: 'U_NAME', type: mssql.NVarChar(50), value: fullName },
-        { name: 'U_PHONE', type: mssql.VarChar(10), value: phoneNumber },
-        { name: 'U_EMAIL', type: mssql.VarChar(25), value: email },
-        { name: 'U_PASS', type: mssql.VarChar(8), value: password }
+        { name: 'U_NAME', type: TYPE.nvarcharFifty, value: fullName },
+        { name: 'U_PHONE', type: TYPE.varCharEleven, value: phoneNumber },
+        { name: 'U_EMAIL', type: TYPE.varcharThirty, value: email },
+        { name: 'U_PASS', type: TYPE.varcharHundred, value: password }
       ]);
+
       return res.status(200).json({
         message: "Register successfully",
       });
@@ -96,19 +69,20 @@ module.exports = {
       let fullName = req.body.fullName;
       let phoneNumber = req.body.phoneNumber;
       const result = await executeMultipleParams('sp_editInforUser', [
-        { name: 'U_ID', type: mssql.Int, value: userID },
-        { name: 'U_NAME', type: mssql.NVarChar(50), value: fullName },
-        { name: 'U_PHONE', type: mssql.VarChar(11), value: phoneNumber },
+        { name: 'U_ID', type: TYPE.int, value: userID },
+        { name: 'U_NAME', type: TYPE.nvarcharFifty, value: fullName },
+        { name: 'U_PHONE', type: TYPE.varCharEleven, value: phoneNumber },
       ]);
+      console.log(result);
       return res.status(200).json({
         message: 'Update successfully',
         data: {
-          id: result.recordset[0].U_ID,
-          email: result.recordset[0].U_EMAIL,
-          fullName: result.recordset[0].U_NAME,
-          phoneNumber: result.recordset[0].U_PHONE,
-          avatar: result.recordset[0].U_AVATAR,
-          role: result.recordset[0].R_ID,
+          id: result.recordset[0][USER.id],
+          email: result.recordset[0][USER.email],
+          fullName: result.recordset[0][USER.name],
+          phoneNumber: result.recordset[0][USER.phone],
+          avatar: result.recordset[0][USER.avatar],
+          role: result.recordset[0][USER.role_id],
         },
       });
     } catch (error) {

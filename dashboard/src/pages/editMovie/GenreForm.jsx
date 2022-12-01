@@ -7,44 +7,26 @@ import Col from "react-bootstrap/Col";
 
 import styles from "./editMovie.module.scss";
 import Tag from "../../components/Tag/Tag";
+import { serverNode } from "../../api/serverNode";
 
 const cx = classname.bind(styles);
-
-const GENRES = [
-  {
-    G_ID: 1,
-    G_NAME: "Hoạt hình",
-  },
-  {
-    G_ID: 2,
-    G_NAME: "Chính kịch",
-  },
-  {
-    G_ID: 3,
-    G_NAME: "Âm nhạc",
-  },
-  {
-    G_ID: 4,
-    G_NAME: "Âm nhạc",
-  },
-  {
-    G_ID: 5,
-    G_NAME: "Âm nhạc",
-  },
-];
 
 export const GenresForm = () => {
   const [movieGenres, setMovieGenres] = useState([]);
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    // Lấy danh sách thể loại
-    setGenres(GENRES);
+    const getAllGenre = async () => {
+      const response = await serverNode.getAllGenres();
+      setGenres(response.data.data);
+    };
+    getAllGenre();
   }, []);
 
   const handleAddGenre = (item) => {
     if (item) {
       if (!movieGenres.some((genre) => genre.G_ID === item.G_ID)) {
+        //Call api here
         setMovieGenres([...movieGenres, item]);
       } else {
         alert(`Already add genre ${item.G_NAME} to movie`);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import classname from "classnames/bind";
 
 import "bootstrap/dist/css/bootstrap.min.css";

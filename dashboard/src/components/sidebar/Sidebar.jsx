@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import classname from "classnames/bind";
 
 import styles from "./sidebar.module.scss";
-import { PermIdentity, PlayCircleFilledOutlined } from "@material-ui/icons";
+import { PlayCircleFilledOutlined } from "@material-ui/icons";
 
 const cx = classname.bind(styles);
 

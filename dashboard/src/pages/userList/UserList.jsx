@@ -3,22 +3,22 @@ import { DeleteOutline } from "@material-ui/icons";
 import classname from "classnames/bind";
 
 import { Link } from "react-router-dom";
-import { useContext, useEffect } from "react";
-import { UserContext } from "../../context/userContext/UserContext";
-import { getUsers, deleteUsers } from "../../context/userContext/apiCall";
+// import { useContext, useEffect } from "react";
+// import { UserContext } from "../../context/userContext/UserContext";
+// import { getUsers, deleteUsers } from "../../context/userContext/apiCall";
 import styles from "./userList.module.scss";
 
 const cx = classname.bind(styles);
 
 export default function UserList() {
-  const { users, dispatch } = useContext(UserContext);
+  const { users } = true;
 
-  useEffect(() => {
-    getUsers(dispatch);
-  }, [dispatch]);
+  // useEffect(() => {
+  //   getUsers(dispatch);
+  // }, [dispatch]);
 
   const handleDelete = (id) => {
-    deleteUsers(id, dispatch);
+    // deleteUsers(id, dispatch);
   };
 
   const columns = [

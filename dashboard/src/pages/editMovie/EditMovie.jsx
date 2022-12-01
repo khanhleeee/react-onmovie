@@ -12,6 +12,7 @@ import Input from "../../components/Form/Input";
 import { GenresForm } from "./GenreForm";
 import { KeywordForm } from "./KeywordForm ";
 import { CastForm } from "./CastForm";
+import { serverNode } from "../../api/serverNode";
 
 const cx = classname.bind(styles);
 
@@ -22,9 +23,8 @@ const TAB_ITEM = [
   { title: "Keywords" },
 ];
 
-function EditMovie() {
+export default function EditMovie() {
   const [activeTab, setActiveTab] = useState(0);
-
   const ID = useParams().id;
 
   return (
@@ -89,16 +89,6 @@ const Information = ({ id }) => {
       columns: "12",
     },
   ];
-  const FILM = {
-    [MOVIE.name]: "Avatar",
-    [MOVIE.release_date]: "05/05/2022",
-    [MOVIE.backdrop]:
-      "https://www.themoviedb.org/t/p/original/lVIKnXtJ5J8ITGEiPy7skbAbJBR.jpg",
-    [MOVIE.poster]:
-      "https://www.themoviedb.org/t/p/original/ypwTbN8T8DsnAoaB7KSgVPKilFi.jpg",
-    [MOVIE.desc]:
-      "Mối quan hệ của đôi bạn thân Sophie và Agatha bị thử thách khi họ bị đưa đến ngôi trường phép thuật dành cho anh hùng và ác nhân tương lai trong truyện cổ tích.",
-  };
 
   const [detailValues, setDetailValues] = useState({
     [MOVIE.name]: "",
@@ -110,13 +100,22 @@ const Information = ({ id }) => {
   const [film, setFilm] = useState(null);
 
   useEffect(() => {
-    // Get film detail
-    setFilm(FILM);
-    console.log(film);
-  }, []);
+    const getDetailsMovie = async () => {
+      const response = await serverNode.getDetailMovie(id);
+      setFilm(response.data.data);
+    };
+    getDetailsMovie();
+  }, [id]);
 
   const handleOnchange = (e) => {
+    console.log({ ...detailValues, [e.target.name]: e.target.value });
     setDetailValues({ ...detailValues, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await serverNode.editDetailMovie(id, detailValues);
+    // window.location.href="/movies";
   };
 
   return (
@@ -134,10 +133,10 @@ const Information = ({ id }) => {
         ))}
       </Row>
       <div className={cx("btn-wrapper")}>
-        <button className={cx("update-btn")}>UPDATE</button>
+        <button className={cx("update-btn")} onClick={handleSubmit}>
+          UPDATE
+        </button>
       </div>
     </div>
   );
 };
-
-export default EditMovie;
