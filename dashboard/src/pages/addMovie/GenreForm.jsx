@@ -11,8 +11,7 @@ import { serverNode } from "../../api/serverNode";
 
 const cx = classname.bind(styles);
 
-export const GenresForm = () => {
-  const [movieGenres, setMovieGenres] = useState([]);
+export const GenresForm = ({ movieGenres, setMovieGenres }) => {
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {

@@ -11,15 +11,16 @@ import { serverNode } from "../../api/serverNode";
 
 const cx = classname.bind(styles);
 
-export const CastForm = () => {
-  const [movieCasts, setMovieCasts] = useState([]);
+export const CastForm = ({ movieCasts, setMovieCasts }) => {
   const [casts, setCasts] = useState([]);
 
-  const getAllCast = async () => {
-    const response = await serverNode.getAllCasts();
-    setCasts(response.data.data);
-  };
-  getAllCast();
+  useEffect(() => {
+    const getAllCast = async () => {
+      const response = await serverNode.getAllCasts();
+      setCasts(response.data.data);
+    };
+    getAllCast();
+  }, []);
 
   const handleAddCast = (item) => {
     if (item) {
