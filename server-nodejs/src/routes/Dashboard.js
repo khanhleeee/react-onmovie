@@ -4,6 +4,7 @@ const router = express.Router();
 const dashboardController = require('../controllers/DashboardController');
 
 router.get('/films', dashboardController.getMoviesList);
+router.post('/films', dashboardController.addMovie);
 router.get('/films/genres', dashboardController.getAllGenres);
 router.get('/films/casts', dashboardController.getAllCasts);
 router.get('/films/keywords', dashboardController.getAllKeywords);

@@ -9,4 +9,5 @@ module.exports.NUMBER = {
   thirty: 30,
   fifty: 50,
   hundred: 100,
+  thousand: 1000,
 };
