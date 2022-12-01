@@ -10,27 +10,25 @@ import styles from "./AddMovie.module.scss";
 import { GenresForm } from "./GenreForm";
 import { KeywordForm } from "./KeywordForm ";
 import { CastForm } from "./CastForm";
+import { serverNode } from "../../api/serverNode";
 
 const cx = classname.bind(styles);
 
 function AddMovie() {
-  const [detailValues, setDetailValues] = useState({
-    F_OFFICIAL_NAME: "",
-    F_RELEASE_DATE: "",
-    F_BACKDROP: "",
-    F_POSTER: "",
-    F_DESC: "",
-  });
+  const [detailValues, setDetailValues] = useState({});
 
   const [movieGenres, setMovieGenres] = useState([]);
   const [movieCasts, setMovieCasts] = useState([]);
   const [movieKeywords, setMovieKeywords] = useState([]);
 
-  const handleOnchange = (e) => {
-    setDetailValues({ ...detailValues, [e.target.name]: e.target.value });
+  const handleOnchange = async (e) => {
+    setDetailValues({ ...detailValues, [e.target.name]: e.target.value,});
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    serverNode.addMovie({detailValues, movieGenres, movieCasts, movieKeywords});
+    window.location.href="/";
   };
 
   return (
