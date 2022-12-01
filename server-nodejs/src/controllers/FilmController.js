@@ -233,4 +233,15 @@ module.exports = {
       res.status(500).json(error);
     }
   },
+  getFilmByRating: async (req, res) => {
+    try {
+      const result = await executeMultipleParams("sp_getFilmByRating", []);
+      res.status(200).json({
+        total: result.recordset.length,
+        data: result.recordset,
+      });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
 };

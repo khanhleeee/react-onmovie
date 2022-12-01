@@ -4,6 +4,7 @@ const router = express.Router();
 const filmController = require("../controllers/FilmController");
 
 router.get("/", filmController.getFilmList);
+router.get("/rating", filmController.getFilmByRating);
 router.get("/filter", filmController.getFilmsByGenreAndCountry);
 router.get("/genres", filmController.getGenres);
 router.get("/genres/:genreID", filmController.getFilmsByGenre);

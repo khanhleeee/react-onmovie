@@ -2,6 +2,14 @@ import axios from 'axios';
 import { apiNode } from './apiConfig';
 
 const serverNode = {
+   getAllFilmRating: async () => {
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'film/rating');
+         return data;
+      } catch (error) {
+         console.log(error);
+      }
+   },
    getFilmList: async (page) => {
       try {
          const data = await axios.get(apiNode.baseUrl + 'film?page=' + page);

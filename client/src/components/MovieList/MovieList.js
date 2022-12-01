@@ -15,7 +15,7 @@ function MovieList(props) {
       const getList = async () => {
          let response = null;
          try {
-            response = await serverNode.getFilmList();
+            response = await serverNode.getAllFilmRating();
             setItems(response.data.data);
 
             if (props.type === 'similar') {
