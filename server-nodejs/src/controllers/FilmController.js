@@ -97,7 +97,7 @@ module.exports = {
         S_NAME: result.recordset[0][FILM.status],
         C_NAME: result.recordset[0][COUNTRY.name],
         F_TRAILER: findTrailer.recordset[0],
-        G_NAME: []
+        G_NAME: [],
       };
       for (let i = 0; i < findGenre.recordset.length; i++) {
         obj.G_NAME.push(findGenre.recordset[i][GENRE.name]);
