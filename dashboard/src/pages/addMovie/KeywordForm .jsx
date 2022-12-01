@@ -11,8 +11,7 @@ import { serverNode } from "../../api/serverNode";
 
 const cx = classname.bind(styles);
 
-export const KeywordForm = () => {
-  const [movieKeywords, setMovieKeywords] = useState([]);
+export const KeywordForm = ({ movieKeywords, setMovieKeywords }) => {
   const [keywords, setKeywords] = useState([]);
 
   useEffect(() => {

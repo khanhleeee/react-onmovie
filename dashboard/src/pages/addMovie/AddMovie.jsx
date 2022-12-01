@@ -21,16 +21,16 @@ function AddMovie() {
     F_POSTER: "",
     F_DESC: "",
   });
-  const [activeForm, setActiveForm] = useState("details");
+
+  const [movieGenres, setMovieGenres] = useState([]);
+  const [movieCasts, setMovieCasts] = useState([]);
+  const [movieKeywords, setMovieKeywords] = useState([]);
 
   const handleOnchange = (e) => {
     setDetailValues({ ...detailValues, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    setActiveForm("genres");
-
-    console.log(new FormData(e.target));
   };
 
   return (
@@ -41,9 +41,12 @@ function AddMovie() {
           detailValues={detailValues}
           handleOnchange={handleOnchange}
         />
-        <GenresForm />
-        <KeywordForm />
-        <CastForm />
+        <GenresForm movieGenres={movieGenres} setMovieGenres={setMovieGenres} />
+        <KeywordForm
+          movieKeywords={movieKeywords}
+          setMovieKeywords={setMovieKeywords}
+        />
+        <CastForm movieCasts={movieCasts} setMovieCasts={setMovieCasts} />
         <Row>
           <Col className={cx("submit-wrapper")} md={{ span: 6, offset: 6 }}>
             <button className={cx("submit-btn")} type="submit">
