@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 
 import styles from "./editMovie.module.scss";
 import { useParams } from "react-router-dom";
-import { MOVIE } from "../../../src/constants";
+import { MOVIE, COUNTRY } from "../../../src/constants";
 import Input from "../../components/Form/Input";
 import { GenresForm } from "./GenreForm";
 import { KeywordForm } from "./KeywordForm ";
@@ -90,12 +90,26 @@ const Information = ({ id }) => {
     },
   ];
 
+  const COUNTRIES = [
+    { [COUNTRY.id]: "VIE", [COUNTRY.name]: "Viet Nam" },
+    { [COUNTRY.id]: "USA", [COUNTRY.name]: "My" },
+    { [COUNTRY.id]: "JPN", [COUNTRY.name]: "Nhat Ban" },
+  ];
+
+  useEffect(() => {
+    setCountries(COUNTRIES);
+  }, []);
+
+  const [countries, setCountries] = useState([]);
+
   const [detailValues, setDetailValues] = useState({
     [MOVIE.name]: "",
     [MOVIE.date]: "",
     [MOVIE.backdrop]: "",
     [MOVIE.poster]: "",
     [MOVIE.desc]: "",
+    [MOVIE.age]: "",
+    [MOVIE.country]: "",
   });
   const [film, setFilm] = useState(null);
 
@@ -121,6 +135,47 @@ const Information = ({ id }) => {
   return (
     <div className={cx("info")}>
       <h2 className={cx("sub-title")}>Movie's details</h2>
+      <Row>
+        <Col sm={12} lg={3}>
+          <label>Nation</label>
+          <select
+            className={cx("dropdown")}
+            name="C_ID"
+            value={detailValues.C_ID}
+            onChange={(e) =>
+              setDetailValues({
+                ...detailValues,
+                C_ID: e.target.value,
+              })
+            }
+          >
+            {countries.map((item, index) => (
+              <option key={index} value={item[COUNTRY.id]}>
+                {item[COUNTRY.name]}
+              </option>
+            ))}
+          </select>
+        </Col>
+        <Col sm={12} lg={3}>
+          <label>Limited age</label>
+          <select
+            className={cx("dropdown")}
+            name="F_AGE"
+            value={detailValues.F_AGE}
+            onChange={(e) =>
+              setDetailValues({
+                ...detailValues,
+                F_AGE: e.target.value,
+              })
+            }
+          >
+            <option value="13">Above 13</option>
+            <option value="16">Above 16</option>
+            <option value="18">Above 18</option>
+            <option value="21">Above 21</option>
+          </select>
+        </Col>
+      </Row>
       <Row>
         {DETAIL_INPUTS.map((input, index) => (
           <Col key={index} sm={12} lg={input.columns}>
