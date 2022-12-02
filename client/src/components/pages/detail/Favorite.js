@@ -51,7 +51,6 @@ function Favorite({ id }) {
          serverNode
             .addWatchList({ [MOVIE.id]: id, [USER.id]: userData[USER.id] })
             .then((res) => {
-               console.log(res);
                setWatchlist(res.data[MOVIE.id]);
                setActive(true);
             })
