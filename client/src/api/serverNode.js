@@ -34,6 +34,7 @@ const serverNode = {
          console.log(error);
       }
    },
+
    getFilmDetail: async (id) => {
       try {
          const data = await axios.get(apiNode.baseUrl + 'film/' + id);
@@ -58,6 +59,8 @@ const serverNode = {
          console.log(error);
       }
    },
+   
+
    getGenres: async () => {
       try {
          const data = await axios.get(apiNode.baseUrl + 'film/genres');
@@ -98,6 +101,8 @@ const serverNode = {
          console.log(error);
       }
    },
+
+   // Auth
    checkLogin: async (user) => {
       try {
          const data = await axios.post(apiNode.baseUrl + 'auth/login', user);
@@ -114,7 +119,7 @@ const serverNode = {
          return error.response;
       }
    },
-   upgradeUser: async (id, data) => {
+   editUser: async (id, data) => {
       try {
          const response = await axios.put(
             apiNode.baseUrl + 'auth/update/' + id,
@@ -125,6 +130,8 @@ const serverNode = {
          return error.response;
       }
    },
+
+   // Watchlist
    getWatchList: async (id) => {
       try {
          const data = await axios.get(
@@ -152,6 +159,24 @@ const serverNode = {
             apiNode.baseUrl + 'user/removeWatchList',
             data,
          );
+         return response;
+      } catch (error) {
+         return error.response;
+      }
+   },
+
+   // Rating
+   getRatingList: async (id) => {
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'user/getRatingList/' + id);
+         return data;
+      } catch (error) {
+         return error.response;
+      }
+   },
+   addRating: async (data) => {
+      try {
+         const response = await axios.post(apiNode.baseUrl + 'user/addRating', data);
          return response;
       } catch (error) {
          return error.response;

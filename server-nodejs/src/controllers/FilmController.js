@@ -5,6 +5,28 @@ const { COUNTRY } = require("../constants/CountryConstants");
 const { TYPE } = require("../constants/TypeConstants");
 
 module.exports = {
+  getFilmByRating: async (req, res) => {
+    try {
+      const result = await executeMultipleParams("sp_getFilmByRating", []);
+      res.status(200).json({
+        total: result.recordset.length,
+        data: result.recordset,
+      });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+  getFimByFavorite: async (req, res) => {
+    try {
+      const result = await executeMultipleParams("sp_getFavoriteFilms", []);
+      res.status(200).json({
+        total: result.recordset.length,
+        data: result.recordset,
+      });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
   getFilmList: async (req, res) => {
     try {
       const page = parseInt(req.query.page);
@@ -61,6 +83,7 @@ module.exports = {
       res.status(500).json(error);
     }
   },
+
   getDetailFilm: async (req, res) => {
     const filmID = req.params.filmID;
 
@@ -171,6 +194,7 @@ module.exports = {
       res.status(500).json(error);
     }
   },
+
   getFilmsByGenreAndCountry: async (req, res) => {
     const genreID = req.query.g;
     const countryID = req.query.c;
@@ -245,28 +269,6 @@ module.exports = {
           value: countryID,
         },
       ]);
-      res.status(200).json({
-        total: result.recordset.length,
-        data: result.recordset,
-      });
-    } catch (error) {
-      res.status(500).json(error);
-    }
-  },
-  getFilmByRating: async (req, res) => {
-    try {
-      const result = await executeMultipleParams("sp_getFilmByRating", []);
-      res.status(200).json({
-        total: result.recordset.length,
-        data: result.recordset,
-      });
-    } catch (error) {
-      res.status(500).json(error);
-    }
-  },
-  getFimByFavorite: async (req, res) => {
-    try {
-      const result = await executeMultipleParams("sp_getFavoriteFilms", []);
       res.status(200).json({
         total: result.recordset.length,
         data: result.recordset,

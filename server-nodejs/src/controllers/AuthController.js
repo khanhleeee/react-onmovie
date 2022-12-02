@@ -74,16 +74,15 @@ module.exports = {
         { name: "U_NAME", type: TYPE.nvarcharFifty, value: fullName },
         { name: "U_PHONE", type: TYPE.varCharEleven, value: phoneNumber },
       ]);
-      console.log(result);
       return res.status(200).json({
         message: "Update successfully",
         data: {
-          id: result.recordset[0][USER.id],
-          email: result.recordset[0][USER.email],
-          fullName: result.recordset[0][USER.name],
-          phoneNumber: result.recordset[0][USER.phone],
-          avatar: result.recordset[0][USER.avatar],
-          role: result.recordset[0][USER.role_id],
+          [USER.id]: result.recordset[0][USER.id],
+          [USER.email]: result.recordset[0][USER.email],
+          [USER.name]: result.recordset[0][USER.name],
+          [USER.phone]: result.recordset[0][USER.phone],
+          [USER.avatar]: result.recordset[0][USER.avatar],
+          [USER.role_id]: result.recordset[0][USER.role_id],
         },
       });
     } catch (error) {
