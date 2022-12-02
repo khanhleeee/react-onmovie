@@ -1,11 +1,10 @@
-const { executeMultipleParams, queryStatement } = require("../database/handleQuery");
+const { executeMultipleParams } = require("../database/handleQuery");
 const { FILM } = require("../constants/FilmConstants");
 const { GENRE } = require("../constants/GenreConstants");
 const { COUNTRY } = require("../constants/CountryConstants");
 const { TYPE } = require("../constants/TypeConstants");
 const { CAST } = require("../constants/CastConstants");
 const { KEYWORD } = require("../constants/KeywordConstants");
-const mssql = require("mssql");
 
 module.exports = {
     getMoviesList: async (req, res) => {
@@ -187,35 +186,35 @@ module.exports = {
         const status = 2;
         try {
             const result = await executeMultipleParams("sp_editDetailsFilm", [
-                { name: "F_ID", type: mssql.Int, value: filmID },
+                { name: "F_ID", type: TYPE.int, value: filmID },
                 {
                     name: "F_OFFICIAL_NAME",
-                    type: mssql.NVarChar(100),
+                    type: TYPE.nvarcharHundred,
                     value: name,
                 },
-                { name: "F_DESC", type: mssql.NVarChar(1000), value: desc },
+                { name: "F_DESC", type: TYPE.nvarcharThousand, value: desc },
                 {
                     name: "F_RELEASE_DATE",
-                    type: mssql.SmallDateTime,
+                    type: TYPE.smallDateTime,
                     value: release_date,
                 },
-                { name: "F_AGE", type: mssql.TinyInt, value: age },
+                { name: "F_AGE", type: TYPE.tinyInt, value: age },
                 {
                     name: "F_BACKDROP",
-                    type: mssql.VarChar(mssql.MAX),
+                    type: TYPE.max,
                     value: backdrop,
                 },
                 {
                     name: "F_POSTER",
-                    type: mssql.VarChar(mssql.MAX),
+                    type: TYPE.max,
                     value: poster,
                 },
                 {
                     name: "S_ID",
-                    type: mssql.Int,
+                    type: TYPE.int,
                     value: status,
                 },
-                { name: "C_ID", type: mssql.Char(3), value: cID },
+                { name: "C_ID", type: TYPE.charThree, value: cID },
             ]);
             res.status(200).json({
                 data: result.recordset,
@@ -241,7 +240,7 @@ module.exports = {
         const filmID = req.params.filmID;
         try {
             const result = await executeMultipleParams("sp_getGenresOfFilm", [
-                { name: "F_ID", type: mssql.Int, value: filmID },
+                { name: "F_ID", type: TYPE.int, value: filmID },
             ]);
             res.status(200).json({
                 total: result.recordset.length,
@@ -256,10 +255,10 @@ module.exports = {
         const genres = req.body.genre;
         try {
             const result = await executeMultipleParams("sp_addGenreToFilm", [
-                { name: "F_ID", type: mssql.Int, value: filmID },
+                { name: "F_ID", type: TYPE.int, value: filmID },
                 {
                     name: "G_ID",
-                    type: mssql.Int,
+                    type: TYPE.int,
                     value: genres,
                 },
             ]);
@@ -275,10 +274,10 @@ module.exports = {
         const genres = req.body.genre;
         try {
             const result = await executeMultipleParams("sp_removeGenreToFilm ", [
-                { name: "F_ID", type: mssql.Int, value: filmID },
+                { name: "F_ID", type: TYPE.int, value: filmID },
                 {
                     name: "G_ID",
-                    type: mssql.Int,
+                    type: TYPE.int,
                     value: genres,
                 },
             ]);
@@ -313,7 +312,7 @@ module.exports = {
         const filmID = req.params.filmID;
         try {
             const result = await executeMultipleParams("sp_getFilmCredit", [
-                { name: "F_ID", type: mssql.Int, value: filmID },
+                { name: "F_ID", type: TYPE.int, value: filmID },
             ]);
             res.status(200).json({
                 total: result.recordset.length,
@@ -328,10 +327,10 @@ module.exports = {
         const casts = req.body.cast;
         try {
             const result = await executeMultipleParams("sp_addCastToFilm", [
-                { name: "F_ID", type: mssql.Int, value: filmID },
+                { name: "F_ID", type: TYPE.int, value: filmID },
                 {
                     name: "ANC_ID",
-                    type: mssql.Int,
+                    type: TYPE.int,
                     value: casts,
                 },
             ]);
@@ -347,10 +346,10 @@ module.exports = {
         const castID = req.body.cast;
         try {
             const result = await executeMultipleParams("sp_removeCastToFilm", [
-                { name: "F_ID", type: mssql.Int, value: filmID },
+                { name: "F_ID", type: TYPE.int, value: filmID },
                 {
                     name: "ANC_ID",
-                    type: mssql.Int,
+                    type: TYPE.int,
                     value: castID,
                 },
             ]);
@@ -384,7 +383,7 @@ module.exports = {
         const filmID = req.params.filmID;
         try {
             const result = await executeMultipleParams("sp_getKeywordOfFilm", [
-                { name: "F_ID", type: mssql.Int, value: filmID },
+                { name: "F_ID", type: TYPE.int, value: filmID },
             ]);
             res.status(200).json({
                 total: result.recordset.length,
@@ -399,10 +398,10 @@ module.exports = {
         const keyword = req.body.keyword;
         try {
             const result = await executeMultipleParams("sp_addKeyWordToFilm", [
-                { name: "F_ID", type: mssql.Int, value: filmID },
+                { name: "F_ID", type: TYPE.int, value: filmID },
                 {
                     name: "KW_ID",
-                    type: mssql.Int,
+                    type: TYPE.int,
                     value: keyword,
                 },
             ]);
@@ -418,10 +417,10 @@ module.exports = {
         const keywordID = req.body.keyword;
         try {
             const result = await executeMultipleParams("sp_removeKeyWordToFilm", [
-                { name: "F_ID", type: mssql.Int, value: filmID },
+                { name: "F_ID", type: TYPE.int, value: filmID },
                 {
                     name: "KW_ID",
-                    type: mssql.Int,
+                    type: TYPE.int,
                     value: keywordID,
                 },
             ]);

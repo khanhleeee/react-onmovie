@@ -3,8 +3,9 @@ const { NUMBER } = require("./NumberConstants");
 
 module.exports.TYPE = {
   int: mssql.Int,
+  tinyInt: mssql.TinyInt,
   smallDateTime: mssql.SmallDateTime,
-
+  bit : mssql.Bit,
   max: mssql.VarChar(mssql.MAX),
 
   varCharEight: mssql.VarChar(NUMBER.eight),
