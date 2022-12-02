@@ -77,6 +77,16 @@ export const GenresForm = ({ movieGenres, setMovieGenres }) => {
           </ul>
         </Col>
       </Row>
+
+      <Row>
+        <Col xs={{ order: 1 }}>
+          <AddNew />
+        </Col>
+      </Row>
     </>
   );
+};
+
+const AddNew = () => {
+  return <div>Hello</div>;
 };

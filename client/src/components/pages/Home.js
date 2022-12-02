@@ -12,7 +12,7 @@ function Home() {
          <div className="container">
             <div className="section mb-3">
                <div className="section-header mb-2">
-                  <h2>Popular Movies</h2>
+                  <h2>Top Rated Movies</h2>
                   <Link to="/movie">
                      <Button outline>View more</Button>
                   </Link>
@@ -21,7 +21,7 @@ function Home() {
             </div>
             <div className="section mb-3">
                <div className="section-header mb-2">
-                  <h2>Top Rated Movies</h2>
+                  <h2>Top Favorite Movies</h2>
                   <Link to="/movie">
                      <Button outline>View more</Button>
                   </Link>
