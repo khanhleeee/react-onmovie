@@ -1,8 +1,9 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
+import serverNode from '~/api/serverNode';
 import { LikeIcon, UnlikeIcon } from '~/components/Icons/Icons';
 
-import { MOVIE, MOVIE_RATING } from '~/constants';
+import { MOVIE, MOVIE_RATING, USER } from '~/constants';
 import styles from './Detail.module.scss';
 
 const cx = classNames.bind(styles);
@@ -12,78 +13,55 @@ const cx = classNames.bind(styles);
  * Like: 1
  * Dislike: 2
  */
-const user_ratings = [
-   {
-      F_ID: '00003',
-      ISLIKE: 1,
-   },
-   {
-      F_ID: '00004',
-      ISLIKE: 0,
-   },
-   {
-      F_ID: '00001',
-      ISLIKE: 1,
-   },
-];
-
-function Rating({ id }) {
-   const [active, setActive] = useState(false);
-   const [ratings, setRatings] = useState(0);
+export default function Rating({ id }) {
+   const [active, setActive] = useState(2);
+   const [ratings, setRatings] = useState([]);
+   const userData = JSON.parse(localStorage.getItem('user'));
 
    useEffect(() => {
-      // Lấy dữ liệu ratings của user
-      for (let item of user_ratings) {
-         if (item[MOVIE.id] === id) {
-            setActive(item[MOVIE_RATING.islike]);
-         }
-      }
-      setRatings(user_ratings);
+      const getRating = () => {
+         serverNode.getRatingList(userData[USER.id])
+            .then((res) => {
+               let user_ratings = res.data.data;
+               user_ratings.forEach((rating) => {
+                  if (rating[MOVIE_RATING.islike]) {
+                     rating[MOVIE_RATING.islike] = 1;
+                  } else {
+                     rating[MOVIE_RATING.islike] = 0;
+                  }
+               });
+               for (let item of user_ratings) {
+                  if (item[MOVIE.id].toString() === id) {
+                     setActive(item[MOVIE_RATING.islike]);
+                  }
+               }
+               setRatings(user_ratings);
+            })
+            .catch((err) => {
+               console.log(err);
+            });
+      };
+      getRating();
    }, [active]);
 
    const handleLike = () => {
-      if (!active) {
-         // Goi procedure them like vao film
-         setRatings(ratings.push({ [MOVIE.id]: id, [MOVIE_RATING.islike]: 1 }));
-         setActive(1);
-      } else if (active === 1) {
-         for (let i in ratings) {
-            if (ratings[i][MOVIE.id] === id) {
-               ratings.splice(ratings.indexOf(id), 1);
-            }
-         }
-         setRatings(ratings);
-         setActive(false);
-      } else {
-         for (let item of ratings) {
-            if (item[MOVIE.id] === id) {
-               item[MOVIE_RATING.islike] = 0;
-            }
-         }
-         setActive(0);
-      }
+      serverNode.addRating({
+         [MOVIE.id]: id,
+         [MOVIE_RATING.islike]: 1,
+         [USER.id]: userData[USER.id],
+      })
+      setRatings([...ratings, { [MOVIE.id]: id, [MOVIE_RATING.islike]: 1, [USER.id]: userData[USER.id] }]);
+      setActive(1);
    };
+
    const handleDisLike = () => {
-      if (!active) {
-         // Goi procedure them like vao film
-         setRatings(ratings.push({ [MOVIE.id]: id, [MOVIE_RATING.islike]: 0 }));
-         setActive(0);
-      } else if (active === 0) {
-         for (let i in ratings) {
-            if (ratings[i][MOVIE.id] === id) {
-               ratings.splice(ratings.indexOf(id), 1);
-            }
-         }
-         setRatings(ratings);
-         setActive(false);
-      } else {
-         for (let item of ratings) {
-            if (item[MOVIE.id] === id) {
-               item[MOVIE_RATING.islike] = 0;
-            }
-         }
-         setActive(0);
-      }
+      serverNode.addRating({
+         [MOVIE.id]: id,
+         [MOVIE_RATING.islike]: 0,
+         [USER.id]: userData[USER.id],
+      })
+      setRatings([...ratings, { [MOVIE.id]: id, [MOVIE_RATING.islike]: 0, [USER.id]: userData[USER.id] }]);
+      setActive(0);
    };
 
    return (
@@ -103,5 +81,3 @@ function Rating({ id }) {
       </div>
    );
 }
-
-export default Rating;
