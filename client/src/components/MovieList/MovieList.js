@@ -15,13 +15,18 @@ function MovieList(props) {
       const getList = async () => {
          let response = null;
          try {
-            response = await serverNode.getAllFilmRating();
-            setItems(response.data.data);
-
+            if (props.type === 'popular') {
+               response = await serverNode.getAllFilmRating();
+               setItems(response.data.data);
+            }; 
+            if (props.type === 'top_rated') {
+               response = await serverNode.getAllFilmFavorite();
+               setItems(response.data.data);
+            };
             if (props.type === 'similar') {
                const similarFilm = await serverNode.getSimilarFilm(props.id);
                setItems(similarFilm.data.data);
-            }
+            };
          } catch (error) {
             console.error(error);
          }

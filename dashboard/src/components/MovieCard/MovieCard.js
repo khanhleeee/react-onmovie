@@ -50,7 +50,11 @@ export default function MovieCard(props) {
             </li>
             <li>
               <span className={cx("title")}>Rating: </span>
-              <span className={cx("value")}>5.6</span>
+              <span className={cx("value")}>{item[MOVIE.avg]}</span>
+            </li>
+            <li>
+              <span className={cx("title")}>Nation: </span>
+              <span className={cx("value")}>{item[MOVIE.country]}</span>
             </li>
           </ul>
         </div>

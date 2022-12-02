@@ -11,7 +11,7 @@ import { serverNode } from "../../api/serverNode";
 
 const cx = classname.bind(styles);
 
-export const GenresForm = () => {
+export const GenresForm = ({ id }) => {
   const [movieGenres, setMovieGenres] = useState([]);
   const [genres, setGenres] = useState([]);
 
@@ -21,23 +21,30 @@ export const GenresForm = () => {
       setGenres(response.data.data);
     };
     getAllGenre();
+    const getGenreOfMovie = async () => {
+      const response = await serverNode.getGenreMovie(id);
+      setMovieGenres(response.data.data);
+    };
+    getGenreOfMovie();
   }, []);
 
   const handleAddGenre = (item) => {
     if (item) {
       if (!movieGenres.some((genre) => genre.G_ID === item.G_ID)) {
-        //Call api here
         setMovieGenres([...movieGenres, item]);
+        serverNode.addGenreMovie(id, item.G_ID);
       } else {
         alert(`Already add genre ${item.G_NAME} to movie`);
       }
     }
   };
+
   const handleRemoveGenre = (item) => {
     const newMovieGenres = movieGenres.filter(
       (genre) => genre.G_ID !== item.G_ID
     );
     setMovieGenres(newMovieGenres);
+    serverNode.removieGenreMovie(id, item.G_ID);
   };
 
   return (
@@ -78,9 +85,6 @@ export const GenresForm = () => {
           </ul>
         </Col>
       </Row>
-      <div className={cx("btn-wrapper")}>
-        <button className={cx("update-btn")}>UPDATE</button>
-      </div>
     </>
   );
 };

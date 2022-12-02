@@ -43,9 +43,9 @@ export default function EditMovie() {
       </ul>
       <div className={cx("content")}>
         {activeTab === 0 && <Information id={ID} />}
-        {activeTab === 1 && <GenresForm />}
-        {activeTab === 2 && <CastForm />}
-        {activeTab === 3 && <KeywordForm />}
+        {activeTab === 1 && <GenresForm id={ID} />}
+        {activeTab === 2 && <CastForm id={ID} />}
+        {activeTab === 3 && <KeywordForm id={ID} />}
       </div>
     </div>
   );
@@ -90,14 +90,12 @@ const Information = ({ id }) => {
     },
   ];
 
-  const COUNTRIES = [
-    { [COUNTRY.id]: "VIE", [COUNTRY.name]: "Viet Nam" },
-    { [COUNTRY.id]: "USA", [COUNTRY.name]: "My" },
-    { [COUNTRY.id]: "JPN", [COUNTRY.name]: "Nhat Ban" },
-  ];
-
   useEffect(() => {
-    setCountries(COUNTRIES);
+    const getAllCountries = async () => {
+      const response = await serverNode.getAllCountries();
+      setCountries(response.data.data);
+    };
+    getAllCountries();
   }, []);
 
   const [countries, setCountries] = useState([]);
@@ -122,19 +120,18 @@ const Information = ({ id }) => {
   }, [id]);
 
   const handleOnchange = (e) => {
-    console.log({ ...detailValues, [e.target.name]: e.target.value });
     setDetailValues({ ...detailValues, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await serverNode.editDetailMovie(id, detailValues);
-    // window.location.href="/movies";
+    window.location.href="/";
   };
 
   return (
     <div className={cx("info")}>
-      <h2 className={cx("sub-title")}>Movie's details</h2>
+      <h2 className={cx("sub-title")}>Movie's Details</h2>
       <Row>
         <Col sm={12} lg={3}>
           <label>Nation</label>

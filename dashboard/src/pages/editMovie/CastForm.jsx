@@ -12,7 +12,7 @@ import { serverNode } from "../../api/serverNode";
 
 const cx = classname.bind(styles);
 
-export const CastForm = () => {
+export const CastForm = ({ id }) => {
   const [movieCasts, setMovieCasts] = useState([]);
   const [casts, setCasts] = useState([]);
 
@@ -22,13 +22,18 @@ export const CastForm = () => {
       setCasts(response.data.data);
     };
     getAllCast();
+    const getCastOfMovie = async () => {
+      const response = await serverNode.getCastMovie(id);
+      setMovieCasts(response.data.data);
+    };
+    getCastOfMovie();
   }, []);
 
   const handleAddCast = (item) => {
     if (item) {
       if (!movieCasts.some((genre) => genre.ANC_ID === item.ANC_ID)) {
-        //call api here
         setMovieCasts([...movieCasts, item]);
+        serverNode.addCastMovie(id, item.ANC_ID);
       } else {
         alert(`Already add genre ${item.ANC_NAME} to movie`);
       }
@@ -36,6 +41,7 @@ export const CastForm = () => {
   };
   const handleRemoveCast = (item) => {
     setMovieCasts(movieCasts.filter((genre) => genre.ANC_ID !== item.ANC_ID));
+    serverNode.removeCastMovie(id, item.ANC_ID);
   };
 
   return (
@@ -77,9 +83,6 @@ export const CastForm = () => {
           </ul>
         </Col>
       </Row>
-      <div className={cx("btn-wrapper")}>
-        <button className={cx("update-btn")}>UPDATE</button>
-      </div>
     </>
   );
 };

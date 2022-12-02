@@ -11,7 +11,7 @@ import { serverNode } from "../../api/serverNode";
 
 const cx = classname.bind(styles);
 
-export const KeywordForm = () => {
+export const KeywordForm = ({ id }) => {
   const [movieKeywords, setMovieKeywords] = useState([]);
   const [keywords, setKeywords] = useState([]);
 
@@ -21,22 +21,26 @@ export const KeywordForm = () => {
       setKeywords(response.data.data);
     };
     getAllKeyword();
+    const getKeywordOfMovie = async () => {
+      const response = await serverNode.getKeywordMovie(id);
+      setMovieKeywords(response.data.data);
+    };
+    getKeywordOfMovie();
   }, []);
 
   const handleAddKeyword = (item) => {
     if (item) {
       if (!movieKeywords.some((keyword) => keyword.KW_ID === item.KW_ID)) {
-        //call api here
         setMovieKeywords([...movieKeywords, item]);
+        serverNode.addKeywordMovie(id, item.KW_ID);
       } else {
         alert(`Already add keyword ${item.KW_NAME} to movie`);
       }
     }
   };
   const handleRemoveKeyword = (item) => {
-    setMovieKeywords(
-      movieKeywords.filter((keyword) => keyword.KW_ID !== item.KW_ID)
-    );
+    setMovieKeywords(movieKeywords.filter((keyword) => keyword.KW_ID !== item.KW_ID));
+    serverNode.removeKeywordMovie(id, item.KW_ID);
   };
 
   return (
@@ -77,9 +81,6 @@ export const KeywordForm = () => {
           </ul>
         </Col>
       </Row>
-      <div className={cx("btn-wrapper")}>
-        <button className={cx("update-btn")}>UPDATE</button>
-      </div>
     </>
   );
 };

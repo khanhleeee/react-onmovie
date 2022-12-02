@@ -10,6 +10,14 @@ const serverNode = {
          console.log(error);
       }
    },
+   getAllFilmFavorite: async () => {
+      try {
+         const data = await axios.get(apiNode.baseUrl + 'film/favorite');
+         return data;
+      } catch (error) {
+         console.log(error);
+      }
+   },
    getFilmList: async (page) => {
       try {
          const data = await axios.get(apiNode.baseUrl + 'film?page=' + page);
