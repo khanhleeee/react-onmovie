@@ -1,0 +1,28 @@
+@use "../../scss" as *;
+
+.add-btn {
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  color: $text-color;
+  background-color: $primary-color;
+  cursor: pointer;
+}
+
+.addnew {
+  margin-right: 1rem;
+
+  .container {
+    @include flex(center, unset);
+    background-color: $sub-bg;
+    padding: 0.7rem 1rem;
+    border-radius: 4px;
+
+    .input {
+      width: 100%;
+      height: 100%;
+      color: $white;
+      background: none;
+      border: none;
+    }
+  }
+}

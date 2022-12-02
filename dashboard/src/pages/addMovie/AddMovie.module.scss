@@ -83,3 +83,6 @@ label {
   background-color: $sub-bg;
   margin-bottom: 2rem;
 }
+.addnew-btn {
+  @include flex(center, end);
+}

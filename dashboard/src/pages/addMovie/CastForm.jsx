@@ -8,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import styles from "./AddMovie.module.scss";
 import CastCard from "../../components/CastCard/CastCard";
 import { serverNode } from "../../api/serverNode";
+import AddNew from "../../components/AddNew/AddNew";
 
 const cx = classname.bind(styles);
 
@@ -74,6 +75,10 @@ export const CastForm = ({ movieCasts, setMovieCasts }) => {
           </ul>
         </Col>
       </Row>
+
+      <div className={cx("addnew-btn")}>
+        <AddNew cast />
+      </div>
     </>
   );
 };
