@@ -63,6 +63,7 @@ module.exports = {
   },
   getDetailFilm: async (req, res) => {
     const filmID = req.params.filmID;
+
     try {
       const result = await executeMultipleParams("sp_getFilmDetail", [
         {
@@ -80,7 +81,7 @@ module.exports = {
       ]);
       const findTrailer = await executeMultipleParams("sp_getFilmTrailers", [
         {
-          name: "ID_FILM",
+          name: "F_ID",
           type: TYPE.int,
           value: filmID,
         },
