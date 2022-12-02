@@ -105,7 +105,7 @@ module.exports = {
                 });
                 return "(" + result + " )";
             };
-    
+
             const details = {
                 F_OFFICIAL_NAME: data.detailValues[FILM.name],
                 F_DESC: data.detailValues[FILM.desc],
@@ -177,21 +177,14 @@ module.exports = {
     },
     editDetailMovie: async (req, res) => {
         const filmID = req.params.filmID;
+        const name = req.body[FILM.name];
+        const release_date = req.body[FILM.release_date];
+        const poster = req.body[FILM.poster];
+        const backdrop = req.body[FILM.backdrop];
+        const desc = req.body[FILM.desc];
+        const age = req.body[FILM.age];
+        const cID = req.body[COUNTRY.id];
         const status = 2;
-        const cID = 'USA';
-        const avg = 8.0;
-        const age = 18;
-        const {
-            [FILM.name]: name,
-            [FILM.release_date]: release_date,
-            [FILM.backdrop]: backdrop,
-            [FILM.poster]: poster,
-            [FILM.desc]: desc,
-            // [FILM.age]: age,
-            // [FILM.avg]: avg,
-            // [FILM.status]: status,
-            // [COUNTRY.id]: cID,            
-        } = req.body;
         try {
             const result = await executeMultipleParams("sp_editDetailsFilm", [
                 { name: "F_ID", type: mssql.Int, value: filmID },
@@ -206,23 +199,22 @@ module.exports = {
                     type: mssql.SmallDateTime,
                     value: release_date,
                 },
-                {
-                    name: "F_AVG",
-                    type: mssql.Real,
-                    value: avg,
-                },
                 { name: "F_AGE", type: mssql.TinyInt, value: age },
                 {
                     name: "F_BACKDROP",
-                    type: mssql.VarChar(100),
+                    type: mssql.VarChar(mssql.MAX),
                     value: backdrop,
                 },
                 {
                     name: "F_POSTER",
-                    type: mssql.VarChar(100),
+                    type: mssql.VarChar(mssql.MAX),
                     value: poster,
                 },
-                { name: "S_ID", type: mssql.Int, value: status },
+                {
+                    name: "S_ID",
+                    type: mssql.Int,
+                    value: status,
+                },
                 { name: "C_ID", type: mssql.Char(3), value: cID },
             ]);
             res.status(200).json({
@@ -232,6 +224,8 @@ module.exports = {
             res.status(500).json(error);
         }
     },
+
+    // GENRES
     getAllGenres: async (req, res) => {
         try {
             const result = await executeMultipleParams("sp_getGenres", []);
@@ -243,6 +237,60 @@ module.exports = {
             res.status(500).json(error);
         }
     },
+    getGenresMovie: async (req, res) => {
+        const filmID = req.params.filmID;
+        try {
+            const result = await executeMultipleParams("sp_getGenresOfFilm", [
+                { name: "F_ID", type: mssql.Int, value: filmID },
+            ]);
+            res.status(200).json({
+                total: result.recordset.length,
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+    addGenreMovie: async (req, res) => {
+        const filmID = req.params.filmID;
+        const genres = req.body.genre;
+        try {
+            const result = await executeMultipleParams("sp_addGenreToFilm", [
+                { name: "F_ID", type: mssql.Int, value: filmID },
+                {
+                    name: "G_ID",
+                    type: mssql.Int,
+                    value: genres,
+                },
+            ]);
+            res.status(200).json({
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+    removeGenreMovie: async (req, res) => {
+        const filmID = req.params.filmID;
+        const genres = req.body.genre;
+        try {
+            const result = await executeMultipleParams("sp_removeGenreToFilm ", [
+                { name: "F_ID", type: mssql.Int, value: filmID },
+                {
+                    name: "G_ID",
+                    type: mssql.Int,
+                    value: genres,
+                },
+            ]);
+            res.status(200).json({
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+
+    // CAST
     getAllCasts: async (req, res) => {
         try {
             const result = await executeMultipleParams("sp_getCasts", []);
@@ -261,6 +309,60 @@ module.exports = {
             res.status(500).json(error);
         }
     },
+    getCastsMovie: async (req, res) => {
+        const filmID = req.params.filmID;
+        try {
+            const result = await executeMultipleParams("sp_getFilmCredit", [
+                { name: "F_ID", type: mssql.Int, value: filmID },
+            ]);
+            res.status(200).json({
+                total: result.recordset.length,
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+    addCastsMovie: async (req, res) => {
+        const filmID = req.params.filmID;
+        const casts = req.body.cast;
+        try {
+            const result = await executeMultipleParams("sp_addCastToFilm", [
+                { name: "F_ID", type: mssql.Int, value: filmID },
+                {
+                    name: "ANC_ID",
+                    type: mssql.Int,
+                    value: casts,
+                },
+            ]);
+            res.status(200).json({
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+    removeCastMovie: async (req, res) => {
+        const filmID = req.params.filmID;
+        const castID = req.body.cast;
+        try {
+            const result = await executeMultipleParams("sp_removeCastToFilm", [
+                { name: "F_ID", type: mssql.Int, value: filmID },
+                {
+                    name: "ANC_ID",
+                    type: mssql.Int,
+                    value: castID,
+                },
+            ]);
+            res.status(200).json({
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+
+    // KEYWORD
     getAllKeywords: async (req, res) => {
         try {
             const result = await executeMultipleParams("sp_getKeywords", []);
@@ -277,5 +379,70 @@ module.exports = {
         } catch (error) {
             res.status(500).json(error);
         }
-    }
+    },
+    getKeywordsMovie: async (req, res) => {
+        const filmID = req.params.filmID;
+        try {
+            const result = await executeMultipleParams("sp_getKeywordOfFilm", [
+                { name: "F_ID", type: mssql.Int, value: filmID },
+            ]);
+            res.status(200).json({
+                total: result.recordset.length,
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+    addKeywordsMovie: async (req, res) => {
+        const filmID = req.params.filmID;
+        const keyword = req.body.keyword;
+        try {
+            const result = await executeMultipleParams("sp_addKeyWordToFilm", [
+                { name: "F_ID", type: mssql.Int, value: filmID },
+                {
+                    name: "KW_ID",
+                    type: mssql.Int,
+                    value: keyword,
+                },
+            ]);
+            res.status(200).json({
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+    removeKeywordMovie: async (req, res) => {
+        const filmID = req.params.filmID;
+        const keywordID = req.body.keyword;
+        try {
+            const result = await executeMultipleParams("sp_removeKeyWordToFilm", [
+                { name: "F_ID", type: mssql.Int, value: filmID },
+                {
+                    name: "KW_ID",
+                    type: mssql.Int,
+                    value: keywordID,
+                },
+            ]);
+            res.status(200).json({
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+    
+    // COUNTRY
+    getAllCountries: async (req, res) => {
+        try {
+            const result = await executeMultipleParams("sp_getCountries", []);
+            res.status(200).json({
+                total: result.recordset.length,
+                data: result.recordset,
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
 }

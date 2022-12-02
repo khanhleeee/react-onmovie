@@ -85,22 +85,41 @@ module.exports = {
           value: filmID,
         },
       ]);
-      var obj = {
-        F_ID: result.recordset[0][FILM.id],
-        F_OFFICIAL_NAME: result.recordset[0][FILM.name],
-        F_DESC: result.recordset[0][FILM.desc],
-        F_RELEASE_DATE: result.recordset[0][FILM.release_date],
-        F_AVG: result.recordset[0][FILM.avg],
-        F_AGE: result.recordset[0][FILM.age],
-        F_BACKDROP: result.recordset[0][FILM.backdrop],
-        F_POSTER: result.recordset[0][FILM.poster],
-        S_NAME: result.recordset[0][FILM.status],
-        C_NAME: result.recordset[0][COUNTRY.name],
-        F_TRAILER: findTrailer.recordset[0],
-        G_NAME: [],
-      };
-      for (let i = 0; i < findGenre.recordset.length; i++) {
-        obj.G_NAME.push(findGenre.recordset[i][GENRE.name]);
+      if (findTrailer.recordsets.length !== 0) {
+        var obj = {
+          F_ID: result.recordset[0][FILM.id],
+          F_OFFICIAL_NAME: result.recordset[0][FILM.name],
+          F_DESC: result.recordset[0][FILM.desc],
+          F_RELEASE_DATE: result.recordset[0][FILM.release_date],
+          F_AVG: result.recordset[0][FILM.avg],
+          F_AGE: result.recordset[0][FILM.age],
+          F_BACKDROP: result.recordset[0][FILM.backdrop],
+          F_POSTER: result.recordset[0][FILM.poster],
+          S_NAME: result.recordset[0][FILM.status],
+          C_NAME: result.recordset[0][COUNTRY.name],
+          F_TRAILER: findTrailer.recordset[0],
+          G_NAME: [],
+        };
+        for (let i = 0; i < findGenre.recordset.length; i++) {
+          obj.G_NAME.push(findGenre.recordset[i][GENRE.name]);
+        }
+      } else {
+        var obj = {
+          F_ID: result.recordset[0][FILM.id],
+          F_OFFICIAL_NAME: result.recordset[0][FILM.name],
+          F_DESC: result.recordset[0][FILM.desc],
+          F_RELEASE_DATE: result.recordset[0][FILM.release_date],
+          F_AVG: result.recordset[0][FILM.avg],
+          F_AGE: result.recordset[0][FILM.age],
+          F_BACKDROP: result.recordset[0][FILM.backdrop],
+          F_POSTER: result.recordset[0][FILM.poster],
+          S_NAME: result.recordset[0][FILM.status],
+          C_NAME: result.recordset[0][COUNTRY.name],
+          G_NAME: [],
+        };
+        for (let i = 0; i < findGenre.recordset.length; i++) {
+          obj.G_NAME.push(findGenre.recordset[i][GENRE.name]);
+        }
       }
       res.status(200).json({ data: obj });
     } catch (error) {
@@ -113,7 +132,7 @@ module.exports = {
       const result = await executeMultipleParams("sp_getSimilarFilms", [
         {
           name: "F_ID",
-          type: TYPE.charFive,
+          type: TYPE.int,
           value: filmID,
         },
       ]);
@@ -236,6 +255,17 @@ module.exports = {
   getFilmByRating: async (req, res) => {
     try {
       const result = await executeMultipleParams("sp_getFilmByRating", []);
+      res.status(200).json({
+        total: result.recordset.length,
+        data: result.recordset,
+      });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+  getFimByFavorite: async (req, res) => {
+    try {
+      const result = await executeMultipleParams("sp_getFavoriteFilms", []);
       res.status(200).json({
         total: result.recordset.length,
         data: result.recordset,
