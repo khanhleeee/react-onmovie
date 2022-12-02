@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Button from '~/components/Button/Button';
 
@@ -97,7 +96,7 @@ const Account = () => {
       };
 
       serverNode
-         .upgradeUser(user[USER.id], {
+         .editUser(user[USER.id], {
             fullName: dataUpdate.fullName,
             phoneNumber: dataUpdate.phoneNumber,
          })

@@ -8,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import styles from "./AddMovie.module.scss";
 import Tag from "../../components/Tag/Tag";
 import { serverNode } from "../../api/serverNode";
+import AddNew from "../../components/AddNew/AddNew";
 
 const cx = classname.bind(styles);
 
@@ -78,15 +79,9 @@ export const GenresForm = ({ movieGenres, setMovieGenres }) => {
         </Col>
       </Row>
 
-      <Row>
-        <Col xs={{ order: 1 }}>
-          <AddNew />
-        </Col>
-      </Row>
+      <div className={cx("addnew-btn")}>
+        <AddNew genre />
+      </div>
     </>
   );
-};
-
-const AddNew = () => {
-  return <div>Hello</div>;
 };
