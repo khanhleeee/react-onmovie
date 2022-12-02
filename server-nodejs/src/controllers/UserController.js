@@ -2,6 +2,7 @@ const { executeMultipleParams } = require('../database/handleQuery');
 const { TYPE } = require('../constants/TypeConstants');
 
 module.exports = {
+  // Watchlist
   getWatchList: async (req, res) => {
     const userID = req.params.userID;
     try {
@@ -68,6 +69,40 @@ module.exports = {
         }
         res.status(200).json(obj);
       }
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  },
+
+  // Rating
+  getRatingList: async (req, res) => {
+    const userID = req.params.userID;
+    try {
+      const result = await executeMultipleParams("sp_getFilmUserRated", [
+        {
+          name: "U_ID",
+          type: TYPE.int,
+          value: userID,
+        },
+      ]);
+      res.status(200).json({
+        total: result.recordset.length,
+        data: result.recordset,
+      });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+  addRating: async (req, res) => {
+    try {
+      let filmID = req.body.F_ID;
+      let userID = req.body.U_ID;
+      let isLike = req.body.ISLIKE;
+      const result = await executeMultipleParams("sp_rateFilm", [
+        { name: "ISLIKE", type: TYPE.bit, value: isLike },
+        { name: "F_ID", type: TYPE.int, value: filmID },
+        { name: "U_ID", type: TYPE.int, value: userID },
+      ]);
     } catch (err) {
       return res.status(500).json(err);
     }
