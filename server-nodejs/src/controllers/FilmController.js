@@ -81,7 +81,7 @@ module.exports = {
       const findTrailer = await executeMultipleParams("sp_getFilmTrailers", [
         {
           name: "ID_FILM",
-          type: TYPE.charFive,
+          type: TYPE.int,
           value: filmID,
         },
       ]);
@@ -210,7 +210,7 @@ module.exports = {
       res.status(200).json({
         total: result.recordset.length,
         data: result.recordset,
-      })
+      });
     } catch (error) {
       res.status(500).json(error);
     }

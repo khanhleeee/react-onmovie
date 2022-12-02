@@ -1,15 +1,16 @@
-const { executeMultipleParams } = require('../database/handleQuery');
-const { USER } = require('../constants/UserConstants');
-const { TYPE } = require('../constants/TypeConstants');
+const { executeMultipleParams } = require("../database/handleQuery");
+const { USER } = require("../constants/UserConstants");
+const { TYPE } = require("../constants/TypeConstants");
 
 module.exports = {
   login: async (req, res) => {
     try {
       let email = req.body.email;
       let password = req.body.password;
-      const result = await executeMultipleParams('sp_getUser', [
-        { name: 'EMAIL', type: TYPE.varcharThirty, value: email },
-        { name: 'PASS', type: TYPE.charHundred, value: password },
+
+      const result = await executeMultipleParams("sp_getUser", [
+        { name: "EMAIL", type: TYPE.varcharThirty, value: email },
+        { name: "PASS", type: TYPE.charHundred, value: password },
       ]);
       if (result.recordset === undefined) {
         return res.status(401).json("Email or Password is incorrect");
@@ -49,11 +50,11 @@ module.exports = {
         return res.status(400).json("Please fill all fields");
       }
 
-      const result = await executeMultipleParams('sp_addInforUser', [
-        { name: 'U_NAME', type: TYPE.nvarcharFifty, value: fullName },
-        { name: 'U_PHONE', type: TYPE.varCharEleven, value: phoneNumber },
-        { name: 'U_EMAIL', type: TYPE.varcharThirty, value: email },
-        { name: 'U_PASS', type: TYPE.varcharHundred, value: password }
+      const result = await executeMultipleParams("sp_addInforUser", [
+        { name: "U_NAME", type: TYPE.nvarcharFifty, value: fullName },
+        { name: "U_PHONE", type: TYPE.varCharEleven, value: phoneNumber },
+        { name: "U_EMAIL", type: TYPE.varcharThirty, value: email },
+        { name: "U_PASS", type: TYPE.varcharHundred, value: password },
       ]);
 
       return res.status(200).json({
@@ -68,14 +69,14 @@ module.exports = {
       let userID = req.params.userID;
       let fullName = req.body.fullName;
       let phoneNumber = req.body.phoneNumber;
-      const result = await executeMultipleParams('sp_editInforUser', [
-        { name: 'U_ID', type: TYPE.int, value: userID },
-        { name: 'U_NAME', type: TYPE.nvarcharFifty, value: fullName },
-        { name: 'U_PHONE', type: TYPE.varCharEleven, value: phoneNumber },
+      const result = await executeMultipleParams("sp_editInforUser", [
+        { name: "U_ID", type: TYPE.int, value: userID },
+        { name: "U_NAME", type: TYPE.nvarcharFifty, value: fullName },
+        { name: "U_PHONE", type: TYPE.varCharEleven, value: phoneNumber },
       ]);
       console.log(result);
       return res.status(200).json({
-        message: 'Update successfully',
+        message: "Update successfully",
         data: {
           id: result.recordset[0][USER.id],
           email: result.recordset[0][USER.email],
@@ -89,4 +90,4 @@ module.exports = {
       res.status(500).json(error.message);
     }
   },
-}
+};
