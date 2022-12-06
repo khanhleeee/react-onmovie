@@ -14,25 +14,21 @@ function Favorite({ id }) {
    const userData = JSON.parse(localStorage.getItem('user'));
 
    useEffect(() => {
-      const getUserWatchlist = () => {
-         serverNode
-            .getWatchList(userData[USER.id])
-            .then((res) => {
-               const user_watchlist = res.data.data;
-               if(user_watchlist) {
-                  user_watchlist.forEach((watchlist) => {
-                     if (watchlist[MOVIE.id] == id) {
-                        setActive(true);
-                     }
-                  });
-               }
-               setWatchlist(user_watchlist);
-            })
-            .catch((err) => {
-               console.log(err);
-            });
-      };
-      getUserWatchlist();
+      serverNode.getWatchList(userData[USER.id])
+         .then((res) => {
+            const user_watchlist = res.data.data;
+            if (user_watchlist) {
+               user_watchlist.forEach((watchlist) => {
+                  if (watchlist[MOVIE.id].toString() === id) {
+                     setActive(true);
+                  }
+               });
+            }
+            setWatchlist(user_watchlist);
+         })
+         .catch((err) => {
+            console.log(err);
+         });
    }, [active]);
 
    const handleAddToFavorite = () => {
