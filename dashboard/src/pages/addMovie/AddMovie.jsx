@@ -14,7 +14,7 @@ import { COUNTRY, MOVIE } from "../../../src/constants";
 import { serverNode } from "../../api/serverNode";
 const cx = classname.bind(styles);
 
-function AddMovie() {
+export default function AddMovie() {
   const [detailValues, setDetailValues] = useState({
     [MOVIE.name]: "",
     [MOVIE.release_date]: "",
@@ -37,13 +37,19 @@ function AddMovie() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log({
+      detailValues,
+      movieGenres,
+      movieCasts,
+      movieKeywords,
+    })
     serverNode.addMovie({
       detailValues,
       movieGenres,
       movieCasts,
       movieKeywords,
     });
-    window.location.href = "/";
+    // window.location.href = "/";
   };
 
   return (
@@ -111,16 +117,13 @@ const MovieDetailForm = ({ detailValues, setDetailValues, handleOnchange }) => {
       columns: "12",
     },
   ];
-  const COUNTRIES = [
-    { [COUNTRY.id]: "VIE", [COUNTRY.name]: "Viet Nam" },
-    { [COUNTRY.id]: "USA", [COUNTRY.name]: "My" },
-    { [COUNTRY.id]: "JPN", [COUNTRY.name]: "Nhat Ban" },
-  ];
 
   const [countries, setCountries] = useState([]);
-
   useEffect(() => {
-    setCountries(COUNTRIES);
+    serverNode.getAllCountries()
+      .then((res) => {
+        setCountries(res.data.data);
+      })
   }, []);
 
   return (
@@ -208,4 +211,3 @@ const MovieDetailForm = ({ detailValues, setDetailValues, handleOnchange }) => {
   );
 };
 
-export default AddMovie;

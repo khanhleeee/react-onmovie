@@ -1,12 +1,13 @@
 import classname from "classnames/bind";
 import { useEffect, useState } from "react";
+import { serverNode } from "../../api/serverNode";
 import { ACTOR } from "../../constants";
 
 import styles from "./AddNew.module.scss";
 
 const cx = classname.bind(styles);
 
-function AddNew(props) {
+export default function AddNew(props) {
   const [active, setActive] = useState(1);
 
   const [value, setValue] = useState("");
@@ -25,16 +26,23 @@ function AddNew(props) {
     }
   }, [active]);
 
-  const handleAdd = () => {
+  const handleAdd = (e) => {
+    e.preventDefault();
     if (props.genre) {
-      //goi sp_addnewgenre
-      console.log("genre: ", value);
+      serverNode.addMoreGenre(value);
+      props.setResetGenre(true);
+      setValue("");
     } else if (props.keyword) {
-      //goi sp_addnewkeyword
-      console.log("keyword: ", value);
+      serverNode.addMoreKeyword(value);
+      props.setResetKeyword(true);
+      setValue("");
     } else if (props.cast) {
-      //goi sp_addnewcast
-      console.log("cast: ", castValue);
+      serverNode.addMoreCast(castValue);
+      props.setResetCast(true);
+      setCastValue({
+        [ACTOR.name]: "",
+        [ACTOR.avatar]: "",
+      });
     }
   };
 
@@ -85,5 +93,3 @@ function AddNew(props) {
     </>
   );
 }
-
-export default AddNew;

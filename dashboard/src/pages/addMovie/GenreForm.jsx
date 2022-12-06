@@ -14,6 +14,7 @@ const cx = classname.bind(styles);
 
 export const GenresForm = ({ movieGenres, setMovieGenres }) => {
   const [genres, setGenres] = useState([]);
+  const [resetGenre, setResetGenre] = useState(false);
 
   useEffect(() => {
     const getAllGenre = async () => {
@@ -21,18 +22,19 @@ export const GenresForm = ({ movieGenres, setMovieGenres }) => {
       setGenres(response.data.data);
     };
     getAllGenre();
-  }, []);
+    setResetGenre(false);
+  }, [resetGenre]);
 
   const handleAddGenre = (item) => {
     if (item) {
       if (!movieGenres.some((genre) => genre.G_ID === item.G_ID)) {
-        //call api here
         setMovieGenres([...movieGenres, item]);
       } else {
         alert(`Already add genre ${item.G_NAME} to movie`);
       }
     }
   };
+
   const handleRemoveGenre = (item) => {
     const newMovieGenres = movieGenres.filter(
       (genre) => genre.G_ID !== item.G_ID
@@ -80,7 +82,7 @@ export const GenresForm = ({ movieGenres, setMovieGenres }) => {
       </Row>
 
       <div className={cx("addnew-btn")}>
-        <AddNew genre />
+        <AddNew genre resetGenre={resetGenre} setResetGenre={setResetGenre} />
       </div>
     </>
   );

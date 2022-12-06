@@ -62,6 +62,14 @@ export const serverNode = {
       return error.response;
     }
   },
+  addMoreGenre: async (genre) => {
+    try {
+      const data = await axios.post(apiNode.baseUrl + "films/genres", { genre });
+      return data;
+    } catch (error) {
+      return error.response;
+    }
+  },
   addGenreMovie: async (filmID, genre) => {
     try {
       const data = await axios.post(
@@ -104,6 +112,14 @@ export const serverNode = {
       return error.response;
     }
   },
+  addMoreCast: async (cast) => {
+    try {
+      const data = await axios.post(apiNode.baseUrl + "films/casts", cast);
+      return data;
+    } catch (error) {
+      return error.response;
+    }
+  },
   getCastMovie: async (filmID) => {
     try {
       const data = await axios.get(
@@ -140,6 +156,14 @@ export const serverNode = {
   getAllKeywords: async () => {
     try {
       const data = await axios.get(apiNode.baseUrl + "films/keywords");
+      return data;
+    } catch (error) {
+      return error.response;
+    }
+  },
+  addMoreKeyword: async (keyword) => {
+    try {
+      const data = await axios.post(apiNode.baseUrl + "films/keywords", { keyword });
       return data;
     } catch (error) {
       return error.response;

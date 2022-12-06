@@ -14,6 +14,7 @@ const cx = classname.bind(styles);
 
 export const CastForm = ({ movieCasts, setMovieCasts }) => {
   const [casts, setCasts] = useState([]);
+  const [resetCast, setResetCast] = useState(false);
 
   useEffect(() => {
     const getAllCast = async () => {
@@ -21,7 +22,8 @@ export const CastForm = ({ movieCasts, setMovieCasts }) => {
       setCasts(response.data.data);
     };
     getAllCast();
-  }, []);
+    setResetCast(false);
+  }, [resetCast]);
 
   const handleAddCast = (item) => {
     if (item) {
@@ -77,7 +79,7 @@ export const CastForm = ({ movieCasts, setMovieCasts }) => {
       </Row>
 
       <div className={cx("addnew-btn")}>
-        <AddNew cast />
+        <AddNew cast resetCast={resetCast} setResetCast={setResetCast} />
       </div>
     </>
   );

@@ -42,7 +42,7 @@ function MovieCard(props) {
          <div className={classes}>
             <div
                className={cx('poster')}
-               style={{ backgroundImage: `url(${backgroud})` }}
+               style={{ backgroundImage: `url(${item[MOVIE.poster]})` }}
             ></div>
             <div className={cx('info')}>
                <h3 className={cx('title')}>{item[MOVIE.name]}</h3>
