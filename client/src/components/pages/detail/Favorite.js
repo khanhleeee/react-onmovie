@@ -15,7 +15,8 @@ function Favorite({ id }) {
    const userData = JSON.parse(localStorage.getItem('user'));
 
    useEffect(() => {
-      serverNode.getWatchList(userData[USER.id])
+      serverNode
+         .getWatchList(userData[USER.id])
          .then((res) => {
             const user_watchlist = res.data.data;
             if (user_watchlist) {
