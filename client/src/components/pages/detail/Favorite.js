@@ -11,6 +11,7 @@ const cx = classNames.bind(styles);
 function Favorite({ id }) {
    const [active, setActive] = useState(false);
    const [watchlist, setWatchlist] = useState([]);
+
    const userData = JSON.parse(localStorage.getItem('user'));
 
    useEffect(() => {
@@ -19,7 +20,7 @@ function Favorite({ id }) {
             .getWatchList(userData[USER.id])
             .then((res) => {
                const user_watchlist = res.data.data;
-               if(user_watchlist) {
+               if (user_watchlist) {
                   user_watchlist.forEach((watchlist) => {
                      if (watchlist[MOVIE.id] == id) {
                         setActive(true);
@@ -33,7 +34,8 @@ function Favorite({ id }) {
             });
       };
       getUserWatchlist();
-   }, [active]);
+      console.log(id);
+   }, [id]);
 
    const handleAddToFavorite = () => {
       if (active) {

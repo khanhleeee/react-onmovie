@@ -25,11 +25,21 @@ const TAB_ITEM = [
 
 export default function EditMovie() {
   const [activeTab, setActiveTab] = useState(0);
+  const [item, setItem] = useState([]);
+
   const ID = useParams().id;
+
+  useEffect(() => {
+    const getDetailsMovie = async () => {
+      const response = await serverNode.getDetailMovie(ID);
+      setItem(response.data.data);
+    };
+    getDetailsMovie();
+  }, [ID]);
 
   return (
     <div className={cx("container")}>
-      <h2 className={cx("title")}>Edit movie</h2>
+      <h2 className={cx("title")}>Edit movie: {item[MOVIE.name]}</h2>
       <ul className={cx("tab-container")}>
         {TAB_ITEM.map((item, index) => (
           <li
@@ -42,7 +52,7 @@ export default function EditMovie() {
         ))}
       </ul>
       <div className={cx("content")}>
-        {activeTab === 0 && <Information id={ID} />}
+        {activeTab === 0 && <Information id={ID} film={item} />}
         {activeTab === 1 && <GenresForm id={ID} />}
         {activeTab === 2 && <CastForm id={ID} />}
         {activeTab === 3 && <KeywordForm id={ID} />}
@@ -51,7 +61,7 @@ export default function EditMovie() {
   );
 }
 
-const Information = ({ id }) => {
+const Information = ({ id, film }) => {
   const DETAIL_INPUTS = [
     {
       name: [MOVIE.name],
@@ -90,6 +100,8 @@ const Information = ({ id }) => {
     },
   ];
 
+  const [countries, setCountries] = useState([]);
+
   useEffect(() => {
     const getAllCountries = async () => {
       const response = await serverNode.getAllCountries();
@@ -98,26 +110,20 @@ const Information = ({ id }) => {
     getAllCountries();
   }, []);
 
-  const [countries, setCountries] = useState([]);
-
   const [detailValues, setDetailValues] = useState({
     [MOVIE.name]: "",
-    [MOVIE.date]: "",
+    [MOVIE.release_date]: "",
     [MOVIE.backdrop]: "",
     [MOVIE.poster]: "",
     [MOVIE.desc]: "",
     [MOVIE.age]: "",
     [MOVIE.country]: "",
   });
-  const [film, setFilm] = useState(null);
 
   useEffect(() => {
-    const getDetailsMovie = async () => {
-      const response = await serverNode.getDetailMovie(id);
-      setFilm(response.data.data);
-    };
-    getDetailsMovie();
-  }, [id]);
+    setDetailValues({ ...film });
+  }, [film]);
+  console.log(detailValues);
 
   const handleOnchange = (e) => {
     setDetailValues({ ...detailValues, [e.target.name]: e.target.value });
@@ -126,7 +132,7 @@ const Information = ({ id }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await serverNode.editDetailMovie(id, detailValues);
-    window.location.href="/";
+    window.location.href = "/";
   };
 
   return (
@@ -166,9 +172,15 @@ const Information = ({ id }) => {
               })
             }
           >
+            <option value="12">Above 12</option>
             <option value="13">Above 13</option>
+            <option value="14">Above 14</option>
+            <option value="15">Above 15</option>
             <option value="16">Above 16</option>
+            <option value="17">Above 17</option>
             <option value="18">Above 18</option>
+            <option value="19">Above 19</option>
+            <option value="20">Above 20</option>
             <option value="21">Above 21</option>
           </select>
         </Col>

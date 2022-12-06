@@ -17,12 +17,14 @@ const cx = classname.bind(styles);
 function AddMovie() {
   const [detailValues, setDetailValues] = useState({
     [MOVIE.name]: "",
-    [MOVIE.date]: "",
+    [MOVIE.release_date]: "",
     [MOVIE.backdrop]: "",
     [MOVIE.poster]: "",
     [MOVIE.desc]: "",
     [MOVIE.age]: "",
     [MOVIE.country]: "",
+    [MOVIE.sourceID]: "",
+    [MOVIE.trailerID]: "",
   });
 
   const [movieGenres, setMovieGenres] = useState([]);
@@ -30,13 +32,18 @@ function AddMovie() {
   const [movieKeywords, setMovieKeywords] = useState([]);
 
   const handleOnchange = async (e) => {
-    setDetailValues({ ...detailValues, [e.target.name]: e.target.value,});
+    setDetailValues({ ...detailValues, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    serverNode.addMovie({detailValues, movieGenres, movieCasts, movieKeywords});
-    window.location.href="/";
+    serverNode.addMovie({
+      detailValues,
+      movieGenres,
+      movieCasts,
+      movieKeywords,
+    });
+    window.location.href = "/";
   };
 
   return (
@@ -55,7 +62,7 @@ function AddMovie() {
         />
         <CastForm movieCasts={movieCasts} setMovieCasts={setMovieCasts} />
         <Row>
-          <Col className={cx("submit-wrapper")} md={{ span: 6, offset: 6 }}>
+          <Col className={cx("submit-wrapper")} md={12}>
             <button className={cx("submit-btn")} type="submit">
               Create new
             </button>
@@ -158,6 +165,32 @@ const MovieDetailForm = ({ detailValues, setDetailValues, handleOnchange }) => {
             <option value="18">Above 18</option>
             <option value="21">Above 21</option>
           </select>
+        </Col>
+        <Col sm={12} lg={3}>
+          <Input
+            label="Source ID"
+            placeholder="eg: 0123"
+            value={detailValues[MOVIE.sourceID]}
+            onChange={(e) =>
+              setDetailValues({
+                ...detailValues,
+                [MOVIE.sourceID]: e.target.value,
+              })
+            }
+          />
+        </Col>
+        <Col sm={12} lg={3}>
+          <Input
+            label="Trailer ID"
+            placeholder="eg: 0123"
+            value={detailValues[MOVIE.trailerID]}
+            onChange={(e) =>
+              setDetailValues({
+                ...detailValues,
+                [MOVIE.trailerID]: e.target.value,
+              })
+            }
+          />
         </Col>
       </Row>
       <Row>

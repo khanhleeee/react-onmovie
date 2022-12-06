@@ -19,7 +19,6 @@ function Detail() {
    const category = 'movie';
 
    const [item, setItem] = useState(null);
-   const [genres, setGenres] = useState([]);
 
    useEffect(() => {
       const getDetail = async () => {

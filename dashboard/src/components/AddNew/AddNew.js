@@ -1,5 +1,6 @@
 import classname from "classnames/bind";
 import { useEffect, useState } from "react";
+import { ACTOR } from "../../constants";
 
 import styles from "./AddNew.module.scss";
 
@@ -7,7 +8,14 @@ const cx = classname.bind(styles);
 
 function AddNew(props) {
   const [active, setActive] = useState(1);
+
   const [value, setValue] = useState("");
+
+  const [castValue, setCastValue] = useState({
+    [ACTOR.name]: "",
+    [ACTOR.avatar]: "",
+    [ACTOR.role]: 1,
+  });
 
   useEffect(() => {
     if (props.genre || props.keyword) {
@@ -20,10 +28,13 @@ function AddNew(props) {
   const handleAdd = () => {
     if (props.genre) {
       //goi sp_addnewgenre
+      console.log("genre: ", value);
     } else if (props.keyword) {
       //goi sp_addnewkeyword
+      console.log("keyword: ", value);
     } else if (props.cast) {
       //goi sp_addnewcast
+      console.log("cast: ", castValue);
     }
   };
 
@@ -42,7 +53,32 @@ function AddNew(props) {
           </div>
         </div>
       )}
-      {active === 2 && <div className={cx("addnew")}>hello</div>}
+      {active === 2 && (
+        <div className={cx("addnew", "horizontal")}>
+          <div className={cx("container")}>
+            <input
+              className={cx("input")}
+              value={castValue[ACTOR.name]}
+              onChange={(e) =>
+                setCastValue({ ...castValue, [ACTOR.name]: e.target.value })
+              }
+              type="text"
+              placeholder="Cast's name"
+            />
+          </div>
+          <div className={cx("container")}>
+            <input
+              className={cx("input")}
+              value={castValue[ACTOR.avatar]}
+              onChange={(e) =>
+                setCastValue({ ...castValue, [ACTOR.avatar]: e.target.value })
+              }
+              type="text"
+              placeholder="Cast's avatar"
+            />
+          </div>
+        </div>
+      )}
       <div className={cx("add-btn")} onClick={handleAdd}>
         Add new
       </div>
