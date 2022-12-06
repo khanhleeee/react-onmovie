@@ -15,7 +15,7 @@ export default function Trailers(props) {
    useEffect(() => {
       const getVideos = async () => {
          const getFilmDetail = await serverNode.getFilmDetail(props.id);
-         if (!getFilmDetail.data.F_TRAILER === undefined) {
+         if (getFilmDetail.data.F_TRAILER === undefined) {
             const trailerId = getFilmDetail.data.data.F_TRAILER[TRAILER.id];
             const response = await onmoviedbApi.getVideos(category, trailerId);
             setVideos(response.results.slice(0, 2));
