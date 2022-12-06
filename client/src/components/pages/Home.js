@@ -14,7 +14,7 @@ function Home() {
                <div className="section-header mb-2">
                   <h2>Top Rated Movies</h2>
                   <Link to="/movie">
-                     <Button outline>View more</Button>
+                     {/* <Button outline>View more</Button> */}
                   </Link>
                </div>
                <MovieList category={category.movie} type={movieType.popular} />
@@ -23,7 +23,7 @@ function Home() {
                <div className="section-header mb-2">
                   <h2>Top Favorite Movies</h2>
                   <Link to="/movie">
-                     <Button outline>View more</Button>
+                     {/* <Button outline>View more</Button> */}
                   </Link>
                </div>
                <MovieList

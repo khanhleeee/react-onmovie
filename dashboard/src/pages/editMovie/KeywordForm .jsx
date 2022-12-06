@@ -8,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import styles from "./editMovie.module.scss";
 import Tag from "../../components/Tag/Tag";
 import { serverNode } from "../../api/serverNode";
+import AddNew from "../../components/AddNew/AddNew";
 
 const cx = classname.bind(styles);
 
@@ -39,7 +40,9 @@ export const KeywordForm = ({ id }) => {
     }
   };
   const handleRemoveKeyword = (item) => {
-    setMovieKeywords(movieKeywords.filter((keyword) => keyword.KW_ID !== item.KW_ID));
+    setMovieKeywords(
+      movieKeywords.filter((keyword) => keyword.KW_ID !== item.KW_ID)
+    );
     serverNode.removeKeywordMovie(id, item.KW_ID);
   };
 
@@ -81,6 +84,9 @@ export const KeywordForm = ({ id }) => {
           </ul>
         </Col>
       </Row>
+      <div className={cx("addnew-btn")}>
+        <AddNew keyword />
+      </div>
     </>
   );
 };

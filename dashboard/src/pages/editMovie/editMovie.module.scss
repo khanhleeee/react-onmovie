@@ -3,7 +3,6 @@
 .title {
   color: $primary-color;
   text-align: center;
-  text-transform: uppercase;
   line-height: 3rem;
   background-color: $sub-bg;
   border-radius: 4px;
@@ -124,4 +123,7 @@ label {
   border-radius: 4px;
   background-color: $sub-bg;
   margin-bottom: 2rem;
+}
+.addnew-btn {
+  @include flex(center, end);
 }

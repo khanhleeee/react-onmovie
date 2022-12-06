@@ -11,6 +11,7 @@ const cx = classNames.bind(styles);
 function Favorite({ id }) {
    const [active, setActive] = useState(false);
    const [watchlist, setWatchlist] = useState([]);
+
    const userData = JSON.parse(localStorage.getItem('user'));
 
    useEffect(() => {

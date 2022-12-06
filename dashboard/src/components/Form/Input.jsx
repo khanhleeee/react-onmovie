@@ -17,7 +17,7 @@ function Input(props) {
     <div className={classes}>
       <label>{label}</label>
       <div className={cx("input-warraper")}>
-        <Component {...inputprops} onChange={props.onChange} />
+        <Component value={value} {...inputprops} onChange={props.onChange} />
       </div>
     </div>
   );

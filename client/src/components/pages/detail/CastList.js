@@ -24,22 +24,19 @@ function CastList(props) {
 
    return (
       <div className={cx('casts')}>
-         {casts.length === 0 ?
-            <div>No information</div>
-            :
-            casts.map((cast, i) => (
-               <div key={i} className={cx('cast')}>
-                  <div
-                     className={cx('cast-img')}
-                     style={{
-                        backgroundImage: `url(${apiConfig.w500Image(
-                           cast[ACTORS.avatar],
-                        )})`,
-                     }}
-                  ></div>
-                  <p className={cx('cast-name')}>{cast[ACTORS.name]}</p>
-               </div>
-            ))}
+         {casts.map((cast, i) => (
+            <div key={i} className={cx('cast')}>
+               <div
+                  className={cx('cast-img')}
+                  style={{
+                     backgroundImage: `url(${apiConfig.w500Image(
+                        cast[ACTORS.avatar],
+                     )})`,
+                  }}
+               ></div>
+               <p className={cx('cast-name')}>{cast[ACTORS.name]}</p>
+            </div>
+         ))}
       </div>
    );
 }

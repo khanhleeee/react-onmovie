@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import styles from "./editMovie.module.scss";
-// import Tag from "../../components/Tag/Tag";
+import AddNew from "../../components/AddNew/AddNew";
 import CastCard from "../../components/CastCard/CastCard";
 import { serverNode } from "../../api/serverNode";
 
@@ -83,6 +83,9 @@ export const CastForm = ({ id }) => {
           </ul>
         </Col>
       </Row>
+      <div className={cx("addnew-btn")}>
+        <AddNew cast />
+      </div>
     </>
   );
 };

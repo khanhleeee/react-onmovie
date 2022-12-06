@@ -26,9 +26,10 @@
       color: $white;
       border-radius: 4px;
       justify-content: end;
-      padding: 0.8rem 1.2rem;
+      padding: 0.8rem 3rem;
       cursor: pointer;
       transform: opacity 0.3s ease;
+      margin-top: 5rem;
 
       &:hover {
         opacity: 0.9;

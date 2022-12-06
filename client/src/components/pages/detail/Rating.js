@@ -9,27 +9,30 @@ import styles from './Detail.module.scss';
 const cx = classNames.bind(styles);
 
 /**
- * Did not like yet: 0
  * Like: 1
  * Dislike: 2
  */
 export default function Rating({ id }) {
    const [active, setActive] = useState(2);
+   const [reset, setReset] = useState(false);
    const [ratings, setRatings] = useState([]);
+
    const userData = JSON.parse(localStorage.getItem('user'));
 
    useEffect(() => {
       const getRating = () => {
-         serverNode.getRatingList(userData[USER.id])
+         serverNode
+            .getRatingList(userData[USER.id])
             .then((res) => {
                let user_ratings = res.data.data;
                user_ratings.forEach((rating) => {
-                  if (rating[MOVIE_RATING.islike]) {
+                  if (rating[MOVIE_RATING.islike] == true) {
                      rating[MOVIE_RATING.islike] = 1;
-                  } else {
+                  } else if (rating[MOVIE_RATING.islike] == false) {
                      rating[MOVIE_RATING.islike] = 0;
                   }
                });
+               setActive(2);
                for (let item of user_ratings) {
                   if (item[MOVIE.id].toString() === id) {
                      setActive(item[MOVIE_RATING.islike]);
@@ -42,16 +45,26 @@ export default function Rating({ id }) {
             });
       };
       getRating();
-   }, [active]);
+      setReset(false);
+      console.log(reset);
+   }, [reset]);
 
    const handleLike = () => {
       serverNode.addRating({
          [MOVIE.id]: id,
          [MOVIE_RATING.islike]: 1,
          [USER.id]: userData[USER.id],
-      })
-      setRatings([...ratings, { [MOVIE.id]: id, [MOVIE_RATING.islike]: 1, [USER.id]: userData[USER.id] }]);
-      setActive(1);
+      });
+      setReset(true);
+      // setRatings([
+      //    ...ratings,
+      //    {
+      //       [MOVIE.id]: id,
+      //       [MOVIE_RATING.islike]: 1,
+      //       [USER.id]: userData[USER.id],
+      //    },
+      // ]);
+      // setActive(1);
    };
 
    const handleDisLike = () => {
@@ -59,9 +72,17 @@ export default function Rating({ id }) {
          [MOVIE.id]: id,
          [MOVIE_RATING.islike]: 0,
          [USER.id]: userData[USER.id],
-      })
-      setRatings([...ratings, { [MOVIE.id]: id, [MOVIE_RATING.islike]: 0, [USER.id]: userData[USER.id] }]);
-      setActive(0);
+      });
+      setReset(true);
+      // setRatings([
+      //    ...ratings,
+      //    {
+      //       [MOVIE.id]: id,
+      //       [MOVIE_RATING.islike]: 0,
+      //       [USER.id]: userData[USER.id],
+      //    },
+      // ]);
+      // setActive(0);
    };
 
    return (
