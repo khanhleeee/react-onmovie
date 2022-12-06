@@ -1,6 +1,9 @@
 const { executeMultipleParams } = require("../database/handleQuery");
 const { USER } = require("../constants/UserConstants");
 const { TYPE } = require("../constants/TypeConstants");
+const dotenv = require("dotenv");
+dotenv.config();
+const mssql = require("mssql");
 
 module.exports = {
   login: async (req, res) => {
@@ -8,10 +11,25 @@ module.exports = {
       let email = req.body.email;
       let password = req.body.password;
 
-      const result = await executeMultipleParams("sp_getUser", [
-        { name: "EMAIL", type: TYPE.varcharThirty, value: email },
-        { name: "PASS", type: TYPE.charHundred, value: password },
-      ]);
+      const dbConnection = {
+        user: email,
+        password: password,
+        database: process.env.DB_NAME,
+        server: "localhost",
+        port: 64265 || process.env.DB_PORT,
+        options: {
+          encrypt: true,
+          enableArithAbort: true,
+          trustServerCertificate: true,
+        },
+      };
+      await mssql.connect(dbConnection);
+      const request = new mssql.Request();
+      const result = await request
+        .input('EMAIL', email)
+        .input('PASS', password)
+        .execute('sp_getUser');
+
       if (result.recordset === undefined) {
         return res.status(401).json("Email or Password is incorrect");
       } else {
@@ -50,10 +68,14 @@ module.exports = {
         return res.status(400).json("Please fill all fields");
       }
 
+      if (password !== confirmPassword) {
+        return res.status(400).json("Password and Confirm Password are not match");
+      }
+
       const result = await executeMultipleParams("sp_addInforUser", [
         { name: "U_NAME", type: TYPE.nvarcharFifty, value: fullName },
         { name: "U_PHONE", type: TYPE.varCharEleven, value: phoneNumber },
-        { name: "U_EMAIL", type: TYPE.varcharThirty, value: email },
+        { name: "U_EMAIL", type: TYPE.varcharFifty, value: email },
         { name: "U_PASS", type: TYPE.varcharHundred, value: password },
       ]);
 
@@ -61,6 +83,7 @@ module.exports = {
         message: "Register successfully",
       });
     } catch (error) {
+      console.log(error);
       res.status(500).json(error.message);
     }
   },

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
-// import { useParams } from 'react-router-dom';
 import onmoviedbApi from '~/api/onmoviedb';
 import serverNode from '~/api/serverNode';
 
@@ -9,16 +8,18 @@ import { TRAILER } from '~/constants';
 
 const cx = classNames.bind(styles);
 
-function Trailers(props) {
+export default function Trailers(props) {
    const category = 'movie';
    const [videos, setVideos] = useState([]);
 
    useEffect(() => {
       const getVideos = async () => {
          const getFilmDetail = await serverNode.getFilmDetail(props.id);
-         const trailerId = getFilmDetail.data.data.F_TRAILER[TRAILER.id];
-         const response = await onmoviedbApi.getVideos(category, trailerId);
-         setVideos(response.results.slice(0, 2));
+         if (!getFilmDetail.data.F_TRAILER === undefined) {
+            const trailerId = getFilmDetail.data.data.F_TRAILER[TRAILER.id];
+            const response = await onmoviedbApi.getVideos(category, trailerId);
+            setVideos(response.results.slice(0, 2));
+         }
       };
       getVideos();
    }, [category, props.id]);
@@ -55,5 +56,3 @@ const Video = (props) => {
       </div>
    );
 };
-
-export default Trailers;

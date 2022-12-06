@@ -11,6 +11,7 @@ module.exports.TYPE = {
   varCharEight: mssql.VarChar(NUMBER.eight),
   varCharEleven: mssql.VarChar(NUMBER.eleven),
   varCharTwentyFive: mssql.VarChar(NUMBER.twentyFive),
+  varcharFifty: mssql.Char(NUMBER.fifty),
   varcharThirty: mssql.VarChar(NUMBER.thirty),
   varcharHundred: mssql.VarChar(NUMBER.hundred),
   

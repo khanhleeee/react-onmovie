@@ -60,7 +60,7 @@ const serverNode = {
       }
    },
    
-
+   // GENRES & COUNTRIES
    getGenres: async () => {
       try {
          const data = await axios.get(apiNode.baseUrl + 'film/genres');
