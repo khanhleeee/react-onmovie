@@ -10,44 +10,34 @@ const cx = classNames.bind(styles);
 
 /**
  * Like: 1
- * Dislike: 2
+ * Dislike: 0
  */
+
 export default function Rating({ id }) {
-   const [active, setActive] = useState(2);
-   const [reset, setReset] = useState(false);
+   const [active, setActive] = useState(-1);
    const [ratings, setRatings] = useState([]);
 
    const userData = JSON.parse(localStorage.getItem('user'));
 
    useEffect(() => {
-      const getRating = () => {
-         serverNode
-            .getRatingList(userData[USER.id])
-            .then((res) => {
-               let user_ratings = res.data.data;
-               user_ratings.forEach((rating) => {
-                  if (rating[MOVIE_RATING.islike] == true) {
-                     rating[MOVIE_RATING.islike] = 1;
-                  } else if (rating[MOVIE_RATING.islike] == false) {
-                     rating[MOVIE_RATING.islike] = 0;
-                  }
-               });
-               setActive(2);
-               for (let item of user_ratings) {
-                  if (item[MOVIE.id].toString() === id) {
-                     setActive(item[MOVIE_RATING.islike]);
-                  }
+      const getRating = async () => {
+         const res = await serverNode.getRatingList(userData[USER.id]);
+         const user_ratings = res.data.data;
+         if (!res.data.data) {
+            setRatings([]);
+         } else {
+            for (let i in user_ratings) {
+               if (user_ratings[i][MOVIE.id].toString() === id) {
+                  setActive(user_ratings[i][MOVIE_RATING.islike]);
+               } else {
+                  setActive(-1);
                }
-               setRatings(user_ratings);
-            })
-            .catch((err) => {
-               console.log(err);
-            });
+            }
+            setRatings(user_ratings);
+         }
       };
       getRating();
-      setReset(false);
-      console.log(reset);
-   }, [reset]);
+   }, [active]);
 
    const handleLike = () => {
       serverNode.addRating({
@@ -55,16 +45,12 @@ export default function Rating({ id }) {
          [MOVIE_RATING.islike]: 1,
          [USER.id]: userData[USER.id],
       });
-      setReset(true);
-      // setRatings([
-      //    ...ratings,
-      //    {
-      //       [MOVIE.id]: id,
-      //       [MOVIE_RATING.islike]: 1,
-      //       [USER.id]: userData[USER.id],
-      //    },
-      // ]);
-      // setActive(1);
+      if (active == true && active != -1) {
+         setActive(-1);
+      } else {
+         setActive(true);
+      }
+      console.log('like: ', ratings);
    };
 
    const handleDisLike = () => {
@@ -73,27 +59,26 @@ export default function Rating({ id }) {
          [MOVIE_RATING.islike]: 0,
          [USER.id]: userData[USER.id],
       });
-      setReset(true);
-      // setRatings([
-      //    ...ratings,
-      //    {
-      //       [MOVIE.id]: id,
-      //       [MOVIE_RATING.islike]: 0,
-      //       [USER.id]: userData[USER.id],
-      //    },
-      // ]);
-      // setActive(0);
+      if (active == false) {
+         setActive(-1);
+      } else {
+         setActive(false);
+      }
    };
 
    return (
       <div className={cx('rating')}>
          <LikeIcon
-            classNames={active === 1 ? cx('icon', 'active') : cx('icon')}
+            classNames={
+               active === true && active !== -1
+                  ? cx('icon', 'active')
+                  : cx('icon')
+            }
             onClick={handleLike}
          />
          <UnlikeIcon
             classNames={
-               active === 0
+               active === false
                   ? cx('icon', 'dislike', 'active')
                   : cx('icon', 'dislike')
             }

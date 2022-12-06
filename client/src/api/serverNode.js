@@ -28,7 +28,9 @@ const serverNode = {
    },
    searchFilmList: async (keyword) => {
       try {
-         const data = await axios.get(apiNode.baseUrl + 'film/search?q=' + keyword);
+         const data = await axios.get(
+            apiNode.baseUrl + 'film/search?q=' + keyword,
+         );
          return data;
       } catch (error) {
          console.log(error);
@@ -45,7 +47,9 @@ const serverNode = {
    },
    getSimilarFilm: async (id) => {
       try {
-         const data = await axios.get(apiNode.baseUrl + 'film/' + id + '/similar');
+         const data = await axios.get(
+            apiNode.baseUrl + 'film/' + id + '/similar',
+         );
          return data;
       } catch (error) {
          console.log(error);
@@ -59,7 +63,7 @@ const serverNode = {
          console.log(error);
       }
    },
-   
+
    // GENRES & COUNTRIES
    getGenres: async () => {
       try {
@@ -83,19 +87,23 @@ const serverNode = {
          return data;
       } catch (error) {
          console.log(error);
-      }         
+      }
    },
    getFilmsByCountry: async (country) => {
       try {
-         const data = await axios.get(apiNode.baseUrl + 'film/countries/' + country);
+         const data = await axios.get(
+            apiNode.baseUrl + 'film/countries/' + country,
+         );
          return data;
       } catch (error) {
          console.log(error);
-      }         
+      }
    },
    getFilmsByGenreAndCountry: async (genre, country) => {
       try {
-         const data = await axios.get(apiNode.baseUrl + 'film/filter/?g=' + genre + '&c=' + country);
+         const data = await axios.get(
+            apiNode.baseUrl + 'film/filter/?g=' + genre + '&c=' + country,
+         );
          return data;
       } catch (error) {
          console.log(error);
@@ -168,7 +176,9 @@ const serverNode = {
    // Rating
    getRatingList: async (id) => {
       try {
-         const data = await axios.get(apiNode.baseUrl + 'user/getRatingList/' + id);
+         const data = await axios.get(
+            apiNode.baseUrl + 'user/getRatingList/' + id,
+         );
          return data;
       } catch (error) {
          return error.response;
@@ -176,7 +186,10 @@ const serverNode = {
    },
    addRating: async (data) => {
       try {
-         const response = await axios.post(apiNode.baseUrl + 'user/addRating', data);
+         const response = await axios.post(
+            apiNode.baseUrl + 'user/addRating',
+            data,
+         );
          return response;
       } catch (error) {
          return error.response;
