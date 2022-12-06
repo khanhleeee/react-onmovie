@@ -8,4 +8,6 @@ module.exports.FILM = {
   backdrop: 'F_BACKDROP',
   poster: 'F_POSTER',
   status: 'S_NAME',
+  trailerID: 'TR_ID',
+  sourceID: 'SS_ID',
 };

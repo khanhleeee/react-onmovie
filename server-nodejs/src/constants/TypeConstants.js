@@ -11,7 +11,7 @@ module.exports.TYPE = {
   varCharEight: mssql.VarChar(NUMBER.eight),
   varCharEleven: mssql.VarChar(NUMBER.eleven),
   varCharTwentyFive: mssql.VarChar(NUMBER.twentyFive),
-  varcharFifty: mssql.Char(NUMBER.fifty),
+  varcharFifty: mssql.VarChar(NUMBER.fifty),
   varcharThirty: mssql.VarChar(NUMBER.thirty),
   varcharHundred: mssql.VarChar(NUMBER.hundred),
   
@@ -20,8 +20,9 @@ module.exports.TYPE = {
   charTen: mssql.Char(NUMBER.ten),
   charHundred: mssql.Char(NUMBER.hundred),
 
-  nvarcharTwenty: mssql.Char(NUMBER.twenty),
-  nvarcharFifty: mssql.Char(NUMBER.fifty),
+  nvarcharTwenty: mssql.NVarChar(NUMBER.twenty),
+  nvarcharThirty: mssql.NVarChar(NUMBER.thirty),
+  nvarcharFifty: mssql.NVarChar(NUMBER.fifty),
   nvarcharHundred: mssql.NVarChar(NUMBER.hundred),
   nvarcharThousand: mssql.NVarChar(NUMBER.thousand),
 }

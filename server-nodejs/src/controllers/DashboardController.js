@@ -90,35 +90,48 @@ module.exports = {
   },
   addMovie: async (req, res) => {
     const data = req.body.film;
-
     try {
       const converToString = (array) => {
         let result = "";
-        array.forEach((item) => {
-          if (Object.keys(item)[0] === "G_ID") {
-            result += " 0, " + item.G_ID + ";";
-          } else if (Object.keys(item)[0] === "ANC_ID") {
-            result += " 0, " + item.ANC_ID + ";";
-          } else if (Object.keys(item)[0] === "KW_ID") {
-            result += " 0, " + item.KW_ID + ";";
+        for (let i = 0; i < array.length; i++) {
+          if (Object.keys(array[i])[0] === "G_ID") {
+            if (i + 1 === array.length) {
+              result += " 0, " + array[i].G_ID;
+            } else {
+              result += " 0, " + array[i].G_ID + ";";
+            }
+          } else if (Object.keys(array[i])[0] === "ANC_ID") {
+            if (i + 1 === array.length) {
+              result += " NULL, 0, 1, " + array[i].ANC_ID;
+            } else {
+              result += " NULL, 0, 1,  " + array[i].ANC_ID + ";";
+            }
+          } else if (Object.keys(array[i])[0] === "KW_ID") {
+            if (i + 1 === array.length) {
+              result += " 0, " + array[i].KW_ID;
+            } else {
+              result += " 0, " + array[i].KW_ID + ";";
+            }
           }
-        });
+        }
         return "(" + result + " )";
       };
-
       const details = {
         F_OFFICIAL_NAME: data.detailValues[FILM.name],
         F_DESC: data.detailValues[FILM.desc],
         F_RELEASE_DATE: data.detailValues[FILM.release_date],
         F_BACKDROP: data.detailValues[FILM.backdrop],
         F_POSTER: data.detailValues[FILM.poster],
-        F_AGE: 18,
-        C_ID: "USA",
+        F_AGE: data.detailValues[FILM.age],
+        C_ID: data.detailValues[COUNTRY.id],
+        SOURCE_ID: data.detailValues[FILM.sourceID],
+        TRAILER_ID: data.detailValues[FILM.trailerID],
         strGenres: converToString(data.movieGenres),
         strCasts: converToString(data.movieCasts),
         strKeywords: converToString(data.movieKeywords),
       };
-      await executeMultipleParams("sp_ADDFILM", [
+      console.log(details);
+      const results = await executeMultipleParams("sp_ADDFILM", [
         {
           name: "F_OFFCIAL_NAME",
           type: TYPE.nvarcharHundred,
@@ -141,12 +154,12 @@ module.exports = {
         },
         {
           name: "F_BACKDROP",
-          type: TYPE.varcharHundred,
+          type: TYPE.max,
           value: details.F_BACKDROP,
         },
         {
           name: "F_POSTER",
-          type: TYPE.varcharHundred,
+          type: TYPE.max,
           value: details.F_POSTER,
         },
         {
@@ -169,9 +182,21 @@ module.exports = {
           type: TYPE.max,
           value: details.strCasts,
         },
+        {
+          name: "SOURCE_ID",
+          type: TYPE.int,
+          value: details.SOURCE_ID,
+        },
+        {
+          name: "TRAILER_ID",
+          type: TYPE.int,
+          value: details.TRAILER_ID,
+        },
       ]);
+      console.log(results)
       res.status(200).json("Add movie successfully");
     } catch (error) {
+      console.log(error)
       res.status(500).json(error);
     }
   },
@@ -231,6 +256,19 @@ module.exports = {
       const result = await executeMultipleParams("sp_getGenres", []);
       res.status(200).json({
         total: result.recordset.length,
+        data: result.recordset,
+      });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+  addMoreGenre: async (req, res) => {
+    const genreName = req.body.genre;
+    try {
+      const result = await executeMultipleParams("sp_addGenre", [
+        { name: "G_NAME", type: TYPE.nvarcharThirty, value: genreName },
+      ]);
+      res.status(200).json({
         data: result.recordset,
       });
     } catch (error) {
@@ -309,6 +347,23 @@ module.exports = {
       res.status(500).json(error);
     }
   },
+  addMoreCast: async (req, res) => {
+    const castName = req.body.ANC_NAME;
+    const castAvatar = req.body.ANC_AVATAR;
+    const R_ID = 1;
+    try {
+      const result = await executeMultipleParams("dbo.sp_addCast", [
+        { name: "ANC_NAME", type: TYPE.nvarcharThirty, value: castName },
+        { name: "ANC_AVATAR", type: TYPE.max, value: castAvatar },
+        { name: "R_ID", type: TYPE.int, value: R_ID },
+      ]);
+      res.status(200).json({
+        data: result.recordset,
+      });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
   getCastsMovie: async (req, res) => {
     const filmID = req.params.filmID;
     try {
@@ -375,6 +430,19 @@ module.exports = {
       res.status(200).json({
         total: result.recordset.length,
         data: obj,
+      });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+  addMoreKeyword: async (req, res) => {
+    const keyword = req.body.keyword;
+    try {
+      const result = await executeMultipleParams("sp_addKeyword", [
+        { name: "KW_NAME", type: TYPE.varcharThirty, value: keyword },
+      ]);
+      res.status(200).json({
+        data: result.recordset,
       });
     } catch (error) {
       res.status(500).json(error);
