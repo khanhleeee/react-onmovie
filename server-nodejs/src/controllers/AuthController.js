@@ -30,8 +30,6 @@ module.exports = {
         .input("PASS", password)
         .execute("sp_getUser");
 
-      console.log(result.recordset);
-
       if (result.recordset === undefined) {
         return res.status(401).json("Email or Password is incorrect");
       } else {

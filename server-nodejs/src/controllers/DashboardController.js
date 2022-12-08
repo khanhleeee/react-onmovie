@@ -93,26 +93,101 @@ module.exports = {
     const data = req.body.film;
     try {
       const details = {
+        F_OFFICIAL_NAME: data.detailValues[FILM.name],
+        F_DESC: data.detailValues[FILM.desc],
+        F_RELEASE_DATE: data.detailValues[FILM.release_date],
+        F_BACKDROP: data.detailValues[FILM.backdrop],
+        F_POSTER: data.detailValues[FILM.poster],
+        F_AGE: data.detailValues[FILM.age],
+        C_ID: data.detailValues[COUNTRY.id],
+        SOURCE_ID: data.detailValues[FILM.sourceID],
+        TRAILER_ID: data.detailValues[FILM.trailerID],
         strGenres: data.movieGenres,
         strCasts: data.movieCasts,
         strKeywords: data.movieKeywords,
       };
 
-      var tvp_Emp = new mssql.Table();
-      tvp_Emp.columns.add("G_ID", TYPE.int);
+      var genreTable = new mssql.Table();
+      genreTable.columns.add("G_ID", TYPE.int);
 
+      var keywordTable = new mssql.Table();
+      keywordTable.columns.add("KW_ID", TYPE.int);
+
+      var castTable = new mssql.Table();
+      castTable.columns.add("F_ID", TYPE.int);
       for (let i in details.strGenres) {
-        tvp_Emp.rows.add(details.strGenres[i]["G_ID"]);
+        genreTable.rows.add(details.strGenres[i]["G_ID"]);
+      }
+      for (let i in details.strKeywords) {
+        keywordTable.rows.add(details.strKeywords[i]["KW_ID"]);
+      }
+      for (let i in details.strCasts) {
+        castTable.rows.add(details.strCasts[i]["ANC_ID"]);
       }
 
-      const result = await executeMultipleParams("sp_TEST", [
+      const results = await executeMultipleParams("sp_ADDFILM", [
+        {
+          name: "F_OFFCIAL_NAME",
+          type: TYPE.nvarcharHundred,
+          value: details.F_OFFICIAL_NAME,
+        },
+        {
+          name: "F_DESC",
+          type: TYPE.nvarcharThousand,
+          value: details.F_DESC,
+        },
+        {
+          name: "F_RELEASE_DATE",
+          type: TYPE.smallDateTime,
+          value: details.F_RELEASE_DATE,
+        },
+        {
+          name: "F_AGE",
+          type: TYPE.int,
+          value: details.F_AGE,
+        },
+        {
+          name: "F_BACKDROP",
+          type: TYPE.max,
+          value: details.F_BACKDROP,
+        },
+        {
+          name: "F_POSTER",
+          type: TYPE.max,
+          value: details.F_POSTER,
+        },
+        {
+          name: "C_ID",
+          type: TYPE.charThree,
+          value: details.C_ID,
+        },
         {
           name: "GENRES",
           type: TYPE.tvp,
-          value: tvp_Emp,
+          value: genreTable,
+        },
+        {
+          name: "KEYWORDS",
+          type: TYPE.tvp,
+          value: keywordTable,
+        },
+        {
+          name: "CASTS",
+          type: TYPE.tvp,
+          value: castTable,
+        },
+        {
+          name: "SOURCE_ID",
+          type: TYPE.int,
+          value: details.SOURCE_ID,
+        },
+        {
+          name: "TRAILER_ID",
+          type: TYPE.int,
+          value: details.TRAILER_ID,
         },
       ]);
-      console.log(result);
+      res.status(200).json("Add movie successfully");
     } catch (error) {
       console.log(error);
       res.status(500).json(error);

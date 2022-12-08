@@ -49,7 +49,7 @@ export default function AddMovie() {
       movieCasts,
       movieKeywords,
     });
-    // window.location.href = "/";
+    window.location.href = "/";
   };
 
   return (
