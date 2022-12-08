@@ -2,7 +2,6 @@ import AddMovie from "../pages/addMovie/AddMovie";
 import EditMovie from "../pages/editMovie/EditMovie";
 import Movie from "../pages/movie/Movie";
 import MovieList from "../pages/movieList/MovieList";
-// import UserList from "../pages/userList/UserList";
 
 // Public routes
 const publicRoutes = [
