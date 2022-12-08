@@ -1,19 +1,16 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import classname from "classnames/bind";
 
 import styles from "./topbar.module.scss";
-// import { AuthContext } from "../../context/authContext/AuthContext";
-
 const cx = classname.bind(styles);
 
-export default function Topbar() {
-  // const { user, dispatch } = useContext(AuthContext);
+const user = JSON.parse(localStorage.getItem("user"));
 
-  const user = {
-    id: '1',
-    username: "John Doe",
-  }
+export default function Topbar() {
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    window.location.href = "/";
+  };
 
   return (
     <div className={cx("topbar")}>
@@ -26,18 +23,18 @@ export default function Topbar() {
         </div>
         <div className={cx("topRight")}>
           <div className={cx("dropdownProfile")}>
-            <Link to={{ pathname: "/user/" + user._id, users: user }}>
+            <Link to={{ pathname: "/user/" + user.U_ID, users: user }}>
               <img
                 src={
-                  user.avatar ||
-                  "https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/288230799_2823511521285420_7250080695985063274_n.jpg?stp=dst-jpg_p720x720&_nc_cat=106&ccb=1-7&_nc_sid=0debeb&_nc_ohc=B5tn-54j8OYAX983XPu&_nc_ht=scontent.fsgn8-3.fna&oh=00_AfBS54zUQLym5G1WkPQZsaU4-8pe_TquJD71f9ecPdrikw&oe=639750C0"
+                  user.U_AVATAR !== null ? "https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/288230799_2823511521285420_7250080695985063274_n.jpg?stp=dst-jpg_p720x720&_nc_cat=106&ccb=1-7&_nc_sid=0debeb&_nc_ohc=B5tn-54j8OYAX983XPu&_nc_ht=scontent.fsgn8-3.fna&oh=00_AfBS54zUQLym5G1WkPQZsaU4-8pe_TquJD71f9ecPdrikw&oe=639750C0"
+                  : user.U_AVATAR
                 }
                 alt="avatar"
                 className={cx("topAvatar")}
               />
             </Link>
             <ul className={cx("dropdown")}>
-              <li>Logout</li>
+              <li onClick={handleLogout}>Logout</li>
             </ul>
           </div>
         </div>
