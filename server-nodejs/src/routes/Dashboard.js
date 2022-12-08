@@ -3,6 +3,8 @@ const router = express.Router();
 
 const dashboardController = require('../controllers/DashboardController');
 
+router.post('/login', dashboardController.login);
+
 router.get('/films', dashboardController.getMoviesList);
 router.post('/films', dashboardController.addMovie);
 router.get('/films/countries', dashboardController.getAllCountries);

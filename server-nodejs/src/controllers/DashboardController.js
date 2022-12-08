@@ -1,5 +1,6 @@
 const { executeMultipleParams } = require("../database/handleQuery");
 const { FILM } = require("../constants/FilmConstants");
+const { USER } = require("../constants/UserConstants");
 const { GENRE } = require("../constants/GenreConstants");
 const { COUNTRY } = require("../constants/CountryConstants");
 const { TYPE } = require("../constants/TypeConstants");
@@ -504,6 +505,52 @@ module.exports = {
       });
     } catch (error) {
       res.status(500).json(error);
+    }
+  },
+
+  //Login
+  login: async (req, res) => {
+    try {
+      let email = req.body.email;
+      let password = req.body.password;
+
+      const dbConnection = {
+        user: email,
+        password: password,
+        database: process.env.DB_NAME,
+        server: "localhost",
+        port: 64265 || process.env.DB_PORT,
+        options: {
+          encrypt: true,
+          enableArithAbort: true,
+          trustServerCertificate: true,
+        },
+      };
+      await mssql.connect(dbConnection);
+      const request = new mssql.Request();
+      const result = await request
+        .input("EMAIL", email)
+        .input("PASS", password)
+        .execute("sp_getAdmin");
+        
+      if (result.recordset === undefined) {
+        return res.status(401).json("Email or Password is incorrect");
+      } else {
+        return res.status(200).json({
+          message: "Login successfully",
+          data: {
+            U_ID: result.recordset[0][USER.id],
+            U_EMAIL: result.recordset[0][USER.email],
+            U_NAME: result.recordset[0][USER.name],
+            U_PHONE: result.recordset[0][USER.phone],
+            U_AVATAR: result.recordset[0][USER.avatar],
+            U_ROLE: result.recordset[0][USER.role_id],
+          },
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json(err.message);
     }
   },
 };
