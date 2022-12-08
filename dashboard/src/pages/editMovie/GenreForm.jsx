@@ -15,6 +15,7 @@ const cx = classname.bind(styles);
 export const GenresForm = ({ id }) => {
   const [movieGenres, setMovieGenres] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [resetGenre, setResetGenre] = useState(false);
 
   useEffect(() => {
     const getAllGenre = async () => {
@@ -22,12 +23,13 @@ export const GenresForm = ({ id }) => {
       setGenres(response.data.data);
     };
     getAllGenre();
+    setResetGenre(false);
     const getGenreOfMovie = async () => {
       const response = await serverNode.getGenreMovie(id);
       setMovieGenres(response.data.data);
     };
     getGenreOfMovie();
-  }, []);
+  }, [resetGenre]);
 
   const handleAddGenre = (item) => {
     if (item) {
@@ -87,7 +89,7 @@ export const GenresForm = ({ id }) => {
         </Col>
       </Row>
       <div className={cx("addnew-btn")}>
-        <AddNew genre />
+        <AddNew genre resetGenre={resetGenre} setResetGenre={setResetGenre} />
       </div>
     </>
   );

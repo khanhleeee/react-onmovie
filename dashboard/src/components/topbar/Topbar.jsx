@@ -30,7 +30,7 @@ export default function Topbar() {
               <img
                 src={
                   user.avatar ||
-                  "https://pbs.twimg.com/media/D8tCa48VsAA4lxn.jpg"
+                  "https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/288230799_2823511521285420_7250080695985063274_n.jpg?stp=dst-jpg_p720x720&_nc_cat=106&ccb=1-7&_nc_sid=0debeb&_nc_ohc=B5tn-54j8OYAX983XPu&_nc_ht=scontent.fsgn8-3.fna&oh=00_AfBS54zUQLym5G1WkPQZsaU4-8pe_TquJD71f9ecPdrikw&oe=639750C0"
                 }
                 alt="avatar"
                 className={cx("topAvatar")}

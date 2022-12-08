@@ -15,6 +15,7 @@ const cx = classname.bind(styles);
 export const KeywordForm = ({ id }) => {
   const [movieKeywords, setMovieKeywords] = useState([]);
   const [keywords, setKeywords] = useState([]);
+  const [resetKeyword, setResetKeyword] = useState(false);
 
   useEffect(() => {
     const getAllKeyword = async () => {
@@ -22,12 +23,13 @@ export const KeywordForm = ({ id }) => {
       setKeywords(response.data.data);
     };
     getAllKeyword();
+    setResetKeyword(false);
     const getKeywordOfMovie = async () => {
       const response = await serverNode.getKeywordMovie(id);
       setMovieKeywords(response.data.data);
     };
     getKeywordOfMovie();
-  }, []);
+  }, [resetKeyword]);
 
   const handleAddKeyword = (item) => {
     if (item) {
@@ -85,7 +87,7 @@ export const KeywordForm = ({ id }) => {
         </Col>
       </Row>
       <div className={cx("addnew-btn")}>
-        <AddNew keyword />
+        <AddNew keyword resetKeyword={resetKeyword} setResetKeyword={setResetKeyword}/>
       </div>
     </>
   );

@@ -40,6 +40,13 @@ export default function EditMovie() {
   return (
     <div className={cx("container")}>
       <h2 className={cx("title")}>Edit movie: {item[MOVIE.name]}</h2>
+      <div
+        className={cx("img")}
+        style={{
+          backgroundImage: `url(${item[MOVIE.poster]})`,
+        }}
+      >
+      </div>
       <ul className={cx("tab-container")}>
         {TAB_ITEM.map((item, index) => (
           <li
@@ -123,7 +130,6 @@ const Information = ({ id, film }) => {
   useEffect(() => {
     setDetailValues({ ...film });
   }, [film]);
-  console.log(detailValues);
 
   const handleOnchange = (e) => {
     setDetailValues({ ...detailValues, [e.target.name]: e.target.value });
@@ -154,7 +160,11 @@ const Information = ({ id, film }) => {
           >
             {countries.map((item, index) => (
               <option key={index} value={item[COUNTRY.id]}>
-                {item[COUNTRY.name]}
+                {index === 0
+                  ? detailValues.C_NAME
+                  : item[COUNTRY.name] === detailValues.C_NAME
+                  ? ""
+                  : item[COUNTRY.name]}
               </option>
             ))}
           </select>
@@ -172,6 +182,7 @@ const Information = ({ id, film }) => {
               })
             }
           >
+            {/* <option value={[MOVIE.age]}>Above {detailValues.F_AGE}</option> */}
             <option value="12">Above 12</option>
             <option value="13">Above 13</option>
             <option value="14">Above 14</option>
