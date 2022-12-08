@@ -26,9 +26,11 @@ module.exports = {
       await mssql.connect(dbConnection);
       const request = new mssql.Request();
       const result = await request
-        .input('EMAIL', email)
-        .input('PASS', password)
-        .execute('sp_getUser');
+        .input("EMAIL", email)
+        .input("PASS", password)
+        .execute("sp_getUser");
+
+      console.log(result.recordset);
 
       if (result.recordset === undefined) {
         return res.status(401).json("Email or Password is incorrect");
@@ -46,8 +48,7 @@ module.exports = {
         });
       }
     } catch (err) {
-      console.log(err);
-      return res.status(500).json(err);
+      return res.status(500).json(err.message);
     }
   },
   register: async (req, res) => {
@@ -69,7 +70,9 @@ module.exports = {
       }
 
       if (password !== confirmPassword) {
-        return res.status(400).json("Password and Confirm Password are not match");
+        return res
+          .status(400)
+          .json("Password and Confirm Password are not match");
       }
 
       const result = await executeMultipleParams("sp_addInforUser", [

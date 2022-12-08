@@ -6,6 +6,7 @@ const { TYPE } = require("../constants/TypeConstants");
 const { CAST } = require("../constants/CastConstants");
 const { KEYWORD } = require("../constants/KeywordConstants");
 
+const mssql = require("mssql");
 module.exports = {
   getMoviesList: async (req, res) => {
     try {
@@ -91,112 +92,29 @@ module.exports = {
   addMovie: async (req, res) => {
     const data = req.body.film;
     try {
-      const converToString = (array) => {
-        let result = "";
-        for (let i = 0; i < array.length; i++) {
-          if (Object.keys(array[i])[0] === "G_ID") {
-            if (i + 1 === array.length) {
-              result += " 0, " + array[i].G_ID;
-            } else {
-              result += " 0, " + array[i].G_ID + ";";
-            }
-          } else if (Object.keys(array[i])[0] === "ANC_ID") {
-            if (i + 1 === array.length) {
-              result += " NULL, 0, 1, " + array[i].ANC_ID;
-            } else {
-              result += " NULL, 0, 1,  " + array[i].ANC_ID + ";";
-            }
-          } else if (Object.keys(array[i])[0] === "KW_ID") {
-            if (i + 1 === array.length) {
-              result += " 0, " + array[i].KW_ID;
-            } else {
-              result += " 0, " + array[i].KW_ID + ";";
-            }
-          }
-        }
-        return "(" + result + " )";
-      };
       const details = {
-        F_OFFICIAL_NAME: data.detailValues[FILM.name],
-        F_DESC: data.detailValues[FILM.desc],
-        F_RELEASE_DATE: data.detailValues[FILM.release_date],
-        F_BACKDROP: data.detailValues[FILM.backdrop],
-        F_POSTER: data.detailValues[FILM.poster],
-        F_AGE: data.detailValues[FILM.age],
-        C_ID: data.detailValues[COUNTRY.id],
-        SOURCE_ID: data.detailValues[FILM.sourceID],
-        TRAILER_ID: data.detailValues[FILM.trailerID],
-        strGenres: converToString(data.movieGenres),
-        strCasts: converToString(data.movieCasts),
-        strKeywords: converToString(data.movieKeywords),
+        strGenres: data.movieGenres,
+        strCasts: data.movieCasts,
+        strKeywords: data.movieKeywords,
       };
-      console.log(details);
-      const results = await executeMultipleParams("sp_ADDFILM", [
-        {
-          name: "F_OFFCIAL_NAME",
-          type: TYPE.nvarcharHundred,
-          value: details.F_OFFICIAL_NAME,
-        },
-        {
-          name: "F_DESC",
-          type: TYPE.nvarcharThousand,
-          value: details.F_DESC,
-        },
-        {
-          name: "F_RELEASE_DATE",
-          type: TYPE.smallDateTime,
-          value: details.F_RELEASE_DATE,
-        },
-        {
-          name: "F_AGE",
-          type: TYPE.int,
-          value: details.F_AGE,
-        },
-        {
-          name: "F_BACKDROP",
-          type: TYPE.max,
-          value: details.F_BACKDROP,
-        },
-        {
-          name: "F_POSTER",
-          type: TYPE.max,
-          value: details.F_POSTER,
-        },
-        {
-          name: "C_ID",
-          type: TYPE.charThree,
-          value: details.C_ID,
-        },
+
+      var tvp_Emp = new mssql.Table();
+      tvp_Emp.columns.add("G_ID", TYPE.int);
+
+      for (let i in details.strGenres) {
+        tvp_Emp.rows.add(details.strGenres[i]["G_ID"]);
+      }
+
+      const result = await executeMultipleParams("sp_TEST", [
         {
           name: "GENRES",
-          type: TYPE.max,
-          value: details.strGenres,
-        },
-        {
-          name: "KEYWORDS",
-          type: TYPE.max,
-          value: details.strKeywords,
-        },
-        {
-          name: "CASTS",
-          type: TYPE.max,
-          value: details.strCasts,
-        },
-        {
-          name: "SOURCE_ID",
-          type: TYPE.int,
-          value: details.SOURCE_ID,
-        },
-        {
-          name: "TRAILER_ID",
-          type: TYPE.int,
-          value: details.TRAILER_ID,
+          type: TYPE.tvp,
+          value: tvp_Emp,
         },
       ]);
-      console.log(results)
-      res.status(200).json("Add movie successfully");
+      console.log(result);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       res.status(500).json(error);
     }
   },

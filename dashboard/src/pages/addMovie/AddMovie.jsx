@@ -42,7 +42,7 @@ export default function AddMovie() {
       movieGenres,
       movieCasts,
       movieKeywords,
-    })
+    });
     serverNode.addMovie({
       detailValues,
       movieGenres,
@@ -120,10 +120,9 @@ const MovieDetailForm = ({ detailValues, setDetailValues, handleOnchange }) => {
 
   const [countries, setCountries] = useState([]);
   useEffect(() => {
-    serverNode.getAllCountries()
-      .then((res) => {
-        setCountries(res.data.data);
-      })
+    serverNode.getAllCountries().then((res) => {
+      setCountries(res.data.data);
+    });
   }, []);
 
   return (
@@ -163,9 +162,15 @@ const MovieDetailForm = ({ detailValues, setDetailValues, handleOnchange }) => {
               })
             }
           >
+            <option value="12">Above 12</option>
             <option value="13">Above 13</option>
+            <option value="14">Above 14</option>
+            <option value="15">Above 15</option>
             <option value="16">Above 16</option>
+            <option value="17">Above 17</option>
             <option value="18">Above 18</option>
+            <option value="19">Above 19</option>
+            <option value="20">Above 20</option>
             <option value="21">Above 21</option>
           </select>
         </Col>
@@ -210,4 +215,3 @@ const MovieDetailForm = ({ detailValues, setDetailValues, handleOnchange }) => {
     </>
   );
 };
-

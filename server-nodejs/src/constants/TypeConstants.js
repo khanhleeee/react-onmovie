@@ -5,8 +5,9 @@ module.exports.TYPE = {
   int: mssql.Int,
   tinyInt: mssql.TinyInt,
   smallDateTime: mssql.SmallDateTime,
-  bit : mssql.Bit,
+  bit: mssql.Bit,
   max: mssql.VarChar(mssql.MAX),
+  tvp: mssql.TVP,
 
   varCharEight: mssql.VarChar(NUMBER.eight),
   varCharEleven: mssql.VarChar(NUMBER.eleven),
@@ -14,7 +15,7 @@ module.exports.TYPE = {
   varcharFifty: mssql.VarChar(NUMBER.fifty),
   varcharThirty: mssql.VarChar(NUMBER.thirty),
   varcharHundred: mssql.VarChar(NUMBER.hundred),
-  
+
   charThree: mssql.Char(NUMBER.three),
   charFive: mssql.Char(NUMBER.five),
   charTen: mssql.Char(NUMBER.ten),
@@ -25,4 +26,4 @@ module.exports.TYPE = {
   nvarcharFifty: mssql.NVarChar(NUMBER.fifty),
   nvarcharHundred: mssql.NVarChar(NUMBER.hundred),
   nvarcharThousand: mssql.NVarChar(NUMBER.thousand),
-}
+};
