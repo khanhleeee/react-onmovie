@@ -2,22 +2,15 @@ import axios from "axios";
 import { apiNode } from "./apiConfig";
 
 export const serverNode = {
-  checkLogin: async (user) => {
+  login: async (user) => {
     try {
-      const data = await axios.post(apiNode.baseUrl + "auth/login", user);
+      const data = await axios.post(apiNode.baseUrl + "login", user);
       return data;
     } catch (error) {
       return error.response;
     }
   },
-  checkRegister: async (user) => {
-    try {
-      const data = await axios.post(apiNode.baseUrl + "auth/register", user);
-      return data;
-    } catch (error) {
-      return error.response;
-    }
-  },
+
   getMoviesList: async (page, perPage) => {
     try {
       const data = await axios.get(
