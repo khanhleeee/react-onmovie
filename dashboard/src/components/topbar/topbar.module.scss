@@ -1,0 +1,136 @@
+@use "../../scss" as *;
+
+.topbar {
+  width: 100%;
+  height: $header-height;
+  background-color: $sub-bg;
+  color: $text-color;
+}
+
+.topbarWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 6rem;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 30px;
+  color: #10b99e;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.logo:hover {
+  color: rgb(255, 255, 255);
+}
+
+.topRight {
+  display: flex;
+  align-items: center;
+}
+
+.topbarIconContainer {
+  position: relative;
+  cursor: pointer;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.topbarIconContainer:hover {
+  color: #ccc;
+}
+
+.topIconBadge {
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: -5px;
+  right: 0px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.settingIcon {
+  margin-top: -5px;
+  padding: 5px 40px;
+  width: 100%;
+  height: 100%;
+}
+
+.settingIcon:hover {
+  color: #ccc;
+}
+
+.dropdownLogout {
+  position: relative;
+  display: inline-block;
+  padding: 5px 27px;
+  height: 100%;
+  width: 100%;
+  line-height: 30px;
+}
+
+.dropdownProfile {
+  display: flex;
+  justify-content: center;
+  position: relative;
+
+  & .topAvatar {
+    width: 4.2rem;
+    height: 4.2rem;
+    border-radius: 50%;
+    border: 2px solid #fff;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  &:hover .dropdown {
+    display: block;
+  }
+
+  .dropdown {
+    min-width: 15rem;
+    position: absolute;
+    display: none;
+    background-color: $white;
+    color: $black;
+    border-radius: 4px;
+    padding: 1rem 0;
+    top: 115%;
+    z-index: 99;
+
+    li {
+      padding: 1rem 2rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: rgb(215, 215, 215);
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      border-style: solid;
+      border-width: 10px;
+      border-color: transparent transparent $white transparent;
+      top: -2rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+.dropdownContent {
+}

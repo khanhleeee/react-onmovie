@@ -1,0 +1,114 @@
+@use '../../scss/' as *;
+
+.header {
+   height: $header-height;
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   z-index: 99;
+   background-image: linear-gradient(
+      to bottom,
+      rgba(17, 19, 25, 1),
+      rgba(255, 0, 0, 0)
+   );
+   opacity: 0.96;
+   transition: height 0.3s ease, background-color 0.2s ease;
+
+   &.active {
+      background-image: none;
+      background-color: $sub-bg;
+      opacity: 0.96;
+   }
+
+   &.shrink {
+      height: $header-shrink-height;
+      background-color: $primary-color;
+   }
+}
+.wrapper {
+   @include flex(center, space-between);
+   height: 100%;
+   padding: 0 6rem;
+
+   @include mobile {
+      justify-content: center;
+   }
+}
+.features {
+   display: flex;
+}
+
+.menu {
+   @include flex(center, unset);
+}
+
+.nav {
+   position: relative;
+   top: 3px;
+   @include flex(center, unset);
+   margin-left: 6rem;
+   color: rgb(180, 180, 180);
+
+   & > * ~ * {
+      margin-left: 3rem;
+   }
+   li {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 0 0.8rem;
+      position: relative;
+
+      & > a {
+         padding: 10px 0;
+      }
+      &.active,
+      &:hover {
+         color: $white;
+      }
+   }
+
+   @include mobile {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      height: 7rem;
+      width: 100%;
+      background-color: $primary-color;
+      padding: 0 6rem;
+      box-shadow: $box-shadow;
+
+      @include flex(center, space-between);
+
+      & > * ~ * {
+         margin-left: 0;
+      }
+   }
+}
+.right-side {
+   @include flex(center, unset);
+
+   & .user-avatar {
+      @include flex(center, unset);
+      font-family: $nd-font-family;
+      padding: 0.5rem 0.8rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      background-color: $primary-color;
+      border-radius: 8px;
+      margin-left: 1.4rem;
+      cursor: pointer;
+
+      & .icon {
+         width: 2.6rem;
+         height: 2.6rem;
+         margin-right: 0.4rem;
+         transition: color ease 0.2s;
+
+         &:hover {
+            color: $text-color;
+         }
+      }
+   }
+}

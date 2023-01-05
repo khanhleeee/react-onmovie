@@ -1,0 +1,45 @@
+@use '../../../scss' as *;
+
+$subColor: #222632;
+
+.main {
+   display: flex;
+   font-family: $nd-font-family;
+}
+.sidebar {
+   width: 30rem;
+   padding: 1rem 2rem;
+
+   & .menu {
+      margin-top: 3rem;
+
+      li {
+         display: flex;
+         align-items: center;
+         padding: 1rem 0.8rem;
+         margin-bottom: 0.8rem;
+         border-radius: 4px;
+         font-weight: 500;
+         transition: background-color 0.3s linear;
+         cursor: pointer;
+
+         &:hover {
+            background-color: $subColor;
+         }
+         &.active {
+            color: $primary-color;
+            background-color: $subColor;
+         }
+
+         & .icon {
+            margin-right: 1.2rem;
+         }
+      }
+   }
+}
+
+.content {
+   margin-top: 4rem;
+   padding: 0 3rem;
+   flex: 1;
+}

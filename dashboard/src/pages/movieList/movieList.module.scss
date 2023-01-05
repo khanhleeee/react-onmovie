@@ -1,0 +1,39 @@
+@use "../../scss" as *;
+
+.container {
+  flex: 1;
+  padding: 0 3rem;
+  margin-top: 2rem;
+}
+.feature {
+  display: flex;
+  justify-content: end;
+
+  .create-btn {
+    @include flex(center, center);
+    padding: 1rem 1.6rem;
+    border: none;
+    background-color: $primary-color;
+    color: $text-color;
+    font-weight: 600;
+    border-radius: 4px;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: opacity 0.4s ease;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+.list {
+  width: 100%;
+  margin-top: 4rem;
+
+  .grid {
+    width: 100%;
+    display: grid;
+    gap: 1.8rem 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}

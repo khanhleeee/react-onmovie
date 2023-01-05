@@ -1,0 +1,89 @@
+@use "../../scss" as *;
+
+.title {
+  color: $primary-color;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 3rem;
+  background-color: $sub-bg;
+  border-radius: 4px;
+  padding: 1rem 2rem;
+  margin-bottom: 5rem;
+}
+.sub-title {
+  width: 100%;
+  border-bottom: 2px solid $primary-color-rgba;
+  padding: 0.8rem 0;
+  margin: 2rem 0;
+}
+.detail-form {
+  .submit-wrapper {
+    @include flex(unset, end);
+    margin-top: 1rem;
+
+    .submit-btn {
+      background-color: $primary-color;
+      color: $white;
+      border-radius: 4px;
+      justify-content: end;
+      padding: 0.8rem 3rem;
+      cursor: pointer;
+      transform: opacity 0.3s ease;
+      margin-top: 5rem;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+}
+.genres-container {
+  margin-top: 1rem;
+}
+.genres-list,
+.keywords-list,
+.casts-list {
+  width: 100%;
+  overflow-y: scroll;
+  height: 20rem;
+  padding: 1rem;
+  margin-top: 1rem;
+  border: 3px solid $sub-bg;
+
+  .genre,
+  .keyword,
+  .cast {
+    display: flex;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid $sub-bg;
+    user-select: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $sub-bg;
+    }
+    &:active {
+      opacity: 0.9;
+    }
+
+    & .number {
+      width: 20rem;
+    }
+  }
+}
+label {
+  display: block;
+  margin-bottom: 0.8rem;
+}
+.dropdown {
+  display: flex;
+  width: 100%;
+  color: $text-color;
+  padding: 0.4rem;
+  border-radius: 4px;
+  background-color: $sub-bg;
+  margin-bottom: 2rem;
+}
+.addnew-btn {
+  @include flex(center, end);
+}

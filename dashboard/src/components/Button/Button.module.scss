@@ -1,0 +1,80 @@
+@use '../../scss/' as *;
+
+button {
+   font-family: $font-family;
+   cursor: pointer;
+}
+
+.btn {
+   display: inline-block;
+   text-align: center;
+   font-size: 1.5rem;
+   font-weight: 700;
+   min-width: 100px;
+   min-height: 36px;
+   text-transform: uppercase;
+   border: 1px solid transparent;
+   border-radius: 4px;
+   background-color: $white;
+   color: #000;
+   padding: 0.4rem 6rem;
+   transition: box-shadow 0.3s ease;
+   position: relative;
+   user-select: none;
+
+   + .btn {
+      margin-left: 8px;
+   }
+   &:hover {
+      color: $white;
+      background-color: $primary-color;
+      transition: background-color 0.6s ease;
+   }
+
+   &.disable {
+      opacity: 0.4;
+      cursor: default;
+
+      &:hover {
+         opacity: 0.4;
+      }
+   }
+}
+
+.outline {
+   color: $white;
+   border: 1px solid $white;
+   background-color: transparent;
+
+   &:hover {
+      color: $primary-color;
+      border: 1px solid $primary-color;
+      background-color: transparent;
+      transition: border-color 0.6s ease-out, color 0.6s ease-out;
+   }
+}
+.fullfill {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: $white;
+   width: 100%;
+   border: 1px solid transparent;
+   background-color: $primary-color;
+
+   &:hover {
+      opacity: 0.8;
+      transition: opacity 0.2s ease-out;
+   }
+}
+.gray {
+   color: $white;
+   background-color: #999;
+
+   &:hover {
+      opacity: 0.8;
+      color: $white;
+      background-color: #999;
+      transition: opacity 0.2s ease-out;
+   }
+}
