@@ -5,7 +5,7 @@ const dbConnection = {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  server: "KASLEE\\MSSQLSERVER01",
+  server: "localhost",
   port: 64265 || process.env.DB_PORT,
   options: {
     encrypt: true,
